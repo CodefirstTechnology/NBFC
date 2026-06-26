@@ -1,0 +1,8 @@
+{
+  "name": "core-utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/core-utils/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:util"],
+  "targets": {}
+}

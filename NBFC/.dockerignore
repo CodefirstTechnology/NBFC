@@ -1,30 +1,45 @@
-**/.classpath
-**/.dockerignore
-**/.env
+# Git / IDE
 **/.git
 **/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
+**/.gitattributes
 **/.vs
 **/.vscode
+**/.DS_Store
 **/*.*proj.user
-**/*.dbmdl
-**/*.jfm
-**/azds.yaml
+
+# OS / archive junk
+__MACOSX/
+**/.DS_Store
+Thumbs.db
+
+# .NET build artifacts
 **/bin
-**/charts
-**/docker-compose*
-**/Dockerfile*
-**/node_modules
-**/npm-debug.log
 **/obj
-**/secrets.dev.yaml
-**/values.dev.yaml
-LICENSE
-README.md
-!**/.gitignore
-!.git/HEAD
-!.git/config
-!.git/packed-refs
-!.git/refs/heads/**
+**/TestResults
+**/*.nupkg
+
+# Frontend (built separately via frontend/Dockerfile)
+frontend/
+
+# Design assets and local tools (not needed in API/gateway images)
+Design-Screens/
+tools/
+
+# Nested duplicate scaffold
+NBFC/
+
+# Node artifacts (if any leak into context)
+**/node_modules
+**/dist
+**/.nx
+**/.angular
+**/coverage
+**/npm-debug.log
+**/*.log
+
+# Compose / docs (not needed in image build context)
+docker-compose.yml
+docker-compose.override.yml
+**/README.md
+**/*.md
+!src/**/*.md

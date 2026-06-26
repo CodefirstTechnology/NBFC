@@ -1,0 +1,60 @@
+{
+  "name": "mfe-accounting",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/mfe-accounting/src",
+  "prefix": "pats",
+  "tags": ["scope:accounting", "type:mfe"],
+  "targets": {
+    "build": {
+      "executor": "@angular-architects/native-federation:build",
+      "configurations": {
+        "production": { "target": "mfe-accounting:esbuild:production" },
+        "development": { "target": "mfe-accounting:esbuild:development" }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "mfe-accounting:serve-original:development",
+        "rebuildDelay": 0,
+        "dev": true
+      }
+    },
+    "serve-original": {
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "mfe-accounting:esbuild:production"
+        },
+        "development": {
+          "buildTarget": "mfe-accounting:esbuild:development",
+          "port": 4206
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "esbuild": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/mfe-accounting",
+        "index": "apps/mfe-accounting/src/index.html",
+        "browser": "apps/mfe-accounting/src/main.ts",
+        "polyfills": ["zone.js", "es-module-shims"],
+        "tsConfig": "apps/mfe-accounting/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [{ "glob": "**/*", "input": "apps/mfe-accounting/public" }],
+        "styles": ["apps/mfe-accounting/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": { "outputHashing": "all" },
+        "development": { "optimization": false, "extractLicenses": false, "sourceMap": true }
+      },
+      "defaultConfiguration": "production"
+    },
+    "lint": { "executor": "@nx/eslint:lint" }
+  }
+}

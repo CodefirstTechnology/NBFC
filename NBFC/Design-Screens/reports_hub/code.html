@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reports Hub - Sahakar Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Manrope:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#eeedf4",
+                    "on-secondary-fixed": "#00210d",
+                    "on-secondary-container": "#00723b",
+                    "inverse-primary": "#abc7ff",
+                    "surface-bright": "#faf8ff",
+                    "secondary-container": "#8af6a9",
+                    "surface-container-highest": "#e3e2e9",
+                    "error-npa": "#D64545",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#2a1800",
+                    "on-secondary": "#ffffff",
+                    "text-secondary": "#404040",
+                    "tertiary-fixed": "#ffddb5",
+                    "surface-dim": "#dad9e0",
+                    "inverse-on-surface": "#f1f0f7",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#e9e7ee",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e3e2e9",
+                    "surface-tint": "#405e92",
+                    "tertiary-fixed-dim": "#ffb956",
+                    "surface-container-low": "#f4f3fa",
+                    "secondary": "#006d38",
+                    "border-subtle": "#E2E8F0",
+                    "surface-muted": "#F8FAFC",
+                    "primary": "#002653",
+                    "on-secondary-fixed-variant": "#005229",
+                    "on-surface-variant": "#43474f",
+                    "primary-fixed-dim": "#abc7ff",
+                    "outline": "#747780",
+                    "primary-fixed": "#d7e3ff",
+                    "on-background": "#1a1b20",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#001b3f",
+                    "on-primary-fixed-variant": "#264679",
+                    "secondary-fixed": "#8df9ac",
+                    "on-tertiary-fixed-variant": "#633f00",
+                    "on-primary-container": "#8aa8e0",
+                    "secondary-fixed-dim": "#71dc92",
+                    "outline-variant": "#c4c6d0",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#563600",
+                    "on-tertiary-container": "#e0992c",
+                    "primary-container": "#1a3c6e",
+                    "on-surface": "#1a1b20",
+                    "inverse-surface": "#2f3035",
+                    "surface": "#faf8ff",
+                    "tertiary": "#392200",
+                    "on-error": "#ffffff",
+                    "background": "#faf8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin-desktop": "32px",
+                    "base": "8px",
+                    "container-margin-mobile": "16px",
+                    "section-gap": "48px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Manrope"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Manrope"],
+                    "body-lg": ["Inter"],
+                    "title-md": ["Manrope"],
+                    "body-sm": ["Inter"],
+                    "headline-lg": ["Manrope"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #faf8ff;
+            color: #1a1b20;
+        }
+        .bento-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bento-card:hover {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+            border-color: rgba(0, 38, 83, 0.2);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface-container-highest dark:bg-surface-container-high sticky top-0 z-50 w-full h-16 flex justify-between items-center px-container-margin-desktop shadow-sm border-b border-border-subtle dark:border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">Sahakar Pro</span>
+<span class="font-title-md text-title-md text-primary dark:text-primary-fixed-dim border-l border-outline-variant pl-4 hidden md:block">
+                Branch: Main Mumbai (मुख्य मुंबई शाखा)
+            </span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:flex items-center bg-surface-container-low rounded-full px-4 py-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48" placeholder="Search reports..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined text-on-surface-variant">help</span>
+</button>
+<button class="hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined text-on-surface-variant">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-primary-fixed overflow-hidden border-2 border-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A professional corporate headshot of a female bank administrator in professional Indian attire, set against a clean, softly lit office background. The image has a warm, trustworthy lighting with a shallow depth of field, maintaining a professional banking aesthetic with corporate blue and white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAM5mUJ6exx5MNPdNy2TUQvnCzPO9bd_AgUrYYgCUV8fh3kcCxw0G2JTPjKvIv6infOl9kqBiFaRUe0Evu7XKQpKnY7NwNxXJtuS7LX_d_x7GHUp99yWG0WGXq-CU0dNCjT0lwaSi_Rz1TNtjEWLhf_3ju-cHovp2ocB13ibm9h2rSq8vT5TgXCJQ66rocbaRYv_Ud7zBAnamjkglIv-RZdkFVyc2lvtaEy_H0UaCcKqsitlJPUpa7vOFSvvSqoq7M2MCcA1pjTPrGH"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-64px)] w-64 fixed left-0 top-16 bg-surface-container-low dark:bg-surface-dim border-r border-border-subtle py-4 gap-2 z-40">
+<div class="px-4 mb-4">
+<button class="w-full bg-primary-container text-on-primary-container font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-150 hover:opacity-90 active:scale-95">
+<span class="material-symbols-outlined">add</span>
+<span>New Transaction</span>
+</button>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-lg mx-2 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="flex flex-col">
+<span class="font-label-md text-label-md leading-none">Dashboard</span>
+<span class="font-label-sm text-label-sm opacity-70">डॅशबोर्ड</span>
+</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-lg mx-2 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="flex flex-col">
+<span class="font-label-md text-label-md leading-none">Members</span>
+<span class="font-label-sm text-label-sm opacity-70">सभासद</span>
+</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-lg mx-2 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="flex flex-col">
+<span class="font-label-md text-label-md leading-none">Deposits</span>
+<span class="font-label-sm text-label-sm opacity-70">ठेवी</span>
+</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-lg mx-2 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="flex flex-col">
+<span class="font-label-md text-label-md leading-none">Loans</span>
+<span class="font-label-sm text-label-sm opacity-70">कर्ज</span>
+</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-lg mx-2 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">account_balance</span>
+<span class="flex flex-col">
+<span class="font-label-md text-label-md leading-none">Collections</span>
+<span class="font-label-sm text-label-sm opacity-70">वसुली</span>
+</span>
+</a>
+<!-- Active Tab: Reports -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container font-bold rounded-lg mx-2 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="flex flex-col">
+<span class="font-label-md text-label-md leading-none">Reports</span>
+<span class="font-label-sm text-label-sm opacity-90">अहवाल</span>
+</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-border-subtle pt-4 mx-2">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-error rounded-lg transition-all duration-150" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Log Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 flex-1 p-container-margin-desktop min-h-[calc(100vh-64px)]">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary mb-1">Reports Hub / अहवाल केंद्र</h1>
+<p class="text-on-surface-variant font-body-md max-w-2xl">Access comprehensive financial analytics and administrative reports for current branch operations.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-lowest border border-outline-variant text-primary px-4 py-2 rounded-lg font-label-md flex items-center gap-2 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-xl">filter_list</span>
+<span>Global Filters</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md flex items-center gap-2 hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-xl">schedule_send</span>
+<span>Schedule All</span>
+</button>
+</div>
+</div>
+<!-- Reports Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1: Daily Collection -->
+<div class="bento-card bg-surface-container-lowest border border-border-subtle rounded-xl p-6 flex flex-col relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="bg-primary-fixed p-3 rounded-lg">
+<span class="material-symbols-outlined text-primary text-2xl">receipt_long</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-label-sm font-bold uppercase">Up-to-date</span>
+</div>
+<div class="mb-2">
+<h3 class="font-title-md text-title-md text-primary">Daily Collection</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">दैनिक वसुली</p>
+</div>
+<p class="text-body-sm text-on-surface-variant mb-4 flex-1">Track real-time recovery from field agents and counter transactions for today's session.</p>
+<div class="h-16 mb-6 flex items-end gap-1 px-1">
+<div class="w-full bg-primary/10 rounded-t h-4/6"></div>
+<div class="w-full bg-primary/20 rounded-t h-5/6"></div>
+<div class="w-full bg-primary/10 rounded-t h-3/6"></div>
+<div class="w-full bg-primary/40 rounded-t h-6/6"></div>
+<div class="w-full bg-primary/20 rounded-t h-4/6"></div>
+<div class="w-full bg-primary/60 rounded-t h-5/6"></div>
+<div class="w-full bg-primary rounded-t h-full"></div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors">View Report</button>
+<button class="px-3 border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Loan Outstanding -->
+<div class="bento-card bg-surface-container-lowest border border-border-subtle rounded-xl p-6 flex flex-col relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="bg-primary-fixed p-3 rounded-lg">
+<span class="material-symbols-outlined text-primary text-2xl">account_balance_wallet</span>
+</div>
+</div>
+<div class="mb-2">
+<h3 class="font-title-md text-title-md text-primary">Loan Outstanding</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">थकीत कर्ज</p>
+</div>
+<p class="text-body-sm text-on-surface-variant mb-4 flex-1">Detailed summary of principal balances and interest accruals across all active loan portfolios.</p>
+<div class="h-16 mb-6 flex items-center justify-center">
+<svg class="w-full h-full stroke-primary fill-none stroke-[2px]" viewbox="0 0 100 20">
+<path d="M0,15 Q25,5 50,15 T100,5" stroke-linecap="round"></path>
+</svg>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors">View Report</button>
+<button class="px-3 border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Deposit Report -->
+<div class="bento-card bg-surface-container-lowest border border-border-subtle rounded-xl p-6 flex flex-col relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="bg-primary-fixed p-3 rounded-lg">
+<span class="material-symbols-outlined text-primary text-2xl">savings</span>
+</div>
+</div>
+<div class="mb-2">
+<h3 class="font-title-md text-title-md text-primary">Deposit Report</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">ठेव अहवाल</p>
+</div>
+<p class="text-body-sm text-on-surface-variant mb-4 flex-1">Analysis of Savings, FDs, and Pigmy deposits with maturity forecasting and interest liabilities.</p>
+<div class="h-16 mb-6 flex items-end gap-2">
+<div class="w-2 bg-secondary rounded-full h-1/2"></div>
+<div class="w-2 bg-secondary rounded-full h-2/3"></div>
+<div class="w-2 bg-secondary rounded-full h-full"></div>
+<div class="w-2 bg-secondary rounded-full h-4/5"></div>
+<div class="w-2 bg-secondary rounded-full h-3/4"></div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors">View Report</button>
+<button class="px-3 border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- Card 4: Overdue Report -->
+<div class="bento-card bg-surface-container-lowest border border-border-subtle rounded-xl p-6 flex flex-col relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-tertiary-fixed-dim"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="bg-tertiary-fixed p-3 rounded-lg">
+<span class="material-symbols-outlined text-tertiary text-2xl">notification_important</span>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-1 rounded text-label-sm font-bold uppercase">Critical</span>
+</div>
+<div class="mb-2">
+<h3 class="font-title-md text-title-md text-primary">Overdue Report</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">ओव्हरड्यू अहवाल</p>
+</div>
+<p class="text-body-sm text-on-surface-variant mb-4 flex-1">Identify accounts beyond grace periods categorized by aging (30, 60, 90 days).</p>
+<div class="h-16 mb-6 flex items-center gap-1">
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-tertiary-fixed-dim h-full w-[65%]"></div>
+</div>
+<span class="text-label-sm font-bold text-tertiary">65%</span>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors">View Report</button>
+<button class="px-3 border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- Card 5: NPA Report -->
+<div class="bento-card bg-surface-container-lowest border border-border-subtle rounded-xl p-6 flex flex-col relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-error"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="bg-error-container p-3 rounded-lg">
+<span class="material-symbols-outlined text-error text-2xl">dangerous</span>
+</div>
+<span class="bg-error-container text-on-error-container px-2 py-1 rounded text-label-sm font-bold uppercase">NPA Audit</span>
+</div>
+<div class="mb-2">
+<h3 class="font-title-md text-title-md text-primary">NPA Report</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">एनपीए अहवाल</p>
+</div>
+<p class="text-body-sm text-on-surface-variant mb-4 flex-1">Monitor Non-Performing Assets as per banking regulatory norms for provisioning.</p>
+<div class="h-16 mb-6 flex items-center justify-center">
+<div class="relative w-12 h-12">
+<svg class="w-full h-full rotate-[-90deg]" viewbox="0 0 36 36">
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eeedf4" stroke-width="4"></path>
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ba1a1a" stroke-dasharray="15, 100" stroke-width="4"></path>
+</svg>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors">View Report</button>
+<button class="px-3 border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- Card 6: Branch Performance -->
+<div class="bento-card bg-surface-container-lowest border border-border-subtle rounded-xl p-6 flex flex-col relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="bg-secondary-fixed p-3 rounded-lg">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant text-2xl">trending_up</span>
+</div>
+</div>
+<div class="mb-2">
+<h3 class="font-title-md text-title-md text-primary">Branch Performance</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">शाखा कार्यक्षमता</p>
+</div>
+<p class="text-body-sm text-on-surface-variant mb-4 flex-1">Holistic view of branch growth, targets vs achievements, and staff productivity metrics.</p>
+<div class="h-16 mb-6 flex gap-1 justify-between items-center">
+<div class="h-8 w-8 rounded bg-secondary/10 flex items-center justify-center"><span class="text-xs font-bold text-secondary">A</span></div>
+<div class="h-8 w-8 rounded bg-secondary/20 flex items-center justify-center"><span class="text-xs font-bold text-secondary">B</span></div>
+<div class="h-10 w-10 rounded bg-secondary/30 flex items-center justify-center border-2 border-secondary"><span class="text-sm font-bold text-secondary">C</span></div>
+<div class="h-8 w-8 rounded bg-secondary/20 flex items-center justify-center"><span class="text-xs font-bold text-secondary">D</span></div>
+<div class="h-8 w-8 rounded bg-secondary/10 flex items-center justify-center"><span class="text-xs font-bold text-secondary">E</span></div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors">View Report</button>
+<button class="px-3 border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Detailed Section: Custom Query (Optional high-end UI) -->
+<section class="mt-section-gap bg-primary text-on-primary rounded-xl p-8 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none">
+<svg viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<path d="M45.3,-74C58.3,-66.6,68.2,-53.4,75.4,-39.2C82.5,-25,86.9,-9.8,85.2,5.1C83.5,20,75.8,34.5,66,46.8C56.1,59.1,44.1,69.2,30.3,74.5C16.5,79.8,0.9,80.3,-14.7,77.5C-30.2,74.7,-45.6,68.7,-57.4,58.7C-69.2,48.7,-77.3,34.7,-82,19.8C-86.7,4.8,-87.9,-11.2,-83.1,-25.6C-78.3,-39.9,-67.4,-52.7,-54.2,-60.1C-41.1,-67.5,-25.7,-69.5,-10.3,-71C5,-72.5,20.4,-73.4,32.3,-81.4C44.2,-89.4,52.6,-104.5,45.3,-74Z" fill="white" transform="translate(100 100)"></path>
+</svg>
+</div>
+<div class="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-2">Build Custom Ledger Report</h2>
+<p class="text-on-primary-container font-body-md opacity-80 mb-6">Need something specific? Use our advanced query builder to generate reports based on custom dates, account categories, and geographical clusters.</p>
+<button class="bg-surface-bright text-primary font-bold px-8 py-3 rounded-lg hover:shadow-lg transition-all active:scale-95">Open Query Builder</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-primary-container/40 p-4 rounded-lg border border-primary-fixed/20 backdrop-blur-sm">
+<span class="material-symbols-outlined mb-2">date_range</span>
+<div class="font-label-md">Dynamic Dates</div>
+</div>
+<div class="bg-primary-container/40 p-4 rounded-lg border border-primary-fixed/20 backdrop-blur-sm">
+<span class="material-symbols-outlined mb-2">filter_alt</span>
+<div class="font-label-md">Multi-Filters</div>
+</div>
+<div class="bg-primary-container/40 p-4 rounded-lg border border-primary-fixed/20 backdrop-blur-sm">
+<span class="material-symbols-outlined mb-2">auto_graph</span>
+<div class="font-label-md">Forecasting</div>
+</div>
+<div class="bg-primary-container/40 p-4 rounded-lg border border-primary-fixed/20 backdrop-blur-sm">
+<span class="material-symbols-outlined mb-2">picture_as_pdf</span>
+<div class="font-label-md">Bulk Export</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Mobile Navigation (as per design system rules for small screens) -->
+<footer class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-container-highest border-t border-border-subtle flex justify-around items-center z-50">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px]">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px]">Members</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assessment</span>
+<span class="text-[10px]">Reports</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px]">Profile</span>
+</button>
+</footer>
+<script>
+        // Simple interactivity for the cards
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.style.transform = 'scale(1.1) rotate(5deg)';
+                    icon.style.transition = 'transform 0.3s ease';
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.style.transform = 'scale(1) rotate(0deg)';
+                }
+            });
+        });
+    </script>
+</body></html>

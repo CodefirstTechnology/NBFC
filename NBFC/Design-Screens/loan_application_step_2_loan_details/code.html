@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sahakari Bank - Loan Application Wizard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#43474f",
+                    "tertiary": "#461a00",
+                    "tertiary-fixed": "#ffdbca",
+                    "on-tertiary-fixed": "#341100",
+                    "on-secondary-fixed": "#171c21",
+                    "primary-fixed-dim": "#abc7ff",
+                    "surface-dim": "#cbdbf5",
+                    "outline": "#747780",
+                    "inverse-primary": "#abc7ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#783200",
+                    "on-secondary-fixed-variant": "#42474d",
+                    "surface-variant": "#d3e4fe",
+                    "on-primary-fixed": "#001b3f",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#ff863f",
+                    "surface-container": "#e5eeff",
+                    "background": "#f8f9ff",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#682a00",
+                    "surface-container-low": "#eff4ff",
+                    "secondary": "#595f65",
+                    "primary-fixed": "#d7e3ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#dee3ea",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-bright": "#f8f9ff",
+                    "primary": "#002653",
+                    "secondary-container": "#dee3ea",
+                    "on-surface": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "on-background": "#0b1c30",
+                    "inverse-on-surface": "#eaf1ff",
+                    "outline-variant": "#c4c6d0",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed-dim": "#c2c7ce",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "on-primary-fixed-variant": "#264679",
+                    "surface-tint": "#405e92",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dce9ff",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#8aa8e0",
+                    "on-primary": "#ffffff",
+                    "on-secondary-container": "#5f656b",
+                    "primary-container": "#1a3c6e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "section-gap": "48px",
+                    "margin-desktop": "40px",
+                    "form-element-gap": "20px",
+                    "base": "8px",
+                    "container-max-width": "1200px"
+            },
+            "fontFamily": {
+                    "label-md-bold": ["Manrope"],
+                    "marathi-supplement": ["Manrope"],
+                    "title-md": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "display-lg": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "label-md-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700"}],
+                    "marathi-supplement": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #d3e4fe;
+            border-radius: 3px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #002653;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -7px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen flex flex-col">
+<!-- TopNavBar from JSON -->
+<header class="bg-surface-container-lowest flex justify-between items-center w-full px-margin-desktop h-16 sticky top-0 z-50 border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="text-title-md font-title-md font-bold text-primary">Sahakari Bank</span>
+</div>
+<div class="hidden md:flex gap-8 items-center">
+<nav class="flex gap-6">
+<a class="text-secondary font-marathi-supplement text-marathi-supplement hover:bg-surface-container-low transition-colors px-2 py-1 rounded" href="#">English</a>
+<a class="text-secondary font-marathi-supplement text-marathi-supplement hover:bg-surface-container-low transition-colors px-2 py-1 rounded" href="#">मराठी</a>
+</nav>
+<div class="flex items-center gap-4 border-l border-outline-variant pl-6">
+<button class="text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a senior bank manager in a well-lit modern corporate office setting. The manager is wearing a crisp professional attire, looking confident and approachable. The background is softly blurred showing elements of a clean, minimalist bank branch with high-end architectural details and a blue corporate color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaAmbWZfF991QRqfc-VmOYjRfzWy8eUaTH3sVQjZLJWTvmeYxkQrgcKhcgiDPnS-ZKm5q4VAy3lnsXv_b2dAbm2_oP45F5I-R1TePcPqxKM5sJj0K8nkEdHvzXatMOEBg_YYYc1b0D17hW2E6nqfRmi7_esaztxUih-_f8OuuuNfGQZwqZOQYzWc983j1jFnOrOAZMCybWv6CDHYTJIvXkBHwgcU7yQEbOTcdC240JiyiZ59w9htuAet9xm5GAIOqcrCubBmAQELCE"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-grow flex">
+<!-- SideNavBar from JSON -->
+<aside class="hidden md:flex fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-surface-container flex-col py-base z-40 border-r border-outline-variant">
+<div class="px-6 mb-8 mt-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary leading-tight">Main Branch</h2>
+<p class="text-on-surface-variant text-label-sm">Pune District</p>
+</div>
+</div>
+</div>
+<nav class="flex-grow flex flex-col px-4 gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md-bold text-label-md-bold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-md-bold text-label-md-bold">Loans</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md-bold text-label-md-bold">Members</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label-md-bold text-label-md-bold">Deposits</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="font-label-md-bold text-label-md-bold">Reports</span>
+</a>
+</nav>
+<div class="px-4 py-6 border-t border-outline-variant mt-auto">
+<button class="w-full bg-primary text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                    New Application
+                </button>
+<div class="mt-4 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="text-label-md-bold">Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="text-label-md-bold">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow md:ml-64 p-margin-mobile md:p-margin-desktop bg-background">
+<div class="max-w-[1200px] mx-auto">
+<!-- Stepper Progress -->
+<div class="mb-section-gap">
+<div class="flex justify-between items-center mb-6">
+<h1 class="font-headline-lg text-headline-lg text-primary">Loan Details | <span class="text-secondary font-marathi-supplement">कर्जाचा तपशील</span></h1>
+<span class="text-label-md-bold text-primary font-bold bg-primary-container px-4 py-1 rounded-full">Step 2 of 5</span>
+</div>
+<div class="flex items-center gap-2">
+<!-- Step 1: Completed -->
+<div class="flex-1 h-1 bg-primary rounded-full relative">
+<span class="absolute -top-6 left-0 text-label-sm text-primary font-bold">Personal Info</span>
+</div>
+<!-- Step 2: Active -->
+<div class="flex-1 h-1 bg-primary rounded-full relative">
+<div class="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-primary rounded-full ring-4 ring-primary-container"></div>
+<span class="absolute -top-6 left-0 text-label-sm text-primary font-bold">Loan Details</span>
+</div>
+<!-- Remaining Steps -->
+<div class="flex-1 h-1 bg-outline-variant rounded-full relative">
+<span class="absolute -top-6 left-0 text-label-sm text-on-surface-variant">Documents</span>
+</div>
+<div class="flex-1 h-1 bg-outline-variant rounded-full relative">
+<span class="absolute -top-6 left-0 text-label-sm text-on-surface-variant">Nominee</span>
+</div>
+<div class="flex-1 h-1 bg-outline-variant rounded-full relative">
+<span class="absolute -top-6 left-0 text-label-sm text-on-surface-variant">Review</span>
+</div>
+</div>
+</div>
+<!-- Wizard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left: Form Controls -->
+<div class="lg:col-span-7 flex flex-col gap-form-element-gap bg-surface-container-lowest p-8 border border-outline-variant rounded-xl shadow-sm">
+<!-- Loan Amount Slider -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<label class="flex flex-col">
+<span class="font-label-md-bold text-label-md-bold text-primary">Loan Amount (Required)</span>
+<span class="text-secondary font-marathi-supplement text-marathi-supplement">कर्जाची रक्कम (आवश्यक)</span>
+</label>
+<span class="text-headline-lg text-primary font-bold" id="amountDisplay">₹ 2,50,000</span>
+</div>
+<input class="my-4" id="loanAmount" max="1000000" min="10000" step="5000" type="range" value="250000"/>
+<div class="flex justify-between text-label-sm text-on-surface-variant">
+<span>₹ 10,000</span>
+<span>₹ 10,00,000</span>
+</div>
+</div>
+<!-- Tenure Dropdown -->
+<div class="flex flex-col gap-2 pt-4">
+<label class="flex flex-col">
+<span class="font-label-md-bold text-label-md-bold text-primary">Tenure (Months)</span>
+<span class="text-secondary font-marathi-supplement text-marathi-supplement">कालावधी (महिने)</span>
+</label>
+<div class="relative">
+<select class="w-full h-14 bg-white border border-outline-variant rounded-lg px-4 font-bold text-primary focus:ring-2 focus:ring-primary focus:ring-opacity-10 appearance-none" id="tenure">
+<option value="12">12 Months (1 Year)</option>
+<option value="24">24 Months (2 Years)</option>
+<option selected="" value="36">36 Months (3 Years)</option>
+<option value="48">48 Months (4 Years)</option>
+<option value="60">60 Months (5 Years)</option>
+<option value="120">120 Months (10 Years)</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-4 text-primary pointer-events-none" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</div>
+</div>
+<!-- Purpose Chip Group -->
+<div class="flex flex-col gap-2 pt-4">
+<label class="flex flex-col">
+<span class="font-label-md-bold text-label-md-bold text-primary">Purpose of Loan</span>
+<span class="text-secondary font-marathi-supplement text-marathi-supplement">कर्जाचे कारण</span>
+</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 border border-primary bg-primary text-white rounded-full text-label-sm font-bold">Business Expansion</button>
+<button class="px-4 py-2 border border-outline-variant hover:border-primary text-on-surface-variant rounded-full text-label-sm">Agricultural Equipment</button>
+<button class="px-4 py-2 border border-outline-variant hover:border-primary text-on-surface-variant rounded-full text-label-sm">Home Renovation</button>
+<button class="px-4 py-2 border border-outline-variant hover:border-primary text-on-surface-variant rounded-full text-label-sm">Education</button>
+</div>
+</div>
+</div>
+<!-- Right: EMI Preview -->
+<div class="lg:col-span-5">
+<div class="sticky top-24 bg-[#EBF0F7] rounded-xl border border-outline-variant p-8 flex flex-col gap-6 overflow-hidden relative">
+<!-- Subtle Background Motif -->
+<div class="absolute -right-8 -top-8 opacity-10">
+<span class="material-symbols-outlined text-[160px] text-primary" data-icon="payments">payments</span>
+</div>
+<div class="relative">
+<h3 class="font-label-md-bold text-label-md-bold text-primary uppercase tracking-wider mb-1">Monthly Repayment Preview</h3>
+<p class="text-on-surface-variant font-marathi-supplement text-marathi-supplement">मासिक परतफेडीचे पूर्वावलोकन</p>
+</div>
+<div class="bg-white rounded-lg p-6 shadow-sm border border-outline-variant relative">
+<span class="text-label-sm text-secondary block mb-1">Estimated Monthly EMI</span>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-primary" id="emiDisplay">₹ 8,125</span>
+<span class="text-label-md-bold text-on-surface-variant">/ month</span>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant flex justify-between">
+<span class="text-label-sm text-secondary">Interest Rate (fixed)</span>
+<span class="text-label-md-bold text-primary">10.5% p.a.</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/50 rounded-lg p-4 border border-outline-variant/30">
+<span class="text-label-sm text-secondary block">Total Interest</span>
+<span class="font-title-md text-title-md text-primary" id="totalInterest">₹ 42,500</span>
+</div>
+<div class="bg-white/50 rounded-lg p-4 border border-outline-variant/30">
+<span class="text-label-sm text-secondary block">Total Payable</span>
+<span class="font-title-md text-title-md text-primary" id="totalPayable">₹ 2,92,500</span>
+</div>
+</div>
+<div class="flex gap-2 items-center bg-primary-container/20 p-3 rounded-lg border border-primary-container/40">
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+<p class="text-label-sm text-primary leading-tight">Calculations are indicative and subject to credit verification.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation Buttons -->
+<div class="mt-section-gap flex justify-between items-center pt-8 border-t border-outline-variant">
+<button class="flex items-center gap-2 px-8 py-3 rounded-xl border border-primary text-primary font-bold hover:bg-surface-container transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+                        Back
+                    </button>
+<div class="flex gap-4">
+<button class="px-8 py-3 rounded-xl border border-outline-variant text-secondary font-bold hover:bg-surface-container transition-all">
+                            Save Draft
+                        </button>
+<button class="flex items-center gap-2 px-10 py-3 rounded-xl bg-primary text-white font-bold hover:opacity-90 shadow-md active:scale-95 transition-all">
+                            Next Step
+                            <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        const amountSlider = document.getElementById('loanAmount');
+        const amountDisplay = document.getElementById('amountDisplay');
+        const tenureSelect = document.getElementById('tenure');
+        const emiDisplay = document.getElementById('emiDisplay');
+        const totalInterestDisplay = document.getElementById('totalInterest');
+        const totalPayableDisplay = document.getElementById('totalPayable');
+
+        const formatCurrency = (val) => {
+            return '₹ ' + new Intl.NumberFormat('en-IN').format(val);
+        };
+
+        const updateEMI = () => {
+            const P = parseFloat(amountSlider.value);
+            const r = 10.5 / 12 / 100; // 10.5% annual rate
+            const n = parseInt(tenureSelect.value);
+
+            // EMI = [P x r x (1+r)^n] / [(1+r)^n - 1]
+            const emi = Math.round((P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
+            const totalPayable = emi * n;
+            const totalInterest = totalPayable - P;
+
+            amountDisplay.innerText = formatCurrency(P);
+            emiDisplay.innerText = formatCurrency(emi);
+            totalInterestDisplay.innerText = formatCurrency(totalInterest);
+            totalPayableDisplay.innerText = formatCurrency(totalPayable);
+        };
+
+        amountSlider.addEventListener('input', updateEMI);
+        tenureSelect.addEventListener('change', updateEMI);
+
+        // Initial Calc
+        updateEMI();
+    </script>
+</body></html>

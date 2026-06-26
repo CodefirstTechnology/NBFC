@@ -1,0 +1,34 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2022",
+    "module": "esnext",
+    "lib": ["es2022", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "strict": true,
+    "paths": {
+      "@patsanstha/auth": ["libs/auth/src/index.ts"],
+      "@patsanstha/core-utils": ["libs/core-utils/src/index.ts"],
+      "@patsanstha/design-tokens": ["libs/design-tokens/src/index.ts"],
+      "@patsanstha/ui-kit": ["libs/ui-kit/src/index.ts"],
+      "@patsanstha/members-data-access": ["libs/data-access/members/src/index.ts"],
+      "@patsanstha/deposits-data-access": ["libs/data-access/deposits/src/index.ts"],
+      "@patsanstha/loans-data-access": ["libs/data-access/loans/src/index.ts"],
+      "@patsanstha/accounting-data-access": ["libs/data-access/accounting/src/index.ts"],
+      "@patsanstha/reports-data-access": ["libs/data-access/reports/src/index.ts"],
+      "@patsanstha/admin-data-access": ["libs/data-access/admin/src/index.ts"],
+      "@patsanstha/collections-data-access": ["libs/data-access/collections/src/index.ts"],
+      "@patsanstha/recovery-data-access": ["libs/data-access/recovery/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

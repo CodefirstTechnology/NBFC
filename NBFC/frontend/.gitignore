@@ -1,0 +1,11 @@
+node_modules
+dist
+.nx
+.angular
+coverage
+*.log
+.DS_Store
+__MACOSX/
+.env
+.env.*
+!.env.example

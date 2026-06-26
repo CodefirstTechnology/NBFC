@@ -1,0 +1,81 @@
+services:
+  shell:
+    build:
+      context: .
+      args:
+        APP_NAME: shell
+    image: patsanstha/shell:latest
+    ports:
+      - "4200:80"
+
+  mfe-member:
+    build:
+      context: .
+      args:
+        APP_NAME: mfe-member
+    image: patsanstha/mfe-member:latest
+    ports:
+      - "4201:80"
+
+  mfe-deposit:
+    build:
+      context: .
+      args:
+        APP_NAME: mfe-deposit
+    image: patsanstha/mfe-deposit:latest
+    ports:
+      - "4202:80"
+
+  mfe-loan:
+    build:
+      context: .
+      args:
+        APP_NAME: mfe-loan
+    image: patsanstha/mfe-loan:latest
+    ports:
+      - "4203:80"
+
+  mfe-collection:
+    build:
+      context: .
+      args:
+        APP_NAME: mfe-collection
+    image: patsanstha/mfe-collection:latest
+    ports:
+      - "4204:80"
+
+  mfe-recovery:
+    build:
+      context: .
+      args:
+        APP_NAME: mfe-recovery
+    image: patsanstha/mfe-recovery:latest
+    ports:
+      - "4205:80"
+
+  mfe-accounting:
+    build:
+      context: .
+      args:
+        APP_NAME: mfe-accounting
+    image: patsanstha/mfe-accounting:latest
+    ports:
+      - "4206:80"
+
+  mfe-reports:
+    build:
+      context: .
+      args:
+        APP_NAME: mfe-reports
+    image: patsanstha/mfe-reports:latest
+    ports:
+      - "4207:80"
+
+  mfe-admin:
+    build:
+      context: .
+      args:
+        APP_NAME: mfe-admin
+    image: patsanstha/mfe-admin:latest
+    ports:
+      - "4208:80"

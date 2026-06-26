@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loan Details - Sahakari Bank</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#405e92",
+                        "text-secondary": "#404040",
+                        "on-primary-container": "#8aa8e0",
+                        "on-secondary-container": "#00723b",
+                        "inverse-surface": "#2f3035",
+                        "on-surface": "#1a1b20",
+                        "error-npa": "#D64545",
+                        "tertiary-container": "#563600",
+                        "primary-container": "#1a3c6e",
+                        "outline-variant": "#c4c6d0",
+                        "surface-variant": "#e3e2e9",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "tertiary-fixed": "#ffddb5",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "surface-container-highest": "#e3e2e9",
+                        "tertiary-fixed-dim": "#ffb956",
+                        "primary-fixed-dim": "#abc7ff",
+                        "on-secondary-fixed": "#00210d",
+                        "secondary-fixed": "#8df9ac",
+                        "border-subtle": "#E2E8F0",
+                        "surface": "#faf8ff",
+                        "on-primary-fixed": "#001b3f",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#005229",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#e9e7ee",
+                        "secondary": "#006d38",
+                        "on-background": "#1a1b20",
+                        "background": "#faf8ff",
+                        "on-tertiary-fixed": "#2a1800",
+                        "inverse-on-surface": "#f1f0f7",
+                        "on-tertiary-container": "#e0992c",
+                        "tertiary": "#392200",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#8af6a9",
+                        "surface-container": "#eeedf4",
+                        "surface-muted": "#F8FAFC",
+                        "on-surface-variant": "#43474f",
+                        "inverse-primary": "#abc7ff",
+                        "secondary-fixed-dim": "#71dc92",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f4f3fa",
+                        "on-primary-fixed-variant": "#264679",
+                        "surface-dim": "#dad9e0",
+                        "primary": "#002653",
+                        "primary-fixed": "#d7e3ff",
+                        "outline": "#747780"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "container-margin-mobile": "16px",
+                        "gutter": "24px",
+                        "container-margin-desktop": "32px",
+                        "section-gap": "48px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "label-sm": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "title-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab { border-bottom: 3px solid #002653; color: #002653; font-weight: 700; }
+        .bilingual-label { display: flex; flex-direction: column; }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- Top Navigation Bar -->
+<header class="bg-surface-container-lowest flex justify-between items-center w-full px-container-margin-desktop h-16 sticky top-0 z-50 border-b border-outline-variant">
+<div class="flex items-center gap-base">
+<span class="text-title-md font-title-md font-bold text-primary">Sahakari Bank</span>
+<div class="h-6 w-px bg-outline-variant mx-4"></div>
+<div class="hidden md:flex gap-6">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-title-md text-title-md" href="#">English</a>
+<a class="text-secondary font-marathi-supplement text-marathi-supplement hover:bg-surface-container-low transition-colors px-2 rounded" href="#">मराठी</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<input class="pl-10 pr-4 py-2 rounded-full border border-outline-variant bg-surface-container-low focus:ring-2 focus:ring-primary focus:border-transparent outline-none w-64" placeholder="Search account..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline">search</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">settings</span>
+<div class="w-8 h-8 rounded-full bg-primary-fixed overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a senior bank manager in a corporate setting, with soft natural light and a blurred office background. The manager is wearing a dark blue suit and has a warm, welcoming expression. High quality corporate photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPe5mo_GCr-fVzwSsocY4XJUerip1VzzJSS5jom6mGTz9Fp1LCuKx7Hd8Z_VHZ2x2b--yAfbZ18pNJ0CQ_5W-o2V6OJ6mfZZ0wdEAC1kTbu50KltCXO-RVaIUIewbbf60Tb2FlBFh70-s-eNll8LlCSD1egc3PXSPc0KqRwXizE_yYdDitR5MgSPhQlJm6vbuOeWSAQdFD2cXBiur67_0czJR6HF3ytzqzFlLNvSUTocFb8Y7b9wBoZZGbOqnrcVdRKyEqC1_iXEd0"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- Sidebar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-surface-container border-r border-outline-variant hidden md:flex flex-col py-base z-40">
+<div class="px-4 mb-8">
+<div class="flex items-center gap-3 p-3 bg-surface-container-lowest rounded-xl border border-outline-variant">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1">account_balance</span>
+</div>
+<div>
+<p class="font-bold text-primary text-sm">Main Branch</p>
+<p class="text-xs text-outline">Pune District</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md font-semibold">Members</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-md font-semibold">Deposits</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-white rounded-lg font-bold shadow-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">payments</span>
+<span class="font-label-md">Loans</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-md font-semibold">Reports</span>
+</a>
+</nav>
+<div class="px-2 mt-auto border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md font-semibold">Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-error hover:bg-error-container rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md font-semibold">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 md:ml-64 p-container-margin-desktop min-h-screen">
+<!-- Breadcrumbs -->
+<nav class="flex text-outline text-xs mb-6 gap-2 items-center">
+<a href="#">Loans</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-primary font-semibold">Loan Detail</span>
+</nav>
+<!-- Loan Header -->
+<section class="bg-white p-8 rounded-xl border border-border-subtle shadow-sm mb-8 flex flex-col lg:flex-row justify-between items-start gap-6 border-t-4 border-t-primary">
+<div class="flex items-start gap-6">
+<div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center border-2 border-primary-fixed-dim">
+<span class="material-symbols-outlined text-primary text-3xl">person</span>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h1 class="font-headline-lg text-headline-lg text-primary">Rajesh Vithal Patil</h1>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full border border-secondary flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                Active / सक्रिय
+                            </span>
+</div>
+<div class="flex gap-4 items-center">
+<p class="text-text-secondary font-medium">
+<span class="text-xs uppercase text-outline block">Account Number / खाते क्रमांक</span>
+                                LN-2024-4592
+                            </p>
+<div class="w-px h-8 bg-outline-variant"></div>
+<p class="text-text-secondary font-medium">
+<span class="text-xs uppercase text-outline block">Member ID / सभासद आयडी</span>
+                                MB-88392
+                            </p>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface hover:bg-surface-container-low border border-primary text-primary px-6 py-2.5 rounded-lg font-bold transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">print</span>
+                        Print Statement
+                    </button>
+<button class="bg-primary hover:opacity-90 text-white px-8 py-2.5 rounded-lg font-bold transition-all flex items-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1">account_balance_wallet</span>
+                        Collect EMI / हप्ता जमा करा
+                    </button>
+</div>
+</section>
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
+<div class="bg-white p-6 rounded-xl border border-border-subtle hover:border-primary/30 transition-all group">
+<div class="flex justify-between items-start mb-4">
+<div class="bilingual-label">
+<span class="text-outline font-bold text-[10px] uppercase tracking-wider">Total Principal</span>
+<span class="text-outline text-label-sm font-medium">एकूण मुद्दल</span>
+</div>
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-lg">account_balance</span>
+</div>
+<p class="text-headline-lg-mobile font-bold text-primary">₹ 5,00,000</p>
+<div class="mt-4 w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-full"></div>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-border-subtle hover:border-primary/30 transition-all group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-1 bg-primary/10 rounded-bl-xl">
+<span class="text-[10px] font-bold text-primary px-2 uppercase">68% Remaining</span>
+</div>
+<div class="flex justify-between items-start mb-4">
+<div class="bilingual-label">
+<span class="text-outline font-bold text-[10px] uppercase tracking-wider">Outstanding Balance</span>
+<span class="text-outline text-label-sm font-medium">थकीत रक्कम</span>
+</div>
+<span class="material-symbols-outlined text-secondary bg-secondary-fixed p-1 rounded-lg">monetization_on</span>
+</div>
+<p class="text-headline-lg-mobile font-bold text-primary">₹ 3,42,800</p>
+<div class="mt-4 w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[68%]"></div>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-border-subtle hover:border-primary/30 transition-all group border-t-4 border-t-tertiary-fixed-dim">
+<div class="flex justify-between items-start mb-4">
+<div class="bilingual-label">
+<span class="text-outline font-bold text-[10px] uppercase tracking-wider">Next EMI Amount</span>
+<span class="text-outline text-label-sm font-medium">पुढील हप्ता</span>
+</div>
+<span class="material-symbols-outlined text-on-tertiary-container bg-tertiary-fixed p-1 rounded-lg">schedule</span>
+</div>
+<p class="text-headline-lg-mobile font-bold text-primary">₹ 16,345</p>
+<p class="text-xs text-outline mt-2 italic">*Inclusive of interest</p>
+</div>
+<div class="bg-white p-6 rounded-xl border border-border-subtle hover:border-primary/30 transition-all group border-t-4 border-t-error">
+<div class="flex justify-between items-start mb-4">
+<div class="bilingual-label">
+<span class="text-outline font-bold text-[10px] uppercase tracking-wider">Next Due Date</span>
+<span class="text-outline text-label-sm font-medium">पुढील देय तारीख</span>
+</div>
+<span class="material-symbols-outlined text-error bg-error-container p-1 rounded-lg">event</span>
+</div>
+<p class="text-headline-lg-mobile font-bold text-error">15 Oct 2024</p>
+<p class="text-xs text-error font-semibold mt-2">Due in 12 days</p>
+</div>
+</div>
+<!-- Detailed Tabs -->
+<div class="bg-white rounded-xl border border-border-subtle overflow-hidden">
+<div class="flex border-b border-outline-variant px-6">
+<button class="px-6 py-5 text-label-md font-bold transition-all active-tab flex items-center gap-2" id="tab-emi" onclick="switchTab('emi')">
+<span class="material-symbols-outlined text-xl">table_rows</span>
+                        EMI Schedule / हप्ता वेळापत्रक
+                    </button>
+<button class="px-6 py-5 text-label-md font-bold transition-all text-outline hover:text-primary flex items-center gap-2" id="tab-disbursement" onclick="switchTab('disbursement')">
+<span class="material-symbols-outlined text-xl">payments</span>
+                        Disbursement / वितरण तपशील
+                    </button>
+<button class="px-6 py-5 text-label-md font-bold transition-all text-outline hover:text-primary flex items-center gap-2" id="tab-docs" onclick="switchTab('docs')">
+<span class="material-symbols-outlined text-xl">folder_shared</span>
+                        Documents / कागदपत्रे
+                    </button>
+</div>
+<!-- Tab Content: EMI Schedule -->
+<div class="p-6" id="content-emi">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-muted text-outline uppercase text-[11px] font-bold tracking-widest border-b border-outline-variant">
+<th class="px-4 py-4">EMI No.</th>
+<th class="px-4 py-4">Due Date / दिनांक</th>
+<th class="px-4 py-4">Total Amount</th>
+<th class="px-4 py-4">Principal</th>
+<th class="px-4 py-4">Interest</th>
+<th class="px-4 py-4">Status / स्थिती</th>
+<th class="px-4 py-4 text-center">Action</th>
+</tr>
+</thead>
+<tbody class="text-body-sm">
+<tr class="border-b border-surface-container-high hover:bg-surface-container-lowest transition-colors">
+<td class="px-4 py-4 font-bold text-primary">01</td>
+<td class="px-4 py-4">15 May 2024</td>
+<td class="px-4 py-4 font-semibold">₹ 16,345</td>
+<td class="px-4 py-4">₹ 12,500</td>
+<td class="px-4 py-4">₹ 3,845</td>
+<td class="px-4 py-4">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Paid / भरले</span>
+</td>
+<td class="px-4 py-4 text-center">
+<button class="text-primary hover:bg-primary-container hover:text-white p-1 rounded transition-colors">
+<span class="material-symbols-outlined">receipt_long</span>
+</button>
+</td>
+</tr>
+<tr class="bg-surface-muted border-b border-surface-container-high hover:bg-surface-container-lowest transition-colors">
+<td class="px-4 py-4 font-bold text-primary">02</td>
+<td class="px-4 py-4">15 Jun 2024</td>
+<td class="px-4 py-4 font-semibold">₹ 16,345</td>
+<td class="px-4 py-4">₹ 12,650</td>
+<td class="px-4 py-4">₹ 3,695</td>
+<td class="px-4 py-4">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Paid / भरले</span>
+</td>
+<td class="px-4 py-4 text-center">
+<button class="text-primary hover:bg-primary-container hover:text-white p-1 rounded transition-colors">
+<span class="material-symbols-outlined">receipt_long</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-surface-container-high hover:bg-surface-container-lowest transition-colors">
+<td class="px-4 py-4 font-bold text-primary">03</td>
+<td class="px-4 py-4 font-bold text-on-primary-container bg-primary-fixed/30">15 Oct 2024</td>
+<td class="px-4 py-4 font-bold">₹ 16,345</td>
+<td class="px-4 py-4">₹ 12,800</td>
+<td class="px-4 py-4">₹ 3,545</td>
+<td class="px-4 py-4">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Upcoming</span>
+</td>
+<td class="px-4 py-4 text-center">
+<button class="bg-primary text-white text-[10px] font-bold px-3 py-1.5 rounded uppercase tracking-wider shadow-sm">Collect</button>
+</td>
+</tr>
+<tr class="bg-surface-muted border-b border-surface-container-high">
+<td class="px-4 py-4 font-bold text-primary opacity-50">04</td>
+<td class="px-4 py-4 opacity-50">15 Nov 2024</td>
+<td class="px-4 py-4 opacity-50 font-semibold">₹ 16,345</td>
+<td class="px-4 py-4 opacity-50">₹ 12,950</td>
+<td class="px-4 py-4 opacity-50">₹ 3,395</td>
+<td class="px-4 py-4">
+<span class="bg-surface-dim text-on-surface-variant px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider opacity-50">Scheduled</span>
+</td>
+<td class="px-4 py-4 text-center opacity-50">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-6 flex justify-between items-center text-label-sm text-outline">
+<p>Showing 4 of 36 installments</p>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant rounded hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="p-2 border border-primary bg-primary text-white rounded"><span class="text-xs font-bold px-1">1</span></button>
+<button class="p-2 border border-outline-variant rounded hover:bg-surface-container-low transition-colors"><span class="text-xs font-bold px-1">2</span></button>
+<button class="p-2 border border-outline-variant rounded hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Tab Content: Disbursement (Hidden by default) -->
+<div class="hidden p-8" id="content-disbursement">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<div class="space-y-6">
+<h3 class="text-title-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">info</span>
+                                Funding Details
+                            </h3>
+<div class="space-y-4">
+<div class="flex justify-between border-b border-surface-container-high pb-3">
+<span class="text-outline">Disbursement Date / वितरण तारीख</span>
+<span class="font-bold">12 Apr 2024</span>
+</div>
+<div class="flex justify-between border-b border-surface-container-high pb-3">
+<span class="text-outline">Interest Rate / व्याजाचा दर</span>
+<span class="font-bold text-secondary">9.25% p.a.</span>
+</div>
+<div class="flex justify-between border-b border-surface-container-high pb-3">
+<span class="text-outline">Loan Tenure / कालावधी</span>
+<span class="font-bold">36 Months</span>
+</div>
+<div class="flex justify-between border-b border-surface-container-high pb-3">
+<span class="text-outline">Processing Fees / प्रक्रिया शुल्क</span>
+<span class="font-bold">₹ 5,000 (Paid)</span>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<h3 class="text-title-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">account_balance</span>
+                                Settlement Account
+                            </h3>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 bg-white rounded flex items-center justify-center border border-outline-variant shadow-sm">
+<span class="material-symbols-outlined text-primary">credit_card</span>
+</div>
+<div>
+<p class="font-bold text-primary">Savings Account (SB-4001)</p>
+<p class="text-xs text-outline">Branch: Pune Main</p>
+</div>
+</div>
+<div class="space-y-2">
+<p class="text-sm flex justify-between"><span class="text-outline">IFSC Code:</span> <span class="font-semibold">SAHB0001024</span></p>
+<p class="text-sm flex justify-between"><span class="text-outline">Account Holder:</span> <span class="font-semibold text-primary">RAJESH VITHAL PATIL</span></p>
+</div>
+</div>
+<div class="mt-4 p-4 bg-secondary-container/30 border border-secondary/20 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<p class="text-xs text-on-secondary-fixed-variant leading-relaxed">Loan was successfully disbursed on 12th April 2024 at 11:45 AM. UTR No: SBIN88392019382</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Tab Content: Documents (Hidden by default) -->
+<div class="hidden p-8" id="content-docs">
+<div class="flex justify-between items-center mb-8">
+<h3 class="text-title-md text-primary">KYC &amp; Property Documentation</h3>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">upload</span>
+                            Upload New
+                        </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Document Card 1 -->
+<div class="border border-outline-variant rounded-xl overflow-hidden group cursor-pointer hover:border-primary transition-all">
+<div class="h-32 bg-surface-container flex items-center justify-center relative">
+<span class="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors">description</span>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="bg-white text-primary px-3 py-1 rounded-full text-xs font-bold shadow-lg">Preview</span>
+</div>
+</div>
+<div class="p-4 bg-white border-t border-outline-variant">
+<p class="text-sm font-bold text-primary truncate">Aadhaar Card.pdf</p>
+<p class="text-[10px] text-outline uppercase font-bold mt-1">Identity Proof</p>
+<div class="mt-3 flex justify-between items-center">
+<span class="text-[10px] text-secondary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> Verified
+                                    </span>
+<span class="material-symbols-outlined text-outline hover:text-primary">download</span>
+</div>
+</div>
+</div>
+<!-- Document Card 2 -->
+<div class="border border-outline-variant rounded-xl overflow-hidden group cursor-pointer hover:border-primary transition-all">
+<div class="h-32 bg-surface-container flex items-center justify-center relative">
+<span class="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors">badge</span>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="bg-white text-primary px-3 py-1 rounded-full text-xs font-bold shadow-lg">Preview</span>
+</div>
+</div>
+<div class="p-4 bg-white border-t border-outline-variant">
+<p class="text-sm font-bold text-primary truncate">PAN Card.jpg</p>
+<p class="text-[10px] text-outline uppercase font-bold mt-1">Financial Document</p>
+<div class="mt-3 flex justify-between items-center">
+<span class="text-[10px] text-secondary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> Verified
+                                    </span>
+<span class="material-symbols-outlined text-outline hover:text-primary">download</span>
+</div>
+</div>
+</div>
+<!-- Document Card 3 -->
+<div class="border border-outline-variant rounded-xl overflow-hidden group cursor-pointer hover:border-primary transition-all">
+<div class="h-32 bg-surface-container flex items-center justify-center relative">
+<span class="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors">home_work</span>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="bg-white text-primary px-3 py-1 rounded-full text-xs font-bold shadow-lg">Preview</span>
+</div>
+</div>
+<div class="p-4 bg-white border-t border-outline-variant">
+<p class="text-sm font-bold text-primary truncate">Property Papers.pdf</p>
+<p class="text-[10px] text-outline uppercase font-bold mt-1">Collateral Docs</p>
+<div class="mt-3 flex justify-between items-center">
+<span class="text-[10px] text-secondary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> Verified
+                                    </span>
+<span class="material-symbols-outlined text-outline hover:text-primary">download</span>
+</div>
+</div>
+</div>
+<!-- Document Card 4 (Placeholder/Add) -->
+<div class="border-2 border-dashed border-outline-variant rounded-xl overflow-hidden flex flex-col items-center justify-center group cursor-pointer hover:border-primary hover:bg-primary-container/5 transition-all p-6">
+<span class="material-symbols-outlined text-3xl text-outline group-hover:text-primary group-hover:scale-110 transition-transform">add_circle</span>
+<p class="text-xs font-bold text-outline mt-3 text-center uppercase tracking-widest group-hover:text-primary">Add Document</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Attribution -->
+<footer class="mt-12 text-center text-outline text-xs pb-8">
+<p>© 2024 Pune District Sahakari Bank Ltd. | System Version 2.4.1</p>
+</footer>
+</main>
+</div>
+<!-- Floating Action Button (FAB) -->
+<div class="fixed bottom-8 right-8 z-[60]">
+<button class="w-14 h-14 bg-secondary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all group">
+<span class="material-symbols-outlined text-3xl">chat</span>
+<span class="absolute right-16 bg-primary text-white text-[10px] px-3 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md">Support / मदत</span>
+</button>
+</div>
+<script>
+        function switchTab(tabId) {
+            // Content handling
+            document.getElementById('content-emi').classList.add('hidden');
+            document.getElementById('content-disbursement').classList.add('hidden');
+            document.getElementById('content-docs').classList.add('hidden');
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+
+            // Button styling
+            const tabs = ['emi', 'disbursement', 'docs'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab-' + t);
+                btn.classList.remove('active-tab');
+                btn.classList.add('text-outline');
+            });
+            
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.remove('text-outline');
+            activeBtn.classList.add('active-tab');
+        }
+
+        // micro-interactions for currency formatting animation
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Loan UI Loaded');
+            // Adding a simple fade-in for the cards
+            const cards = document.querySelectorAll('.grid > div');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.4s ease-out';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body></html>

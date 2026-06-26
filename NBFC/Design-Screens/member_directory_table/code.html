@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Member Directory - Sahakari Bank</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-npa": "#D64545",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#faf8ff",
+                    "secondary-fixed-dim": "#71dc92",
+                    "on-surface": "#1a1b20",
+                    "surface-container-highest": "#e3e2e9",
+                    "text-secondary": "#404040",
+                    "on-surface-variant": "#43474f",
+                    "on-tertiary-container": "#e0992c",
+                    "primary-fixed": "#d7e3ff",
+                    "on-primary-container": "#8aa8e0",
+                    "secondary": "#006d38",
+                    "on-secondary-container": "#00723b",
+                    "surface-dim": "#dad9e0",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#e3e2e9",
+                    "background": "#faf8ff",
+                    "on-primary-fixed": "#001b3f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#00210d",
+                    "on-error": "#ffffff",
+                    "surface-container": "#eeedf4",
+                    "primary-container": "#1a3c6e",
+                    "inverse-primary": "#abc7ff",
+                    "tertiary-container": "#563600",
+                    "on-background": "#1a1b20",
+                    "tertiary": "#392200",
+                    "secondary-fixed": "#8df9ac",
+                    "primary": "#002653",
+                    "tertiary-fixed": "#ffddb5",
+                    "surface-tint": "#405e92",
+                    "surface-container-high": "#e9e7ee",
+                    "outline": "#747780",
+                    "tertiary-fixed-dim": "#ffb956",
+                    "outline-variant": "#c4c6d0",
+                    "on-primary-fixed-variant": "#264679",
+                    "inverse-surface": "#2f3035",
+                    "on-tertiary-fixed": "#2a1800",
+                    "on-secondary-fixed-variant": "#005229",
+                    "on-tertiary-fixed-variant": "#633f00",
+                    "secondary-container": "#8af6a9",
+                    "surface": "#faf8ff",
+                    "primary-fixed-dim": "#abc7ff",
+                    "border-subtle": "#E2E8F0",
+                    "on-secondary": "#ffffff",
+                    "surface-muted": "#F8FAFC",
+                    "inverse-on-surface": "#f1f0f7",
+                    "surface-container-low": "#f4f3fa",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin-mobile": "16px",
+                    "container-margin-desktop": "32px",
+                    "base": "8px",
+                    "section-gap": "48px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Manrope"],
+                    "body-md": ["Inter"],
+                    "title-md": ["Manrope"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Manrope"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "label-md": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "1.2", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab {
+            background: rgba(26, 60, 110, 0.08);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 w-64 bg-surface dark:bg-inverse-surface shadow-sm transition-all duration-200 ease-in-out border-r border-border-subtle">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary">account_balance</span>
+</div>
+<div>
+<h1 class="font-title-md text-title-md font-bold text-primary dark:text-inverse-primary leading-tight">Sahakari Bank</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Credit Management</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-primary-container/10 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-inverse-primary font-bold border-r-4 border-primary bg-primary-container/10 font-label-md" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Members</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-primary-container/10 transition-all" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span>Deposits</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-primary-container/10 transition-all" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span>Loans</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-primary-container/10 transition-all" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span>Collections</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-primary-container/10 transition-all" href="#">
+<span class="material-symbols-outlined">rebase_edit</span>
+<span>Recovery</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-primary-container/10 transition-all" href="#">
+<span class="material-symbols-outlined">account_balance</span>
+<span>Accounting</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-primary-container/10 transition-all" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span>Reports</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border-subtle">
+<div class="flex items-center gap-3 p-2">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A professional headshot of a female bank manager in business attire, looking confident and approachable, clean corporate background, high-end commercial photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKDVmXPFnWYSyFDp1ocIIEHHiZX1hc7AeUZx93fZNCWPPJR_TpG9zEbfSWLfwBb-PHfyrh57wHhgP0IB_AoUUeIj6W4FZQw_Um2mPFModbAg5e9U3d7LYhBGbOg5ci9zt0jrNAHvQS-P-njH4ErUcKUKsCipyNRn88CMuaAs1xxB7Qk3dxUT3_XckpVdcirb6I8PE7ZEHS2V_lhJITImj7W6-ya-f7JiOxWgmCHIxsMrdOv8mC1IDtKiBSgz4XFXNLARdYC2HlHzCy"/>
+<div class="flex-1 overflow-hidden">
+<p class="text-label-md font-bold truncate">Aruna Shinde</p>
+<p class="text-label-sm text-on-surface-variant truncate">Branch Manager</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">logout</span>
+</div>
+</div>
+</aside>
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 right-0 left-64 h-16 bg-surface dark:bg-inverse-surface border-b border-border-subtle flex items-center justify-between px-container-margin-desktop z-30">
+<div class="flex items-center gap-4">
+<h2 class="font-title-md text-title-md font-bold text-primary">Member Directory <span class="font-normal text-on-surface-variant ml-1">/ सभासद नोंदणी</span></h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-on-surface-variant font-label-md">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> Branch: Main Office</span>
+<span class="text-primary font-bold cursor-pointer">मराठी / EN</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error-npa rounded-full"></span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-8 min-h-screen">
+<!-- Search and Filters Section -->
+<section class="mb-8 flex flex-col md:flex-row items-start md:items-end justify-between gap-4">
+<div class="w-full md:w-auto flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="space-y-1">
+<label class="block text-label-md text-primary">Search Member / शोध</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-border-subtle rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-body-sm" placeholder="ID, Name or Phone..." type="text"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="block text-label-md text-primary">Branch / शाखा</label>
+<select class="w-full px-3 py-2 bg-surface-container-lowest border border-border-subtle rounded-lg focus:ring-2 focus:ring-primary outline-none text-body-sm">
+<option>All Branches</option>
+<option>Main Office</option>
+<option>Pimpri Branch</option>
+<option>Hadapsar Branch</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="block text-label-md text-primary">KYC Status / केवायसी</label>
+<select class="w-full px-3 py-2 bg-surface-container-lowest border border-border-subtle rounded-lg focus:ring-2 focus:ring-primary outline-none text-body-sm">
+<option>All Status</option>
+<option>Verified</option>
+<option>Pending</option>
+<option>Rejected</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="block text-label-md text-primary">Status / स्थिती</label>
+<select class="w-full px-3 py-2 bg-surface-container-lowest border border-border-subtle rounded-lg focus:ring-2 focus:ring-primary outline-none text-body-sm">
+<option>Active</option>
+<option>Inactive</option>
+</select>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg flex items-center gap-2 font-label-md hover:bg-primary-container transition-all shadow-sm">
+<span class="material-symbols-outlined">person_add</span>
+<div class="flex flex-col items-start leading-tight">
+<span>Add New Member</span>
+<span class="text-[10px] opacity-80 font-normal">नवीन सभासद जोडा</span>
+</div>
+</button>
+</section>
+<!-- Stats Overview (Bento-lite) -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Total Members</p>
+<h3 class="text-title-md font-bold">12,845</h3>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">KYC Verified</p>
+<h3 class="text-title-md font-bold">11,201</h3>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 bg-tertiary-fixed-dim/10 rounded-lg flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Pending KYC</p>
+<h3 class="text-title-md font-bold">428</h3>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4 border-t-4 border-t-error-npa">
+<div class="w-12 h-12 bg-error-container/20 rounded-lg flex items-center justify-center text-error-npa">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Inactive</p>
+<h3 class="text-title-md font-bold">1,216</h3>
+</div>
+</div>
+</section>
+<!-- Data Table Container -->
+<div class="bg-surface-container-lowest rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-muted border-b border-border-subtle">
+<th class="px-6 py-4 text-label-md text-primary">Member ID<br/><span class="text-[10px] font-normal opacity-70">आयडी</span></th>
+<th class="px-6 py-4 text-label-md text-primary">Photo &amp; Name<br/><span class="text-[10px] font-normal opacity-70">फोटो आणि नाव</span></th>
+<th class="px-6 py-4 text-label-md text-primary">Branch<br/><span class="text-[10px] font-normal opacity-70">शाखा</span></th>
+<th class="px-6 py-4 text-label-md text-primary">KYC Status<br/><span class="text-[10px] font-normal opacity-70">केवायसी स्थिती</span></th>
+<th class="px-6 py-4 text-label-md text-primary">Join Date<br/><span class="text-[10px] font-normal opacity-70">नोंदणी तारीख</span></th>
+<th class="px-6 py-4 text-label-md text-primary">Status<br/><span class="text-[10px] font-normal opacity-70">स्थिती</span></th>
+<th class="px-6 py-4 text-label-md text-primary text-right">Actions<br/><span class="text-[10px] font-normal opacity-70">क्रिया</span></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle">
+<!-- Table Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 font-label-md text-on-surface">#SB-2024-8812</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A small circular professional portrait of a male Indian bank customer, humble expression, against a neutral light grey background, high detail sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzxaDIf8Nk5ZlL6fVDsTMVAw7Lc7IDooCCXgp3GLUDhplEjBZNd1uH9_2bbePn9yipbWCidkpzaAeZ6_I9KTyX8Jfn7EoFcOHfrqoZMnPOGqBhAYJ-x1jT2Zc-1sPUAXFzSTAYdc2k_agT6MHOzKpM7rMvp68TV9LvBhka4dXXn6OZ_OJs6eTdX8IAeUh8ZfLKTPaamaEuzt0hwyUZWUhn4_qm8YXcqrnji5M5BG11O-UIvW5cORwvc4fB9iWBtLAsQScH8UWY0uI8"/>
+<div>
+<p class="font-label-md font-bold">Rajesh Deshmukh</p>
+<p class="text-label-sm text-on-surface-variant">+91 98765 43210</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-sm">Main Office</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full text-[11px] font-bold bg-secondary/10 text-secondary flex items-center w-fit gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Verified
+                                </span>
+</td>
+<td class="px-6 py-4 font-body-sm">12 Oct 2023</td>
+<td class="px-6 py-4">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary mr-2"></span>
+<span class="text-label-md">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 hover:bg-primary/10 rounded-lg text-primary transition-all" title="View Profile">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="p-2 hover:bg-primary/10 rounded-lg text-primary transition-all" title="Edit Profile">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-label-md text-on-surface">#SB-2024-8845</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A small circular professional portrait of a female Indian bank customer wearing a traditional saree, professional and neat, neutral studio lighting, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB988MXhBTwCcLE4xSdRmiaLA1kTPJCbsLVtni-SKitMDr46PMUrLux0Zp5pmgITxLXN1V6iGSYgfo_xbRQ-If5coneLFmATrUJOH4w9e7RDqcIQKTOFL4P-Pun7Y1w0HVRwmbizyVbUgibyNHtsPdNM60wJF_Iwp1UuEuuXPSUhHprP9z8-0aB6mNjn_h_k41f_eqfgtoQFUIWxkBEkU7ygm3R9RZf56RpeihuE9gztJUZhrVZWFa01juGNjUGGdgGgOzEXy2BQJ-T"/>
+<div>
+<p class="font-label-md font-bold">Meena Kulkarni</p>
+<p class="text-label-sm text-on-surface-variant">+91 91234 56789</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-sm">Pimpri Branch</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full text-[11px] font-bold bg-tertiary-fixed-dim/20 text-on-tertiary-container flex items-center w-fit gap-1">
+<span class="material-symbols-outlined text-[14px]">hourglass_empty</span> Pending
+                                </span>
+</td>
+<td class="px-6 py-4 font-body-sm">28 Jan 2024</td>
+<td class="px-6 py-4">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary mr-2"></span>
+<span class="text-label-md">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 hover:bg-primary/10 rounded-lg text-primary transition-all">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="p-2 hover:bg-primary/10 rounded-lg text-primary transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-label-md text-on-surface">#SB-2024-8902</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A circular headshot of an elderly Indian farmer, dignified expression, simple white attire, clean natural light, realistic photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiOHFUlEgpIXKfeUaI6LDZ5Bo6KX5P-4fZRt84xrNsAZSj1oQx8Qu7sRS4G4P0X93bI7DevphUnceec42_hoFVfqBORkzk2zGNuBPhu0U0lD7pqhGCWCdqGkUkLGaB3WE6RRDqhTkPA70Z7SKxYX8gmm8fY927JrC__YzaXulgwhlUzuMrUUPZZfkchlrHW_VojkeOyTOD98NkzKl1P1weAE6tSxzvOLr5CmmvHWM99mZoEZWtXwmX88DvpoXYJ0by-8jaNJf2uxcy"/>
+<div>
+<p class="font-label-md font-bold">Vitthal Pawar</p>
+<p class="text-label-sm text-on-surface-variant">+91 88888 22222</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-sm">Main Office</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full text-[11px] font-bold bg-error-container/30 text-error-npa flex items-center w-fit gap-1">
+<span class="material-symbols-outlined text-[14px]">cancel</span> Rejected
+                                </span>
+</td>
+<td class="px-6 py-4 font-body-sm">15 Feb 2024</td>
+<td class="px-6 py-4">
+<span class="inline-block w-2 h-2 rounded-full bg-outline-variant mr-2"></span>
+<span class="text-label-md text-on-surface-variant">Inactive</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 hover:bg-primary/10 rounded-lg text-primary transition-all">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="p-2 hover:bg-primary/10 rounded-lg text-primary transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Table Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-label-md text-on-surface">#SB-2024-9011</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A circular headshot of a young professional Indian woman, tech-industry look, corporate attire, neutral background, high-end photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAELNkWyH6_1xJ042jQt_9RzYONHxP8cBnl2LQmYf-5bLZRrmPykx_Q9PHRsQ5bjZ-uyKL5kxY9Ie6Z8lUbiyAg2VjD9-M7-E0hEDrQOnI78j3k1fvzMCvx5Re03PlrKJjlv2t1AjJhwBYJDBp-4TamNwtXEtfIt1RoNLS08llySCw4b9piL12sNpO6WhymX3MZW9BslwxWUW1cIgRq0D8jsWWuIhgOnFZwdDkdla6WpeD1u1NULJWjGw0wifoP_4RSmzVCV2wCjnpN"/>
+<div>
+<p class="font-label-md font-bold">Snehal Patil</p>
+<p class="text-label-sm text-on-surface-variant">+91 77777 55555</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-sm">Hadapsar Branch</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full text-[11px] font-bold bg-secondary/10 text-secondary flex items-center w-fit gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Verified
+                                </span>
+</td>
+<td class="px-6 py-4 font-body-sm">02 Mar 2024</td>
+<td class="px-6 py-4">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary mr-2"></span>
+<span class="text-label-md">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 hover:bg-primary/10 rounded-lg text-primary transition-all">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="p-2 hover:bg-primary/10 rounded-lg text-primary transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="px-6 py-4 bg-surface-muted border-t border-border-subtle flex items-center justify-between">
+<p class="text-label-sm text-on-surface-variant">Showing 1 to 4 of 12,845 members</p>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded hover:bg-surface-container transition-all text-on-surface-variant disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-on-primary font-label-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container font-label-sm transition-all">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container font-label-sm transition-all">3</button>
+<span class="px-2">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container font-label-sm transition-all">3211</button>
+<button class="p-2 rounded hover:bg-surface-container transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Interactive Layer: Simple Tooltip Logic or Ripple Effects can be added here -->
+<script>
+        // Micro-interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', function(e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                let x = e.clientX - e.target.offsetLeft;
+                let y = e.clientY - e.target.offsetTop;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Toggle search focus styles
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-2', 'ring-primary/20');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-2', 'ring-primary/20');
+        });
+    </script>
+<style>
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            border-radius: 50%;
+            animation: ripple-effect 0.6s linear;
+        }
+        @keyframes ripple-effect {
+            0% { width: 0; height: 0; opacity: 0.5; }
+            100% { width: 500px; height: 500px; opacity: 0; }
+        }
+    </style>
+</body></html>

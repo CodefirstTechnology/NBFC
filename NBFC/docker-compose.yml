@@ -1,0 +1,149 @@
+x-db-connection: &db-connection Host=postgres;Port=5432;Database=patsanstha;Username=postgres;Password=${POSTGRES_PASSWORD:-pravin@45}
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pravin@45}
+      POSTGRES_DB: patsanstha
+    ports:
+      - "5432:5432"
+    volumes:
+      - patsanstha_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d patsanstha"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - patsanstha_redis:/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: patsanstha/api:latest
+    ports:
+      - "5080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Identity: *db-connection
+      ConnectionStrings__Members: *db-connection
+      ConnectionStrings__Deposits: *db-connection
+      ConnectionStrings__Loans: *db-connection
+      ConnectionStrings__Recovery: *db-connection
+      ConnectionStrings__Collections: *db-connection
+      ConnectionStrings__Reporting: *db-connection
+      ConnectionStrings__Accounting: *db-connection
+      ConnectionStrings__Hangfire: *db-connection
+      ConnectionStrings__Redis: redis:6379
+
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    image: patsanstha/gateway:latest
+    ports:
+      - "5000:8080"
+    depends_on:
+      - api
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ReverseProxy__Clusters__api-cluster__Destinations__api-primary__Address: http://api:8080/
+
+  shell:
+    build:
+      context: ./frontend
+      args:
+        APP_NAME: shell
+    image: patsanstha/shell:latest
+    ports:
+      - "4200:80"
+
+  mfe-member:
+    build:
+      context: ./frontend
+      args:
+        APP_NAME: mfe-member
+    image: patsanstha/mfe-member:latest
+    ports:
+      - "4201:80"
+
+  mfe-deposit:
+    build:
+      context: ./frontend
+      args:
+        APP_NAME: mfe-deposit
+    image: patsanstha/mfe-deposit:latest
+    ports:
+      - "4202:80"
+
+  mfe-loan:
+    build:
+      context: ./frontend
+      args:
+        APP_NAME: mfe-loan
+    image: patsanstha/mfe-loan:latest
+    ports:
+      - "4203:80"
+
+  mfe-collection:
+    build:
+      context: ./frontend
+      args:
+        APP_NAME: mfe-collection
+    image: patsanstha/mfe-collection:latest
+    ports:
+      - "4204:80"
+
+  mfe-recovery:
+    build:
+      context: ./frontend
+      args:
+        APP_NAME: mfe-recovery
+    image: patsanstha/mfe-recovery:latest
+    ports:
+      - "4205:80"
+
+  mfe-accounting:
+    build:
+      context: ./frontend
+      args:
+        APP_NAME: mfe-accounting
+    image: patsanstha/mfe-accounting:latest
+    ports:
+      - "4206:80"
+
+  mfe-reports:
+    build:
+      context: ./frontend
+      args:
+        APP_NAME: mfe-reports
+    image: patsanstha/mfe-reports:latest
+    ports:
+      - "4207:80"
+
+  mfe-admin:
+    build:
+      context: ./frontend
+      args:
+        APP_NAME: mfe-admin
+    image: patsanstha/mfe-admin:latest
+    ports:
+      - "4208:80"
+
+volumes:
+  patsanstha_pg:
+  patsanstha_redis:

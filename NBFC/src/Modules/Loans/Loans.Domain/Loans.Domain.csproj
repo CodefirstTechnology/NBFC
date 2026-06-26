@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Patsanstha.Modules.Loans.Domain</RootNamespace>
+    <AssemblyName>Patsanstha.Modules.Loans.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\BuildingBlocks\Patsanstha.BuildingBlocks.Domain\Patsanstha.BuildingBlocks.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

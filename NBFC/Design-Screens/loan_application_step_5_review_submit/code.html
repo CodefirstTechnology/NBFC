@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sahakari Bank - Loan Application Review</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#43474f",
+                    "tertiary": "#461a00",
+                    "tertiary-fixed": "#ffdbca",
+                    "on-tertiary-fixed": "#341100",
+                    "on-secondary-fixed": "#171c21",
+                    "primary-fixed-dim": "#abc7ff",
+                    "surface-dim": "#cbdbf5",
+                    "outline": "#747780",
+                    "inverse-primary": "#abc7ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#783200",
+                    "on-secondary-fixed-variant": "#42474d",
+                    "surface-variant": "#d3e4fe",
+                    "on-primary-fixed": "#001b3f",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#ff863f",
+                    "surface-container": "#e5eeff",
+                    "background": "#f8f9ff",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#682a00",
+                    "surface-container-low": "#eff4ff",
+                    "secondary": "#595f65",
+                    "primary-fixed": "#d7e3ff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#dee3ea",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-bright": "#f8f9ff",
+                    "primary": "#002653",
+                    "secondary-container": "#dee3ea",
+                    "on-surface": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "on-background": "#0b1c30",
+                    "inverse-on-surface": "#eaf1ff",
+                    "outline-variant": "#c4c6d0",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed-dim": "#c2c7ce",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "on-primary-fixed-variant": "#264679",
+                    "surface-tint": "#405e92",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dce9ff",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#8aa8e0",
+                    "on-primary": "#ffffff",
+                    "on-secondary-container": "#5f656b",
+                    "primary-container": "#1a3c6e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "section-gap": "48px",
+                    "margin-desktop": "40px",
+                    "form-element-gap": "20px",
+                    "base": "8px",
+                    "container-max-width": "1200px"
+            },
+            "fontFamily": {
+                    "label-md-bold": ["Manrope"],
+                    "marathi-supplement": ["Manrope"],
+                    "title-md": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "display-lg": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "label-md-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700"}],
+                    "marathi-supplement": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        body { font-family: 'Manrope', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 24px -2px rgba(0, 38, 83, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest flex justify-between items-center w-full px-margin-desktop h-16 sticky top-0 z-50 border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="text-title-md font-title-md font-bold text-primary">Sahakari Bank</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-4">
+<span class="text-primary font-bold border-b-2 border-primary pb-1 font-title-md text-title-md cursor-pointer">English</span>
+<span class="text-secondary font-marathi-supplement text-marathi-supplement cursor-pointer hover:bg-surface-container-low transition-colors px-2 py-1 rounded">मराठी</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined text-primary">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a cooperative bank manager in a crisp formal shirt, set against a blurred modern office background with soft neutral lighting. The style is clean and corporate, reflecting reliability and institutional trust." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRkk2P5axo3ADLTBL6UT5UsgFrU1M8YvZ8LnCMPVNiY3T_YaxwMclg_Qj3w_560rLs79Ert0ppxaVyYjKzixDshnTV0PxUWjkLVkeO8X-ge0bpy0sCXxzXmEsWdmqNiMkKsX_eS9GmemwuIH2KsVnoN6uEQQHQZSWimistZIXUJtKDuIopW4mA1V6N4Sh-T_qloxgLVqBb3OogcBOwT5_nZrxujvKZAjWRaebipwrMNEvC-CtSiJT_QTqi6MkanEFQlEiAezTz4XJW"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-surface-container border-r border-outline-variant flex flex-col py-base z-40 hidden md:flex">
+<div class="px-6 py-4 mb-4">
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Main Branch</div>
+<div class="text-label-sm text-secondary">Pune District</div>
+</div>
+<nav class="flex-grow px-4 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md-bold text-label-md-bold">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md-bold text-label-md-bold">Members</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-md-bold text-label-md-bold">Deposits</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold cursor-pointer">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md-bold text-label-md-bold">Loans</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-md-bold text-label-md-bold">Reports</span>
+</div>
+</nav>
+<div class="px-4 mt-auto space-y-1 border-t border-outline-variant pt-4">
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md-bold text-label-md-bold">Help</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md-bold text-label-md-bold">Logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-grow md:ml-64 p-margin-mobile md:p-margin-desktop bg-background min-h-screen">
+<div class="max-w-container-max-width mx-auto">
+<!-- Page Title & Bilingual Toggle -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary">Review &amp; Submit</h1>
+<p class="font-marathi-supplement text-marathi-supplement text-secondary">पुनरावलोकन आणि सबमिट करा</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low p-1 rounded-lg">
+<button class="px-4 py-1.5 rounded-md bg-white shadow-sm text-label-md-bold text-primary font-bold">Step 5 of 5</button>
+</div>
+</div>
+<!-- Stepper Progress -->
+<div class="mb-10 relative">
+<div class="h-1 bg-surface-container-highest absolute top-1/2 left-0 w-full -translate-y-1/2 rounded-full"></div>
+<div class="h-1 bg-primary absolute top-1/2 left-0 w-full -translate-y-1/2 rounded-full transition-all duration-700"></div>
+<div class="relative flex justify-between">
+<!-- Step 1-4 Complete -->
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white ring-4 ring-background">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white ring-4 ring-background">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white ring-4 ring-background">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white ring-4 ring-background">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<!-- Step 5 Active -->
+<div class="w-8 h-8 rounded-full bg-primary ring-4 ring-primary-container flex items-center justify-center text-white shadow-lg">
+<span class="font-bold text-sm">5</span>
+</div>
+</div>
+<div class="flex justify-between mt-3 px-1 text-[11px] font-bold text-secondary uppercase tracking-wider hidden md:flex">
+<span>Personal</span>
+<span>Documents</span>
+<span>Income</span>
+<span>Collateral</span>
+<span class="text-primary">Review</span>
+</div>
+</div>
+<!-- Summary Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-section-gap">
+<!-- Loan & Financials Card -->
+<div class="md:col-span-2 glass-card rounded-xl p-6 flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<h3 class="font-title-md text-title-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">payments</span>
+                                Loan Details <span class="text-sm font-normal text-secondary opacity-70">/ कर्जाचा तपशील</span>
+</h3>
+<button class="text-primary hover:underline text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">edit</span> Edit
+                            </button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="bg-surface-container-low p-4 rounded-lg">
+<p class="text-label-sm text-secondary uppercase">Product</p>
+<p class="font-label-md-bold text-label-md-bold">Gold Loan</p>
+<p class="text-[12px] text-on-surface-variant">सोने तारण कर्ज</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg">
+<p class="text-label-sm text-secondary uppercase">Amount</p>
+<p class="font-label-md-bold text-label-md-bold">₹ 5,00,000</p>
+<p class="text-[12px] text-on-surface-variant">पाच लाख रुपये</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg">
+<p class="text-label-sm text-secondary uppercase">Tenure</p>
+<p class="font-label-md-bold text-label-md-bold">36 Months</p>
+<p class="text-[12px] text-on-surface-variant">३६ महिने</p>
+</div>
+<div class="bg-primary-container p-4 rounded-lg border border-primary/20">
+<p class="text-label-sm text-on-primary-container uppercase">Est. EMI</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-white">₹ 16,345</p>
+<p class="text-[12px] text-on-primary-container">मासिक हप्ता</p>
+</div>
+</div>
+</div>
+<!-- Guarantor Summary -->
+<div class="glass-card rounded-xl p-6 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="font-title-md text-title-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">security</span>
+                                Guarantor <span class="text-xs font-normal text-secondary block md:inline">/ जामीनदार</span>
+</h3>
+</div>
+<div class="flex items-center gap-4 p-3 bg-surface-container-low rounded-lg border border-outline-variant">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center font-bold text-primary">RD</div>
+<div>
+<p class="font-label-md-bold text-label-md-bold">Rahul Deshmukh</p>
+<p class="text-label-sm text-secondary">Member ID: 884920</p>
+<p class="text-xs text-on-surface-variant mt-1">CIBIL Score: 780</p>
+</div>
+</div>
+<div class="flex items-center justify-between text-sm px-1">
+<span class="text-secondary">Relation</span>
+<span class="font-bold">Business Associate</span>
+</div>
+</div>
+<!-- Collateral Summary -->
+<div class="md:col-span-1 glass-card rounded-xl p-6 flex flex-col gap-4">
+<h3 class="font-title-md text-title-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">diamond</span>
+                            Collateral <span class="text-sm font-normal text-secondary opacity-70">/ तारण</span>
+</h3>
+<div class="border border-dashed border-outline rounded-lg p-4 bg-surface-container-lowest">
+<div class="flex items-start justify-between mb-2">
+<span class="font-label-md-bold text-label-md-bold">Gold Ornaments (22K)</span>
+<span class="text-primary font-bold">120.50g</span>
+</div>
+<div class="w-full h-32 bg-surface-variant rounded-md mb-2 relative overflow-hidden group">
+<img class="w-full h-full object-cover" data-alt="Close-up high-resolution photograph of 22-karat gold traditional Indian jewelry including a heavy necklace and bangles. The items are laid out on a dark velvet surface with elegant spotlighting that catches the intricate craftmanship and texture. The mood is opulent, safe, and authentic for a banking collateral appraisal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeRJ6ETkhGIk6vYCKYd9yGaPK4bPk6lotDWSyqFHLvOomwBWM8h7e2gMLrk9xJv8nF8xjMeBC07cT4yQbu0rK05EmTh6KkEMetkKDMDR3g_3TcT-DkiWcPF_NFQRQIsLAi_RXn5b3Nf-Q-KWQgCXPHp12t6mABeTXICeCWIP7HIq6TVmomiEitSMiJ8aJHeRm6ANnmesjLj8I0Fpevow3M9X5aMmPhKyEZkjN7wF9Ae8GIvWb37z6FVM_mgEkwONKSr_FBfdoi7CU-"/>
+<div class="absolute bottom-0 left-0 w-full p-2 bg-primary/80 text-white text-[10px] text-center">Verified by Appraiser</div>
+</div>
+<div class="flex justify-between text-xs text-secondary mt-3">
+<span>Valuation (Approx)</span>
+<span class="font-bold text-on-background">₹ 6,85,000</span>
+</div>
+</div>
+</div>
+<!-- EMI Schedule Preview Table -->
+<div class="md:col-span-2 glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="p-6 bg-surface-container-low border-b border-outline-variant flex justify-between items-center">
+<div>
+<h3 class="font-title-md text-title-md text-primary">EMI Schedule Preview</h3>
+<p class="text-marathi-supplement text-marathi-supplement text-secondary">मासिक हप्ता वेळापत्रक पूर्वावलोकन</p>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-label-md-bold flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-md">
+<span class="material-symbols-outlined text-[18px]">download</span> Full PDF
+                            </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container text-on-surface-variant">
+<tr>
+<th class="p-4 font-label-md-bold text-label-md-bold border-b border-outline-variant">Installment #</th>
+<th class="p-4 font-label-md-bold text-label-md-bold border-b border-outline-variant">Date</th>
+<th class="p-4 font-label-md-bold text-label-md-bold border-b border-outline-variant">Principal</th>
+<th class="p-4 font-label-md-bold text-label-md-bold border-b border-outline-variant">Interest</th>
+<th class="p-4 font-label-md-bold text-label-md-bold border-b border-outline-variant text-right">Total Payable</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-4 text-label-md-bold">01</td>
+<td class="p-4 text-body-md">05 Oct 2024</td>
+<td class="p-4 text-body-md text-secondary">₹ 12,245.00</td>
+<td class="p-4 text-body-md text-secondary">₹ 4,100.00</td>
+<td class="p-4 font-bold text-right text-primary">₹ 16,345.00</td>
+</tr>
+<tr class="bg-slate-50/50 hover:bg-surface-container-lowest transition-colors">
+<td class="p-4 text-label-md-bold">02</td>
+<td class="p-4 text-body-md">05 Nov 2024</td>
+<td class="p-4 text-body-md text-secondary">₹ 12,345.00</td>
+<td class="p-4 text-body-md text-secondary">₹ 4,000.00</td>
+<td class="p-4 font-bold text-right text-primary">₹ 16,345.00</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-4 text-label-md-bold">03</td>
+<td class="p-4 text-body-md">05 Dec 2024</td>
+<td class="p-4 text-body-md text-secondary">₹ 12,446.00</td>
+<td class="p-4 text-body-md text-secondary">₹ 3,899.00</td>
+<td class="p-4 font-bold text-right text-primary">₹ 16,345.00</td>
+</tr>
+<tr class="bg-slate-50/50 hover:bg-surface-container-lowest transition-colors">
+<td class="p-4 text-label-md-bold">04</td>
+<td class="p-4 text-body-md">05 Jan 2025</td>
+<td class="p-4 text-body-md text-secondary">₹ 12,548.00</td>
+<td class="p-4 text-body-md text-secondary">₹ 3,797.00</td>
+<td class="p-4 font-bold text-right text-primary">₹ 16,345.00</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-4 text-label-md-bold">05</td>
+<td class="p-4 text-body-md">05 Feb 2025</td>
+<td class="p-4 text-body-md text-secondary">₹ 12,650.00</td>
+<td class="p-4 text-body-md text-secondary">₹ 3,695.00</td>
+<td class="p-4 font-bold text-right text-primary">₹ 16,345.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Final Declaration -->
+<div class="mb-section-gap p-6 border-2 border-primary-container bg-surface-container-low rounded-xl">
+<label class="flex items-start gap-3 cursor-pointer group">
+<input class="mt-1.5 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary transition-all" type="checkbox"/>
+<div class="flex flex-col gap-1">
+<span class="font-label-md-bold text-label-md-bold text-primary group-hover:text-primary-container transition-colors">I declare that all information provided is true and accurate.</span>
+<span class="text-marathi-supplement text-marathi-supplement text-secondary">मी घोषित करतो की दिलेली सर्व माहिती सत्य आणि अचूक आहे.</span>
+</div>
+</label>
+</div>
+<!-- Action Footer -->
+<div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-outline-variant">
+<button class="w-full md:w-auto px-10 py-4 rounded-lg border-2 border-primary text-primary font-bold hover:bg-primary/5 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">arrow_back</span>
+                        Back <span class="text-sm font-normal opacity-70">/ मागे</span>
+</button>
+<button class="w-full md:w-auto px-12 py-4 rounded-lg bg-primary text-white font-bold text-lg shadow-xl hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-3" id="submitBtn">
+                        Submit for Approval
+                        <span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            const btn = this;
+            const originalContent = btn.innerHTML;
+            
+            // Basic UI Feedback
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Submitting...';
+            btn.classList.add('opacity-80');
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Application Submitted!';
+                btn.classList.remove('bg-primary');
+                btn.classList.add('bg-green-700');
+                
+                // Show a mini toast or alert
+                const alertBox = document.createElement('div');
+                alertBox.className = 'fixed bottom-10 right-10 bg-on-surface text-white p-6 rounded-xl shadow-2xl flex items-center gap-4 z-[100] animate-bounce';
+                alertBox.innerHTML = `
+                    <span class="material-symbols-outlined text-green-400">task_alt</span>
+                    <div>
+                        <p class="font-bold">Success!</p>
+                        <p class="text-sm opacity-80">Reference ID: SHB-LN-2024-9921</p>
+                    </div>
+                `;
+                document.body.appendChild(alertBox);
+                
+                setTimeout(() => {
+                    alertBox.style.opacity = '0';
+                    alertBox.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => alertBox.remove(), 500);
+                }, 3000);
+            }, 1500);
+        });
+
+        // Hover animation for side nav
+        const navItems = document.querySelectorAll('aside nav div');
+        navItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                if(!item.classList.contains('bg-primary-container')) {
+                    item.style.transform = 'translateX(4px)';
+                }
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateX(0px)';
+            });
+        });
+    </script>
+</body></html>

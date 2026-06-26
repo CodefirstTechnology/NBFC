@@ -1,0 +1,77 @@
+{
+  "name": "mfe-deposit",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/mfe-deposit/src",
+  "prefix": "pats",
+  "tags": ["scope:deposit", "type:mfe"],
+  "targets": {
+    "build": {
+      "executor": "@angular-architects/native-federation:build",
+      "configurations": {
+        "production": {
+          "target": "mfe-deposit:esbuild:production"
+        },
+        "development": {
+          "target": "mfe-deposit:esbuild:development"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "mfe-deposit:serve-original:development",
+        "rebuildDelay": 0,
+        "dev": true
+      }
+    },
+    "serve-original": {
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "mfe-deposit:esbuild:production"
+        },
+        "development": {
+          "buildTarget": "mfe-deposit:esbuild:development",
+          "port": 4202
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "esbuild": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/mfe-deposit",
+        "index": "apps/mfe-deposit/src/index.html",
+        "browser": "apps/mfe-deposit/src/main.ts",
+        "polyfills": ["zone.js", "es-module-shims"],
+        "tsConfig": "apps/mfe-deposit/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/mfe-deposit/public"
+          }
+        ],
+        "styles": ["apps/mfe-deposit/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

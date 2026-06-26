@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap');
+
+:root {
+  --pats-color-primary: #002653;
+  --pats-color-on-primary: #ffffff;
+  --pats-color-primary-container: #1a3c6e;
+  --pats-color-on-primary-container: #8aa8e0;
+  --pats-color-secondary: #006d38;
+  --pats-color-on-secondary: #ffffff;
+  --pats-color-secondary-container: #8af6a9;
+  --pats-color-on-secondary-container: #00723b;
+  --pats-color-error: #ba1a1a;
+  --pats-color-error-npa: #d64545;
+  --pats-color-success: #2e9e5b;
+  --pats-color-warning: #f2a93b;
+  --pats-color-background: #faf8ff;
+  --pats-color-on-background: #1a1b20;
+  --pats-color-surface: #faf8ff;
+  --pats-color-on-surface: #1a1b20;
+  --pats-color-on-surface-variant: #43474f;
+  --pats-color-surface-muted: #f8fafc;
+  --pats-color-surface-container-lowest: #ffffff;
+  --pats-color-surface-container-low: #f4f3fa;
+  --pats-color-surface-container: #eeedf4;
+  --pats-color-border-subtle: #e2e8f0;
+  --pats-color-outline: #747780;
+  --pats-color-text-secondary: #404040;
+  --pats-color-inverse-surface: #2f3035;
+  --pats-color-inverse-on-surface: #f1f0f7;
+
+  --pats-space-base: 8px;
+  --pats-space-sm: 8px;
+  --pats-space-md: 16px;
+  --pats-space-lg: 24px;
+  --pats-space-xl: 32px;
+  --pats-space-gutter: 24px;
+  --pats-space-section-gap: 48px;
+  --pats-touch-target: 44px;
+  --pats-table-row-height: 48px;
+
+  --pats-radius-sm: 4px;
+  --pats-radius-md: 8px;
+  --pats-radius-lg: 16px;
+  --pats-radius-full: 9999px;
+
+  --pats-shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --pats-shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+  --pats-font-display: 'Manrope', sans-serif;
+  --pats-font-body: 'Inter', sans-serif;
+
+  --pats-sidebar-width: 256px;
+  --pats-max-content-width: 1440px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--pats-font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--pats-color-on-surface);
+  background: var(--pats-color-background);
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-flex;
+  vertical-align: middle;
+  user-select: none;
+}

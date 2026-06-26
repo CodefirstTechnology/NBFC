@@ -1,0 +1,11 @@
+node_modules
+dist
+.nx
+.angular
+coverage
+**/*.log
+.git
+.gitignore
+.vscode
+README.md
+docker-compose.yml

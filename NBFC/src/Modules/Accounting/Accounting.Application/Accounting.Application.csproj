@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Patsanstha.Modules.Accounting.Application</RootNamespace>
+    <AssemblyName>Patsanstha.Modules.Accounting.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Accounting.Domain\Accounting.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\BuildingBlocks\Patsanstha.BuildingBlocks.Application\Patsanstha.BuildingBlocks.Application.csproj" />
+  </ItemGroup>
+
+</Project>

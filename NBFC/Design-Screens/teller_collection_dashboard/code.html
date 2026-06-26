@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Teller Collection | Sahakari Bank</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#8df9ac",
+                    "secondary-fixed-dim": "#71dc92",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#f1f0f7",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#8af6a9",
+                    "on-secondary-container": "#00723b",
+                    "surface-container": "#eeedf4",
+                    "on-background": "#1a1b20",
+                    "on-tertiary-container": "#e0992c",
+                    "inverse-surface": "#2f3035",
+                    "surface-variant": "#e3e2e9",
+                    "on-tertiary-fixed": "#2a1800",
+                    "surface-container-low": "#f4f3fa",
+                    "surface": "#faf8ff",
+                    "border-subtle": "#E2E8F0",
+                    "primary": "#002653",
+                    "error-npa": "#D64545",
+                    "tertiary": "#392200",
+                    "on-secondary-fixed-variant": "#005229",
+                    "on-secondary-fixed": "#00210d",
+                    "inverse-primary": "#abc7ff",
+                    "surface-muted": "#F8FAFC",
+                    "on-primary": "#ffffff",
+                    "outline": "#747780",
+                    "surface-bright": "#faf8ff",
+                    "surface-dim": "#dad9e0",
+                    "on-primary-fixed-variant": "#264679",
+                    "outline-variant": "#c4c6d0",
+                    "background": "#faf8ff",
+                    "text-secondary": "#404040",
+                    "error": "#ba1a1a",
+                    "primary-container": "#1a3c6e",
+                    "secondary": "#006d38",
+                    "on-surface": "#1a1b20",
+                    "surface-tint": "#405e92",
+                    "surface-container-high": "#e9e7ee",
+                    "tertiary-container": "#563600",
+                    "tertiary-fixed": "#ffddb5",
+                    "on-primary-fixed": "#001b3f",
+                    "surface-container-highest": "#e3e2e9",
+                    "primary-fixed": "#d7e3ff",
+                    "on-surface-variant": "#43474f",
+                    "error-container": "#ffdad6",
+                    "on-primary-container": "#8aa8e0",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#ffb956",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#633f00",
+                    "primary-fixed-dim": "#abc7ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "section-gap": "48px",
+                    "gutter": "24px",
+                    "container-margin-desktop": "32px",
+                    "container-margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "title-md": ["Manrope"],
+                    "display-lg": ["Manrope"],
+                    "body-sm": ["Inter"],
+                    "headline-lg": ["Manrope"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["11px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "title-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "label-md": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-bg {
+            background-color: #1a3c6e !important;
+            color: #8aa8e0 !important;
+        }
+        body {
+            background-color: #faf8ff;
+            color: #1a1b20;
+            font-family: 'Inter', sans-serif;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        /* Custom Marathi Font Hinting */
+        [lang="mr"] {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface dark:bg-inverse-surface border-r border-border-subtle dark:border-outline-variant shadow-sm flex flex-col p-4 gap-2 z-50">
+<div class="mb-8 px-2">
+<h1 class="font-display-lg text-primary dark:text-primary-fixed tracking-tight text-[24px]">Sahakari Bank</h1>
+<p class="font-label-md text-label-md text-on-surface-variant opacity-70">Cooperative Credit Society</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">group</span>
+                Members
+            </a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                Deposits
+            </a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Loans
+            </a>
+<!-- Active State: Collections -->
+<a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container font-semibold rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">request_quote</span>
+                Collections
+            </a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">assessment</span>
+                Reports
+            </a>
+</nav>
+<div class="mt-auto border-t border-border-subtle pt-4 px-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary font-bold">Amit Kulkarni</p>
+<p class="text-[10px] text-on-surface-variant">Senior Teller</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 h-screen flex flex-col relative">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-surface dark:bg-inverse-surface border-b border-border-subtle dark:border-outline-variant shadow-sm flex items-center justify-between px-8 z-40">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 font-label-md text-label-md text-primary font-bold">
+<span class="material-symbols-outlined">location_on</span>
+                    Branch: Main Office
+                </div>
+<div class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant hover:text-primary cursor-pointer transition-colors">
+<span class="material-symbols-outlined">language</span>
+                    Language: Marathi
+                </div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">translate</span>
+</button>
+<div class="h-8 w-[1px] bg-border-subtle mx-2"></div>
+<button class="flex items-center gap-2 p-2 text-on-surface-variant hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="mt-16 p-8 overflow-y-auto flex-1 bg-surface-muted">
+<div class="max-w-7xl mx-auto space-y-gutter">
+<!-- Search Section -->
+<div class="bento-grid">
+<div class="col-span-8 bg-white p-6 rounded-xl shadow-sm border border-border-subtle">
+<div class="flex flex-col gap-2 mb-4">
+<label class="font-label-md text-label-md text-primary-container">Search Member or Loan ID</label>
+<span class="font-label-sm text-label-sm text-on-surface-variant -mt-1">सभासद किंवा कर्ज खाते क्रमांक शोधा</span>
+</div>
+<div class="relative">
+<input class="w-full pl-12 pr-4 py-4 rounded-lg bg-surface border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim transition-all text-body-md font-body-md" placeholder="Ex: MB-9843 or LN-2024-001" type="text"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+</div>
+</div>
+<div class="col-span-4 bg-white p-6 rounded-xl shadow-sm border border-border-subtle overflow-hidden">
+<h3 class="font-label-md text-label-md text-primary mb-4 uppercase tracking-wider">Recent Collections</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-body-sm p-2 hover:bg-surface-container rounded-lg transition-colors cursor-pointer">
+<div>
+<p class="font-bold">Rahul Deshmukh</p>
+<p class="text-[11px] text-on-surface-variant">LN-2201 • 10:45 AM</p>
+</div>
+<div class="text-secondary font-bold">₹ 5,000</div>
+</div>
+<div class="flex justify-between items-center text-body-sm p-2 hover:bg-surface-container rounded-lg transition-colors cursor-pointer">
+<div>
+<p class="font-bold">Sita Patil</p>
+<p class="text-[11px] text-on-surface-variant">LN-1192 • 09:30 AM</p>
+</div>
+<div class="text-secondary font-bold">₹ 1,250</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Transaction Interface -->
+<div class="bento-grid">
+<!-- Member/Loan Info Card -->
+<div class="col-span-5 bg-white rounded-xl shadow-sm border border-border-subtle overflow-hidden flex flex-col">
+<div class="h-4 bg-primary"></div>
+<div class="p-8 flex flex-col items-center text-center">
+<div class="w-32 h-32 rounded-2xl overflow-hidden mb-4 border-4 border-surface shadow-md">
+<img class="w-full h-full object-cover" data-alt="Professional studio portrait of a middle-aged Indian male cooperative bank member, wearing a clean white shirt, looking friendly and trustworthy. The background is a soft, out-of-focus bank interior with corporate deep blue and green color scheme, reflecting a light and modern banking environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj8laOezLxkoYDjDQGsnwlgTXpY_Q8HMsQWkMYFdYElWLWjMDdwIZAYkQ57loGmT92TqJHkANyANJAdt3xXrrDM0Qxn37A-5A3T4fYvvIVPRhT8xIH2ifB5_SjQDvOT1e0ReOuNTIwzfPxFQvn2i_NW9MSWGNmcX74Cftu8DifgYnnY2_2GBMkc7Y1asZ421P449D-WZ-Y0W_1_ywDHIj6KWqX8odyk43e2N_ifv5qODzxTNGPK9tGtfJdcsfJHs004m2WegbIJI0B"/>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Vishwas G. Rao</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">Member ID: MB-10452 | Loan ID: LN-2024-882</p>
+<div class="mt-8 w-full bg-error-container/10 border border-error-container p-6 rounded-xl">
+<p class="font-label-md text-label-md text-error-container uppercase tracking-widest mb-1">Total Due Amount</p>
+<p class="font-display-lg text-display-lg text-error-npa">₹ 16,345.00</p>
+<p class="font-label-sm text-label-sm text-error-npa/70">एकूण देय रक्कम</p>
+</div>
+<div class="w-full mt-6 grid grid-cols-2 gap-4">
+<div class="bg-surface p-3 rounded-lg text-left">
+<p class="text-[10px] text-outline uppercase">Next Installment</p>
+<p class="font-bold text-primary">15 Oct 2023</p>
+</div>
+<div class="bg-surface p-3 rounded-lg text-left">
+<p class="text-[10px] text-outline uppercase">Last Payment</p>
+<p class="font-bold text-primary">₹ 4,200</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Payment Form -->
+<div class="col-span-7 bg-white rounded-xl shadow-sm border border-border-subtle flex flex-col p-8">
+<div class="mb-8">
+<h3 class="font-title-md text-title-md text-primary mb-4">Payment Collection <span class="font-normal text-on-surface-variant font-label-md ml-2">(पेमेंट संकलन)</span></h3>
+<!-- Mode Selector -->
+<div class="flex gap-4 mb-8">
+<button class="flex-1 flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-primary bg-primary/5 text-primary transition-all scale-105 shadow-md">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-md text-label-md uppercase">Cash</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-border-subtle hover:border-primary-fixed-dim hover:bg-surface transition-all text-on-surface-variant">
+<span class="material-symbols-outlined text-3xl">qr_code_2</span>
+<span class="font-label-md text-label-md uppercase">UPI QR</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-border-subtle hover:border-primary-fixed-dim hover:bg-surface transition-all text-on-surface-variant">
+<span class="material-symbols-outlined text-3xl">credit_card</span>
+<span class="font-label-md text-label-md uppercase">Card</span>
+</button>
+</div>
+<!-- Amount Section -->
+<div class="space-y-6">
+<div class="relative group">
+<label class="absolute -top-3 left-4 bg-white px-2 font-label-md text-label-md text-primary font-bold group-focus-within:text-primary transition-colors">Enter Collection Amount</label>
+<div class="flex items-center border-2 border-outline-variant focus-within:border-primary rounded-xl overflow-hidden transition-all shadow-sm">
+<div class="pl-6 text-2xl font-bold text-outline">₹</div>
+<input class="w-full py-6 px-4 text-4xl font-display-lg text-primary border-none focus:ring-0" type="number" value="16345"/>
+</div>
+<p class="mt-2 text-right font-label-sm text-label-sm text-on-surface-variant">रक्कम प्रविष्ट करा</p>
+</div>
+<!-- Quick Buttons -->
+<div class="grid grid-cols-4 gap-3">
+<button class="py-3 px-2 rounded-lg border border-primary-fixed-dim text-primary font-bold hover:bg-primary-fixed transition-colors text-body-sm">+ 500</button>
+<button class="py-3 px-2 rounded-lg border border-primary-fixed-dim text-primary font-bold hover:bg-primary-fixed transition-colors text-body-sm">+ 1,000</button>
+<button class="py-3 px-2 rounded-lg border border-primary-fixed-dim text-primary font-bold hover:bg-primary-fixed transition-colors text-body-sm">+ 5,000</button>
+<button class="py-3 px-2 rounded-lg bg-primary-fixed-dim text-primary-fixed-variant font-bold hover:bg-secondary-fixed transition-colors text-body-sm">Full Due</button>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="mt-auto pt-8 border-t border-border-subtle">
+<button class="w-full bg-secondary py-5 rounded-xl flex items-center justify-center gap-3 text-white shadow-lg hover:bg-on-secondary-fixed-variant active:scale-95 transition-all">
+<span class="material-symbols-outlined text-2xl">print</span>
+<div class="text-left">
+<p class="font-headline-lg-mobile text-headline-lg-mobile leading-none">Collect &amp; Print Receipt</p>
+<p class="text-[11px] opacity-80 uppercase tracking-tighter">रक्कम जमा करा आणि पावती प्रिंट करा</p>
+</div>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Stats -->
+<div class="grid grid-cols-4 gap-gutter">
+<div class="bg-primary p-6 rounded-xl flex items-center gap-4 shadow-sm text-white">
+<div class="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed">savings</span>
+</div>
+<div>
+<p class="text-xs opacity-70 uppercase tracking-wider">Today's Total Cash</p>
+<p class="text-xl font-bold">₹ 1,42,850</p>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl flex items-center gap-4 shadow-sm border border-border-subtle">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">receipt_long</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Receipts Issued</p>
+<p class="text-xl font-bold text-primary">28</p>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl flex items-center gap-4 shadow-sm border border-border-subtle">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">pending_actions</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Pending Tasks</p>
+<p class="text-xl font-bold text-primary">12</p>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl flex items-center gap-4 shadow-sm border border-border-subtle">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">timer</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Avg. Time / Txn</p>
+<p class="text-xl font-bold text-primary">2.4m</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Toast (Hidden by default, shown for micro-interaction) -->
+<div class="fixed bottom-8 right-8 bg-inverse-surface text-inverse-on-surface px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 translate-y-24 transition-transform duration-300 z-50" id="toast">
+<span class="material-symbols-outlined text-secondary-fixed">check_circle</span>
+<span class="font-label-md text-label-md">Collection processed successfully!</span>
+</div>
+</main>
+<script>
+        // Micro-interaction: Payment Success Simulation
+        const collectBtn = document.querySelector('button.bg-secondary');
+        const toast = document.getElementById('toast');
+
+        collectBtn.addEventListener('click', () => {
+            collectBtn.classList.add('opacity-70');
+            collectBtn.innerText = 'Processing...';
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-24');
+                collectBtn.classList.remove('opacity-70');
+                collectBtn.innerHTML = `
+                    <span class="material-symbols-outlined text-2xl">print</span>
+                    <div class="text-left">
+                        <p class="font-headline-lg-mobile text-headline-lg-mobile leading-none">Collect & Print Receipt</p>
+                        <p class="text-[11px] opacity-80 uppercase tracking-tighter">रक्कम जमा करा आणि पावती प्रिंट करा</p>
+                    </div>
+                `;
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-24');
+                }, 3000);
+            }, 1200);
+        });
+
+        // Quick amount buttons logic
+        const amountInput = document.querySelector('input[type="number"]');
+        const quickButtons = document.querySelectorAll('.grid.grid-cols-4 button');
+
+        quickButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const currentVal = parseInt(amountInput.value) || 0;
+                if (btn.innerText.includes('Full Due')) {
+                    amountInput.value = 16345;
+                } else {
+                    const add = parseInt(btn.innerText.replace(/[^\d]/g, ''));
+                    amountInput.value = currentVal + add;
+                }
+                
+                // Visual feedback
+                amountInput.classList.add('bg-primary-fixed/20');
+                setTimeout(() => amountInput.classList.remove('bg-primary-fixed/20'), 200);
+            });
+        });
+    </script>
+</body></html>

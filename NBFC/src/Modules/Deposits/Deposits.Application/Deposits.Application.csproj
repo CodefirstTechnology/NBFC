@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Patsanstha.Modules.Deposits.Application</RootNamespace>
+    <AssemblyName>Patsanstha.Modules.Deposits.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Deposits.Domain\Deposits.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\BuildingBlocks\Patsanstha.BuildingBlocks.Application\Patsanstha.BuildingBlocks.Application.csproj" />
+  </ItemGroup>
+
+</Project>

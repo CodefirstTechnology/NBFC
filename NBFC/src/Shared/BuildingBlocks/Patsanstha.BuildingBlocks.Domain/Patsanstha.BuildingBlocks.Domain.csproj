@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Patsanstha.BuildingBlocks.Domain</RootNamespace>
+    <AssemblyName>Patsanstha.BuildingBlocks.Domain</AssemblyName>
+  </PropertyGroup>
+
+</Project>

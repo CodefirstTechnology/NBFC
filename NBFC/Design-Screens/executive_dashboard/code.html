@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sahakari Bank - Executive Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1-fr);
+            gap: 24px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        /* Custom scrollbar for data density */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #abc7ff;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#f4f3fa",
+                      "tertiary-container": "#563600",
+                      "on-tertiary": "#ffffff",
+                      "on-surface": "#1a1b20",
+                      "inverse-on-surface": "#f1f0f7",
+                      "primary-container": "#1a3c6e",
+                      "on-primary-fixed": "#001b3f",
+                      "surface-variant": "#e3e2e9",
+                      "secondary-container": "#8af6a9",
+                      "secondary-fixed-dim": "#71dc92",
+                      "primary": "#002653",
+                      "on-primary-fixed-variant": "#264679",
+                      "surface": "#faf8ff",
+                      "on-tertiary-fixed": "#2a1800",
+                      "surface-bright": "#faf8ff",
+                      "outline-variant": "#c4c6d0",
+                      "text-secondary": "#404040",
+                      "on-error-container": "#93000a",
+                      "tertiary": "#392200",
+                      "outline": "#747780",
+                      "primary-fixed-dim": "#abc7ff",
+                      "error": "#ba1a1a",
+                      "secondary": "#006d38",
+                      "secondary-fixed": "#8df9ac",
+                      "on-tertiary-container": "#e0992c",
+                      "surface-muted": "#F8FAFC",
+                      "border-subtle": "#E2E8F0",
+                      "tertiary-fixed-dim": "#ffb956",
+                      "tertiary-fixed": "#ffddb5",
+                      "on-secondary": "#ffffff",
+                      "surface-dim": "#dad9e0",
+                      "error-npa": "#D64545",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-container": "#00723b",
+                      "inverse-primary": "#abc7ff",
+                      "surface-container-high": "#e9e7ee",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#633f00",
+                      "inverse-surface": "#2f3035",
+                      "background": "#faf8ff",
+                      "surface-tint": "#405e92",
+                      "on-surface-variant": "#43474f",
+                      "surface-container": "#eeedf4",
+                      "on-secondary-fixed-variant": "#005229",
+                      "on-background": "#1a1b20",
+                      "on-secondary-fixed": "#00210d",
+                      "on-error": "#ffffff",
+                      "primary-fixed": "#d7e3ff",
+                      "surface-container-highest": "#e3e2e9",
+                      "on-primary-container": "#8aa8e0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "container-margin-desktop": "32px",
+                      "section-gap": "48px",
+                      "container-margin-mobile": "16px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "body-sm": ["Inter"],
+                      "title-md": ["Manrope"],
+                      "headline-lg-mobile": ["Manrope"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Manrope"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg": ["Manrope"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "title-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-md": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["11px", {"lineHeight": "1.2", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface-container-low font-body-md text-on-surface">
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 w-64 bg-surface dark:bg-inverse-surface shadow-sm transition-all duration-200 ease-in-out">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h1 class="font-title-md text-title-md font-bold text-primary dark:text-inverse-primary leading-none">Sahakari Bank</h1>
+<span class="text-label-sm font-label-sm text-on-surface-variant opacity-70">Credit Management</span>
+</div>
+</div>
+<nav class="mt-4 flex-1 px-4 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-primary dark:text-inverse-primary font-bold border-r-4 border-primary bg-primary-container/10" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Members</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-md text-label-md">Deposits</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Loans</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-md text-label-md">Collections</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">rebase_edit</span>
+<span class="font-label-md text-label-md">Recovery</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">account_balance</span>
+<span class="font-label-md text-label-md">Accounting</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-md text-label-md">Branches</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-in-out text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-label-md text-label-md">Admin</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border-subtle mt-auto">
+<div class="flex items-center gap-3 p-2 bg-surface-container rounded-xl">
+<div class="w-8 h-8 rounded-full bg-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up professional portrait of a male bank manager with a warm, trustworthy expression, wearing a tailored navy suit and standing in a modern, brightly lit corporate office environment. The lighting is soft and professional with a shallow depth of field, emphasizing the person as an authority figure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzw2kDAuh4jaOkXa3LxqE_yDc1JyaHMcs0XuAABLzEer44p2HDAkoNwdYr89mLaR_72KKIbOnno0xMZy2JJbNrN9fB7ejm234oGp4FKUVBBEELj0G0N8UlB7cldQwVmakFauCS6QyDJyuCincwAvWJaSUkrI1mcShxnVAQc6eogVsJsPvnNHSw4rPpdKU0qdMyU_nPDKKZ8UZ2tPfP6nnw4ApkUmYSc67zJjbAmUY_DPPu3M5HAK_S7b3U1VK57reg2vTdBIY7VwuH"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-label-md text-label-md text-on-surface truncate">Vikas Deshmukh</p>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-wider">Branch Manager</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation -->
+<header class="flex justify-between items-center w-full px-container-margin-desktop h-16 sticky top-0 z-50 ml-64 bg-surface dark:bg-inverse-surface border-b border-border-subtle">
+<div class="flex items-center gap-6">
+<h2 class="font-headline-lg text-[22px] font-bold text-primary">Executive Dashboard</h2>
+<div class="hidden md:flex items-center gap-4">
+<div class="px-3 py-1 bg-surface-container-high rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-secondary-container">location_on</span>
+<span class="font-label-md text-label-md text-on-surface">Branch: Main Office</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center bg-surface-container-high rounded-full p-1">
+<button class="px-4 py-1 rounded-full text-label-md font-label-md bg-primary text-on-primary shadow-sm transition-all">EN</button>
+<button class="px-4 py-1 rounded-full text-label-md font-label-md text-on-surface-variant hover:text-primary transition-all">मराठी</button>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-highest transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 p-container-margin-desktop">
+<!-- Top Stats Bento -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-gutter">
+<!-- Total Members -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary/5 rounded-lg">
+<span class="material-symbols-outlined text-primary">group</span>
+</div>
+<span class="text-secondary flex items-center gap-1 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">trending_up</span> +12%
+                    </span>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md">Total Members</p>
+<h3 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-1">12,842</h3>
+<div class="mt-4 flex items-center gap-2">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-surface-dim"></div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-surface-dim"></div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-surface-dim"></div>
+</div>
+<span class="text-[11px] text-on-surface-variant font-medium">48 new this week</span>
+</div>
+</div>
+<!-- Active Loans -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary/5 rounded-lg">
+<span class="material-symbols-outlined text-tertiary">payments</span>
+</div>
+<span class="text-secondary flex items-center gap-1 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">trending_up</span> +5.4%
+                    </span>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md">Active Loans</p>
+<h3 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-1">₹ 8.42 Cr</h3>
+<p class="text-[11px] text-on-surface-variant mt-2">Distributed across 1,240 accounts</p>
+</div>
+<!-- Total Deposits -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary/5 rounded-lg">
+<span class="material-symbols-outlined text-secondary">account_balance_wallet</span>
+</div>
+<span class="text-secondary flex items-center gap-1 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">trending_up</span> +2.1%
+                    </span>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md">Total Deposits</p>
+<h3 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-1">₹ 14.28 Cr</h3>
+<div class="w-full bg-secondary-container/20 h-1 rounded-full mt-4">
+<div class="bg-secondary h-full rounded-full w-[78%]"></div>
+</div>
+</div>
+<!-- Recovery Rate -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
+<div class="absolute top-0 left-0 w-1 h-full bg-error-npa"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-error-npa/5 rounded-lg">
+<span class="material-symbols-outlined text-error-npa">rebase_edit</span>
+</div>
+<span class="text-error flex items-center gap-1 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">trending_down</span> -0.4%
+                    </span>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md">Recovery Rate</p>
+<h3 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-1">94.2%</h3>
+<p class="text-[11px] text-error-npa font-bold mt-2">Target: 98%</p>
+</div>
+</section>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Charts Section -->
+<div class="col-span-12 lg:col-span-8">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm flex flex-col h-full">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h4 class="font-title-md text-title-md font-bold text-on-surface">Collection vs Recovery</h4>
+<p class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Monthly Performance (FY 2023-24)</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-label-sm font-label-sm border border-border-subtle rounded-md hover:bg-surface-container transition-colors">6 Months</button>
+<button class="px-3 py-1 text-label-sm font-label-sm bg-primary-container/10 text-primary border border-primary/20 rounded-md">Yearly</button>
+</div>
+</div>
+<div class="flex-1 flex items-end gap-4 px-4 pb-8 border-b border-border-subtle relative">
+<!-- Mock Chart Grid -->
+<div class="absolute inset-x-0 bottom-8 h-[200px] flex flex-col justify-between pointer-events-none opacity-10">
+<div class="border-t border-on-surface-variant w-full"></div>
+<div class="border-t border-on-surface-variant w-full"></div>
+<div class="border-t border-on-surface-variant w-full"></div>
+<div class="border-t border-on-surface-variant w-full"></div>
+</div>
+<!-- Bar Groups -->
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full flex justify-center items-end gap-1 h-[140px]">
+<div class="w-4 bg-primary rounded-t-sm" style="height: 85%;"></div>
+<div class="w-4 bg-secondary rounded-t-sm" style="height: 70%;"></div>
+</div>
+<span class="text-label-sm text-on-surface-variant">Apr</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full flex justify-center items-end gap-1 h-[140px]">
+<div class="w-4 bg-primary rounded-t-sm" style="height: 95%;"></div>
+<div class="w-4 bg-secondary rounded-t-sm" style="height: 85%;"></div>
+</div>
+<span class="text-label-sm text-on-surface-variant">May</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full flex justify-center items-end gap-1 h-[140px]">
+<div class="w-4 bg-primary rounded-t-sm" style="height: 75%;"></div>
+<div class="w-4 bg-secondary rounded-t-sm" style="height: 65%;"></div>
+</div>
+<span class="text-label-sm text-on-surface-variant">Jun</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full flex justify-center items-end gap-1 h-[140px]">
+<div class="w-4 bg-primary rounded-t-sm" style="height: 90%;"></div>
+<div class="w-4 bg-secondary rounded-t-sm" style="height: 88%;"></div>
+</div>
+<span class="text-label-sm text-on-surface-variant">Jul</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full flex justify-center items-end gap-1 h-[140px]">
+<div class="w-4 bg-primary rounded-t-sm" style="height: 60%;"></div>
+<div class="w-4 bg-secondary rounded-t-sm" style="height: 55%;"></div>
+</div>
+<span class="text-label-sm text-on-surface-variant">Aug</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full flex justify-center items-end gap-1 h-[140px]">
+<div class="w-4 bg-primary rounded-t-sm" style="height: 98%;"></div>
+<div class="w-4 bg-secondary rounded-t-sm" style="height: 92%;"></div>
+</div>
+<span class="text-label-sm text-on-surface-variant">Sep</span>
+</div>
+</div>
+<div class="mt-6 flex justify-center gap-8">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Target Collection</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-secondary rounded-full"></div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Actual Recovery</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="col-span-12 lg:col-span-4">
+<div class="bg-primary p-6 rounded-xl shadow-lg h-full text-on-primary relative overflow-hidden">
+
+<h4 class="font-title-md text-title-md font-bold mb-6 relative z-10">Quick Actions</h4>
+<div class="space-y-4 relative z-10">
+<button class="w-full flex items-center gap-4 p-4 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all group">
+<div class="p-2 bg-on-primary-fixed text-primary rounded-lg">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<div class="text-left">
+<p class="font-label-md text-label-md">New Member Enrollment</p>
+<p class="text-[11px] opacity-70">Add a new shareholder to society</p>
+</div>
+<span class="material-symbols-outlined ml-auto group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="w-full flex items-center gap-4 p-4 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all group">
+<div class="p-2 bg-secondary text-on-secondary rounded-lg">
+<span class="material-symbols-outlined">savings</span>
+</div>
+<div class="text-left">
+<p class="font-label-md text-label-md">New Deposit / FD</p>
+<p class="text-[11px] opacity-70">Create a fixed or recurring deposit</p>
+</div>
+<span class="material-symbols-outlined ml-auto group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="w-full flex items-center gap-4 p-4 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all group">
+<div class="p-2 bg-tertiary-fixed text-on-tertiary-fixed rounded-lg">
+<span class="material-symbols-outlined">request_quote</span>
+</div>
+<div class="text-left">
+<p class="font-label-md text-label-md">Disburse Loan</p>
+<p class="text-[11px] opacity-70">Process loan application disbursement</p>
+</div>
+<span class="material-symbols-outlined ml-auto group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+</div>
+<div class="mt-8 p-4 bg-surface-container-low/10 rounded-xl border border-white/5 relative z-10">
+<p class="text-[11px] font-bold uppercase tracking-widest opacity-60 mb-2">System Status</p>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
+<span class="text-label-sm font-label-sm">Day End Processed • 16:45 PM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity Table -->
+<div class="col-span-12">
+<div class="bg-surface-container-lowest rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+<div class="p-6 border-b border-border-subtle flex justify-between items-center bg-surface-muted/50">
+<div>
+<h4 class="font-title-md text-title-md font-bold text-on-surface">Recent Activity</h4>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Last 24 hours of operational changes</p>
+</div>
+<button class="text-primary font-label-md text-label-md hover:underline">View All Records</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-border-subtle">
+<th class="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Member/Transaction</th>
+<th class="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Type</th>
+<th class="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Amount</th>
+<th class="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Time</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle">
+<tr class="hover:bg-surface-muted transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary font-bold text-[12px]">RK</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Rahul Kulkarni</p>
+<p class="text-label-sm text-on-surface-variant">#MEM-89021</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-body-sm font-body-sm">Gold Loan Disbursement</span>
+</td>
+<td class="px-6 py-4 font-bold text-on-surface">
+                                        ₹ 4,50,000
+                                    </td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-secondary-container/30 text-on-secondary-container">
+                                            Completed
+                                        </span>
+</td>
+<td class="px-6 py-4 text-on-surface-variant text-body-sm">
+                                        2 mins ago
+                                    </td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="bg-surface-muted/30 hover:bg-surface-muted transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary font-bold text-[12px]">SM</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Sunita More</p>
+<p class="text-label-sm text-on-surface-variant">#MEM-89045</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-body-sm font-body-sm">Term Deposit (FD)</span>
+</td>
+<td class="px-6 py-4 font-bold text-on-surface">
+                                        ₹ 12,00,000
+                                    </td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-secondary-container/30 text-on-secondary-container">
+                                            Completed
+                                        </span>
+</td>
+<td class="px-6 py-4 text-on-surface-variant text-body-sm">
+                                        15 mins ago
+                                    </td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-muted transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary font-bold text-[12px]">AS</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Amit Shinde</p>
+<p class="text-label-sm text-on-surface-variant">#MEM-89102</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-body-sm font-body-sm">Personal Loan Approval</span>
+</td>
+<td class="px-6 py-4 font-bold text-on-surface">
+                                        ₹ 2,00,000
+                                    </td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-tertiary-fixed-dim/30 text-on-tertiary-fixed-variant">
+                                            Pending Verification
+                                        </span>
+</td>
+<td class="px-6 py-4 text-on-surface-variant text-body-sm">
+                                        1 hour ago
+                                    </td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="bg-surface-muted/30 hover:bg-surface-muted transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary font-bold text-[12px]">JP</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Jyoti Patil</p>
+<p class="text-label-sm text-on-surface-variant">#MEM-89150</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-body-sm font-body-sm">Savings Account Withdrawal</span>
+</td>
+<td class="px-6 py-4 font-bold text-error-npa">
+                                        ₹ 45,000
+                                    </td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-secondary-container/30 text-on-secondary-container">
+                                            Completed
+                                        </span>
+</td>
+<td class="px-6 py-4 text-on-surface-variant text-body-sm">
+                                        3 hours ago
+                                    </td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / Credits -->
+<footer class="mt-section-gap flex flex-col md:flex-row justify-between items-center text-on-surface-variant opacity-60">
+<p class="text-label-sm">© 2024 Sahakari Bank Management System v4.2.0</p>
+<div class="flex gap-6 mt-4 md:mt-0">
+<a class="text-label-sm hover:text-primary transition-colors" href="#">Support Center</a>
+<a class="text-label-sm hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm hover:text-primary transition-colors" href="#">Operational Manual</a>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interactions and data visualization aids
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Simulating some live updates
+        setInterval(() => {
+            const recoveryElement = document.querySelector('h3.font-headline-lg:nth-of-type(4)');
+            // Just a small visual variance for live demo feel
+        }, 10000);
+    </script>
+</body></html>

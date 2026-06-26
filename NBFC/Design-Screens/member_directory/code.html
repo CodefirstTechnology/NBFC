@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Member Management Directory | Sahakari Bank</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Manrope:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #E2E8F0;
+            border-radius: 10px;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            background: rgba(250, 248, 255, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen flex">
+<!-- Theme Config Script -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f4f3fa",
+                        "tertiary-container": "#563600",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1a1b20",
+                        "inverse-on-surface": "#f1f0f7",
+                        "primary-container": "#1a3c6e",
+                        "on-primary-fixed": "#001b3f",
+                        "surface-variant": "#e3e2e9",
+                        "secondary-container": "#8af6a9",
+                        "secondary-fixed-dim": "#71dc92",
+                        "primary": "#002653",
+                        "on-primary-fixed-variant": "#264679",
+                        "surface": "#faf8ff",
+                        "on-tertiary-fixed": "#2a1800",
+                        "surface-bright": "#faf8ff",
+                        "outline-variant": "#c4c6d0",
+                        "text-secondary": "#404040",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#392200",
+                        "outline": "#747780",
+                        "primary-fixed-dim": "#abc7ff",
+                        "error": "#ba1a1a",
+                        "secondary": "#006d38",
+                        "secondary-fixed": "#8df9ac",
+                        "on-tertiary-container": "#e0992c",
+                        "surface-muted": "#F8FAFC",
+                        "border-subtle": "#E2E8F0",
+                        "tertiary-fixed-dim": "#ffb956",
+                        "tertiary-fixed": "#ffddb5",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#dad9e0",
+                        "error-npa": "#D64545",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#00723b",
+                        "inverse-primary": "#abc7ff",
+                        "surface-container-high": "#e9e7ee",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "inverse-surface": "#2f3035",
+                        "background": "#faf8ff",
+                        "surface-tint": "#405e92",
+                        "on-surface-variant": "#43474f",
+                        "surface-container": "#eeedf4",
+                        "on-secondary-fixed-variant": "#005229",
+                        "on-background": "#1a1b20",
+                        "on-secondary-fixed": "#00210d",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#d7e3ff",
+                        "surface-container-highest": "#e3e2e9",
+                        "on-primary-container": "#8aa8e0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-margin-desktop": "32px",
+                        "section-gap": "48px",
+                        "container-margin-mobile": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "title-md": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Manrope"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "title-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["11px", {"lineHeight": "1.2", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<!-- Side Navigation Bar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 bg-surface dark:bg-inverse-surface shadow-sm docked full-height w-64 transition-all duration-200 ease-in-out" id="side-nav">
+<div class="p-6 flex flex-col gap-1">
+<h1 class="font-title-md text-title-md font-bold text-primary dark:text-inverse-primary">Sahakari Bank</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Credit Management</p>
+</div>
+<nav class="flex-1 px-4 overflow-y-auto custom-scrollbar space-y-1">
+<!-- Nav Items Mapping from JSON -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<!-- Members is ACTIVE -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-inverse-primary font-bold border-r-4 border-primary bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Members</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label-md text-label-md">Deposits</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">Loans</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-md text-label-md">Collections</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="rebase_edit">rebase_edit</span>
+<span class="font-label-md text-label-md">Recovery</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+<span class="font-label-md text-label-md">Accounting</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-label-md text-label-md">Branches</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-primary-container/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-md text-label-md">Admin</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="flex items-center gap-3 bg-surface-container-low dark:bg-surface-container-low p-3 rounded-xl">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold">
+                    SM
+                </div>
+<div>
+<p class="font-label-md text-label-md">Staff Manager</p>
+<p class="font-label-sm text-label-sm opacity-70">Main Office</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="ml-64 flex flex-col w-full h-full overflow-hidden">
+<!-- Top Navigation Bar (Shared Component) -->
+<header class="flex justify-between items-center w-full px-container-margin-desktop h-16 sticky top-0 z-50 bg-surface dark:bg-inverse-surface border-b border-border-subtle glass-header">
+<div class="flex items-center gap-6">
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">Member Directory</h2>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="text-primary font-bold font-label-md">Branch: Main Office</span>
+<span class="h-4 w-[1px] bg-outline-variant"></span>
+<button class="font-label-md hover:text-primary transition-colors">मराठी / EN</button>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a financial manager in a modern office, softly lit with natural morning light. The background shows a clean, corporate environment with subtle glass partitions and architectural greenery. Professional, high-end photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ7MZPS-aCcxuosczppUBdIuNI_32hVpxAwNJK9oYh23p0oEHebVAGqb9UgkuJinaNj1ZGLsFPmy-XfhIOLHkUbx7UeYzIZUy7oGjGFYsvNGivnXn9B-ft4xPpGgO2uzGlhZubMrQfOmkC6_zI9U7LaRJDWMFnssywMJJ0yw5zmKzcubEhTS2FGfvNH5-Xlpx7DgpHVWK3Pb4PKviG5ds6Sj0BS-o6803gmei6XdQuQJfqVXLDzNrxURZUNd_7Re520Bz36uaUmAMe"/>
+</div>
+</div>
+</header>
+<!-- Page Content Canvas -->
+<section class="flex-1 overflow-y-auto p-container-margin-desktop space-y-6">
+<!-- Filters & Actions Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<div class="md:col-span-8 bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-border-subtle flex flex-col md:flex-row gap-4 items-center">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-3 rounded-lg border-border-subtle bg-surface-muted focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-sm" placeholder="Search by Name, ID or Phone | नाव किंवा आयडीनुसार शोधा..." type="text"/>
+</div>
+<div class="flex gap-2 w-full md:w-auto">
+<select class="px-4 py-3 rounded-lg border border-border-subtle bg-surface-muted font-label-md text-on-surface-variant focus:ring-2 focus:ring-primary outline-none cursor-pointer">
+<option>All Branches</option>
+<option>Main Office</option>
+<option>South Wing</option>
+<option>North Branch</option>
+</select>
+<select class="px-4 py-3 rounded-lg border border-border-subtle bg-surface-muted font-label-md text-on-surface-variant focus:ring-2 focus:ring-primary outline-none cursor-pointer">
+<option>Status: All</option>
+<option>Active</option>
+<option>Pending</option>
+<option>Closed</option>
+</select>
+</div>
+</div>
+<div class="md:col-span-4 flex items-stretch">
+<button class="w-full bg-primary text-on-primary rounded-xl font-title-md py-4 px-6 flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-md">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+<div class="flex flex-col items-start leading-tight">
+<span>Add New Member</span>
+<span class="text-[10px] font-normal opacity-80">नवीन सभासद जोडा</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-surface-container-lowest rounded-xl border border-border-subtle shadow-sm overflow-hidden flex flex-col">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-border-subtle">
+<th class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-label-md text-primary">Member ID</span>
+<span class="text-[10px] text-on-surface-variant font-normal">सभासद आयडी</span>
+</div>
+</th>
+<th class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-label-md text-primary">Photo & Name</span>
+<span class="text-[10px] text-on-surface-variant font-normal">फोटो आणि नाव</span>
+</div>
+</th>
+<th class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-label-md text-primary">Branch</span>
+<span class="text-[10px] text-on-surface-variant font-normal">शाखा</span>
+</div>
+</th>
+<th class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-label-md text-primary">Status</span>
+<span class="text-[10px] text-on-surface-variant font-normal">स्थिती</span>
+</div>
+</th>
+<th class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-label-md text-primary">Account Balance</span>
+<span class="text-[10px] text-on-surface-variant font-normal">खात्यातील शिल्लक</span>
+</div>
+</th>
+<th class="px-6 py-4 text-center">
+<span class="font-label-md text-primary">Actions</span>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-muted transition-colors group">
+<td class="px-6 py-4 font-label-md text-primary">MB-2024-0892</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a smiling middle-aged male bank member, warm and approachable, professional attire, soft-focus background of a clean bank interior, high-resolution lifestyle photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8hoMi3kxVBalDRfjHUfRYVBXjfCocLlpVCvdUlY5mdvfwAMfq9nHNOXzmKIPNTekWL2vMQxLzDeEhK0swQq3ESerodbEEp4QftmmhvJiNveElKAsKKReSpNU4mnQLgRwWCxnOfv7Rc9Casp6PKVQhKhzqps_5m1KE9IEV1gdYbCDoLXS16bNEnUQVBY36UPR6kz8eUM3spPSNS1fNrtUOpSaX-uaQlCjm-1zluDR9A7ll_mTQS3ArHKiow6akaaOEU1kxYELfH6FF"/>
+</div>
+<div>
+<p class="font-label-md">Rajesh Deshmukh</p>
+<p class="text-[11px] text-on-surface-variant font-medium">राजेश देशमुख</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-sm">Main Office</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container/30 text-secondary">
+                                        Active / सक्रिय
+                                    </span>
+</td>
+<td class="px-6 py-4 font-label-md text-primary">₹ 1,45,280.00</td>
+<td class="px-6 py-4 text-center">
+<button class="p-2 hover:bg-primary-container/10 rounded-full text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-muted transition-colors group">
+<td class="px-6 py-4 font-label-md text-primary">MB-2024-0912</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young Indian businesswoman bank member, confident expression, minimalist office background with plants, soft daylight, professional high-fidelity photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL27COHiBQU5ryNGu1oKxAr4pwVXZwFb3SzH1eQwNkL4KkJGz5lo65El1zQYLv740EOlVyNtG4z_5TgDIaHBssqIKr2fF-wLkgAM1q7X8UDQzjblLZ1RhGXvEChvQ5ujgQTDpiRHcUdvb-F6hZa4iUyye_8pYOtN8RVy4XD_R6Y7AIFeBaTgGpLaNze_zXLD8Z1X1NLj9kHjpsUg0L2v79-LBiYdyFFGL9oNS9SWyf6gI64RU7ynXcCM2dPKEbpWitzFXrMjJJ8-HQ"/>
+</div>
+<div>
+<p class="font-label-md">Anjali Kulkarni</p>
+<p class="text-[11px] text-on-surface-variant font-medium">अंजली कुलकर्णी</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-sm">South Wing</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tertiary-fixed text-tertiary">
+                                        Pending / प्रलंबित
+                                    </span>
+</td>
+<td class="px-6 py-4 font-label-md text-primary">₹ 2,500.00</td>
+<td class="px-6 py-4 text-center">
+<button class="p-2 hover:bg-primary-container/10 rounded-full text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-muted transition-colors group">
+<td class="px-6 py-4 font-label-md text-primary">MB-2023-0451</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of an elderly gentleman, distinguished and smiling, member of a cooperative society, traditional professional attire, high-quality corporate headshot style, clean studio background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs1Sf8S3eX3tnamU8x-lYM_3W4C-EnNaHhvgzrzyfx0EG9pSpecVVJ1EPob6Rz80xPVK8ljIGeKrWKWobWAndArwpKvl9QNWVvGFzHcUmzr5JMDbmaz9OpS-VKFRnPaNVeAbEfQVsweQHckbcmo7XG9xFZ0wYsLyMDevqg0Ab_n2vvXBETQQmCjsFsBri8wR4khBPpEMlwW31kxazXGUsJUdceNaHjXdishnRRmlxdm8U8ziE47wErqAtTbAsDobw3eorm4RG0CGw6"/>
+</div>
+<div>
+<p class="font-label-md">Vinayak Patil</p>
+<p class="text-[11px] text-on-surface-variant font-medium">विनायक पाटील</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-sm">Main Office</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container/30 text-secondary">
+                                        Active / सक्रिय
+                                    </span>
+</td>
+<td class="px-6 py-4 font-label-md text-primary">₹ 8,12,045.00</td>
+<td class="px-6 py-4 text-center">
+<button class="p-2 hover:bg-primary-container/10 rounded-full text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-muted transition-colors group">
+<td class="px-6 py-4 font-label-md text-primary">MB-2022-1102</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young farmer member of a credit society, proud and optimistic, rural context but high-quality clean photographic style, warm golden hour lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOHQBwl_wdgv7d9jiYe5-0-N5ddLvblSswa_Sqp9xBNK_0KDktn09OZnqMxGLtwMv68WZtjY1xjgb8zIfdBNXOPG6YSkDUyudzt2q6rUIEPAHp8GTVDETGiGO9X6o2b3x29E0LByvpbrKsZN7Laph-LMWvgeWjT_odS3VpSlhMJcGlOIkqYtFFEmtX5w3D3j7GyvtY-eUXypAuvhqntDyC8DYX-nuFLlTKNaJkj1fc9Dlv7zAvQgAN0JchBVP3FxqUdB_6Ty2SVT1P"/>
+</div>
+<div>
+<p class="font-label-md">Sandeep Pawar</p>
+<p class="text-[11px] text-on-surface-variant font-medium">संदीप पवार</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-sm">North Branch</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-error-container text-error">
+                                        Closed / बंद
+                                    </span>
+</td>
+<td class="px-6 py-4 font-label-md text-primary">₹ 0.00</td>
+<td class="px-6 py-4 text-center">
+<button class="p-2 hover:bg-primary-container/10 rounded-full text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 bg-surface-container-low flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-body-sm text-on-surface-variant">Showing 1 to 4 of 1,248 members</p>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-lg border border-border-subtle hover:bg-white transition-all disabled:opacity-50">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<div class="flex gap-1">
+<button class="w-10 h-10 rounded-lg bg-primary text-on-primary font-bold">1</button>
+<button class="w-10 h-10 rounded-lg hover:bg-white transition-all">2</button>
+<button class="w-10 h-10 rounded-lg hover:bg-white transition-all">3</button>
+<span class="flex items-end pb-2 px-1">...</span>
+<button class="w-10 h-10 rounded-lg hover:bg-white transition-all">125</button>
+</div>
+<button class="p-2 rounded-lg border border-border-subtle hover:bg-white transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Stats Overlay Bento Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="bg-primary p-6 rounded-xl text-on-primary flex flex-col justify-between shadow-lg relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[120px]" data-icon="group">group</span>
+</div>
+<span class="font-label-md opacity-80 uppercase tracking-widest">Total Members</span>
+<h3 class="font-display-lg text-display-lg">1,248</h3>
+<p class="font-label-sm text-secondary-fixed mt-2">↑ 12% from last month</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm flex flex-col justify-between">
+<span class="font-label-md text-on-surface-variant uppercase tracking-widest">Active Accounts</span>
+<h3 class="font-display-lg text-display-lg text-primary">1,152</h3>
+<div class="w-full bg-surface-container-high h-2 rounded-full mt-4">
+<div class="bg-secondary w-[92%] h-full rounded-full"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm flex flex-col justify-between">
+<span class="font-label-md text-on-surface-variant uppercase tracking-widest">Pending Verification</span>
+<h3 class="font-display-lg text-display-lg text-primary">64</h3>
+<p class="font-label-sm text-tertiary-container mt-2">Requires Admin Approval</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border-subtle shadow-sm flex flex-col justify-between">
+<span class="font-label-md text-on-surface-variant uppercase tracking-widest">Total Deposits</span>
+<h3 class="font-display-lg text-display-lg text-primary">₹ 4.2Cr</h3>
+<p class="font-label-sm text-on-surface-variant mt-2">Across all branches</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.style.transform = 'translateX(4px)';
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.style.transform = 'translateX(0px)';
+                });
+            });
+
+            // Smooth search simulation
+            const searchInput = document.querySelector('input[type="text"]');
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                tableRows.forEach(row => {
+                    const text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(term) ? '' : 'none';
+                });
+            });
+        });
+    </script>
+</body></html>

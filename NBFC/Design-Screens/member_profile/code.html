@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#1a1b1f",
+                        "on-surface-variant": "#43474f",
+                        "primary-container": "#002653",
+                        "on-tertiary-container": "#8c8e91",
+                        "primary-fixed-dim": "#abc7fd",
+                        "inverse-on-surface": "#f1f0f5",
+                        "tertiary-container": "#24272a",
+                        "surface-bright": "#faf9fd",
+                        "primary": "#00122d",
+                        "inverse-surface": "#2f3034",
+                        "on-success-container": "#001c39",
+                        "secondary-container": "#6eaeff",
+                        "tertiary-fixed-dim": "#c5c6ca",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#435f8e",
+                        "secondary-fixed-dim": "#a3c9ff",
+                        "outline-variant": "#c4c6d0",
+                        "on-secondary-fixed": "#001c39",
+                        "glass-bg": "rgba(255, 255, 255, 0.8)",
+                        "on-tertiary-fixed-variant": "#44474a",
+                        "on-secondary-container": "#004076",
+                        "secondary-fixed": "#d3e3ff",
+                        "on-primary-fixed-variant": "#2a4775",
+                        "outline": "#747780",
+                        "surface-dim": "#dad9de",
+                        "secondary": "#0060ab",
+                        "tertiary-fixed": "#e1e2e6",
+                        "surface": "#faf9fd",
+                        "surface-variant": "#e3e2e6",
+                        "tertiary": "#0f1215",
+                        "inverse-primary": "#abc7fd",
+                        "background": "#faf9fd",
+                        "success-container": "#d4e3ff",
+                        "on-primary-fixed": "#001b3e",
+                        "shadow-tint": "rgba(26, 60, 110, 0.05)",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#191c1f",
+                        "surface-container-highest": "#e3e2e6",
+                        "glass-border": "rgba(26, 60, 110, 0.05)",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f4f3f7",
+                        "on-secondary-fixed-variant": "#004883",
+                        "on-background": "#1a1b1f",
+                        "primary-fixed": "#d6e3ff",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#e9e7ec",
+                        "surface-container": "#eeedf2",
+                        "on-primary-container": "#738ec1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "touch-target-min": "48px",
+                        "stack-sm": "8px",
+                        "container-margin": "20px",
+                        "stack-lg": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "numeral-lg": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-md-mobile": ["Manrope"],
+                        "label-md-mobile": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "numeral-md": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "headline-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "numeral-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md-mobile": ["20px", {"lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md-mobile": ["11px", {"lineHeight": "14px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "numeral-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(26, 60, 110, 0.05);
+            box-shadow: 0 10px 20px -5px rgba(26, 60, 110, 0.05);
+        }
+        body {
+            background-color: #faf9fe;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .safe-bottom { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+        .safe-top { padding-top: 72px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full h-[72px] flex items-center justify-between px-container-margin z-50 bg-glass-bg backdrop-blur-md shadow-sm border-b border-glass-border">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of an Indian male banker in his 40s, Rajesh Vithal Patil, wearing a crisp white shirt. The image has soft, natural office lighting and a shallow depth of field, set against a clean, minimalist corporate office background. The style is high-fidelity, polished, and fits a premium fintech application aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi1lEYAE5RxesA1aBOJFhRca_tTgCbamj0kJX2RHaNgl-BgNPVDUU9BdZeTxVQa4wsmuUCVVNvWR4n6Ikd47PgoCIPDFtYN1Ad76k5dQt415UjOJM4zxsEc_vw5aBR9WIFTNzJVciP4EmHFFlpVEloZ9RLmc2hOFoipN6MQnX6-qKL8NG0drGTT21CBBFXAlbvBWqiiPn0scKCX8oB8f9WbKCNwdG0FVe7ribBzB8Ig3e3LyxnbMjPWvI7Jm7yn4bvn5hEkP649rhs"/>
+</div>
+<span class="font-headline-md-mobile text-headline-md-mobile font-bold text-primary">TrustPoint</span>
+</div>
+<button class="w-[48px] h-[48px] flex items-center justify-center rounded-full hover:bg-surface-variant/20 active:scale-95 transition-transform text-primary">
+<span class="material-symbols-outlined">notifications_active</span>
+</button>
+</header>
+<main class="safe-top safe-bottom px-container-margin py-stack-lg">
+<!-- Profile Section -->
+<section class="glass-card rounded-[24px] p-stack-lg flex flex-col items-center mb-stack-lg">
+<div class="relative mb-stack-md">
+<div class="w-24 h-24 rounded-full border-4 border-surface shadow-sm overflow-hidden bg-primary-container">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of Rajesh Vithal Patil, a distinguished professional with a warm smile, wearing business attire. High-resolution corporate photography with a clean, light-filled background. The image evokes reliability and trust, essential for a high-end banking interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_BK96KjD3G0jPKmLTjg9Mu-c-3Mzjw6aKwRtHtamsGfvRwqCFUYiydZueKhvpXpjafd42vhKKZ5q_LMb1_jnnqL0LyZj7mnNZpHb1G6OlwMwp3932TOEwyE71aV3NSEVS3NkPZd7PIOJrmGRvAgQAvIKVJT9qf0CWVI0ANAqOqkLcHorwYXcZEdhtpMB9sW-w9ZJ6g-jd-o9Xm3gs9CofEujZllgwPAd_7N44eGRDEtNAZY8h46j4jl6DwQcRs6HDo9QD6LvnXYnx"/>
+</div>
+<div class="absolute bottom-0 right-0 bg-secondary w-8 h-8 rounded-full border-2 border-surface flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</div>
+</div>
+<div class="text-center">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-1">Rajesh Vithal Patil</h1>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-2">राजेश विठ्ठल पाटील</p>
+<div class="flex items-center justify-center gap-2 mb-stack-sm">
+<span class="bg-success-container text-on-success-container px-3 py-1 rounded-full flex items-center gap-1 font-label-md-mobile text-label-md-mobile">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Verified
+                    </span>
+</div>
+</div>
+<div class="w-full mt-stack-md grid grid-cols-2 gap-stack-sm pt-stack-md border-t border-glass-border">
+<div class="text-center">
+<p class="font-label-md text-on-tertiary-container">Member ID</p>
+<p class="font-numeral-md text-primary">MB-88392</p>
+</div>
+<div class="text-center border-l border-glass-border">
+<p class="font-label-md text-on-tertiary-container">Branch</p>
+<p class="font-numeral-md text-primary">Main Office</p>
+</div>
+</div>
+</section>
+<!-- Document List Section -->
+<section>
+<div class="flex items-center justify-between mb-stack-md">
+<h2 class="font-headline-md-mobile text-headline-md-mobile text-primary">Documents <span class="font-normal text-on-surface-variant text-[14px] ml-1">/ दस्तऐवज</span></h2>
+<button class="text-secondary font-label-md flex items-center">
+                    View All
+                </button>
+</div>
+<div class="space-y-stack-md">
+<!-- Aadhaar Card -->
+<div class="glass-card rounded-[24px] p-4 flex items-center justify-between group active:scale-[0.98] transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">badge</span>
+</div>
+<div>
+<p class="font-headline-md-mobile text-[16px] text-primary">Aadhaar Card</p>
+<p class="text-on-surface-variant text-[12px]">आधार कार्ड • Verified</p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant text-on-surface-variant hover:bg-secondary-container/10">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+<!-- PAN Card -->
+<div class="glass-card rounded-[24px] p-4 flex items-center justify-between group active:scale-[0.98] transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<div>
+<p class="font-headline-md-mobile text-[16px] text-primary">PAN Card</p>
+<p class="text-on-surface-variant text-[12px]">पॅन कार्ड • Verified</p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant text-on-surface-variant hover:bg-secondary-container/10">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+<!-- Member Passbook -->
+<div class="glass-card rounded-[24px] p-4 flex items-center justify-between group active:scale-[0.98] transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<div>
+<p class="font-headline-md-mobile text-[16px] text-primary">Member Passbook</p>
+<p class="text-on-surface-variant text-[12px]">सभासद पासबुक • PDF</p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant text-on-surface-variant hover:bg-secondary-container/10">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="mt-stack-lg">
+<h2 class="font-headline-md-mobile text-headline-md-mobile text-primary mb-stack-md">Settings <span class="font-normal text-on-surface-variant text-[14px] ml-1">/ सेटिंग्ज</span></h2>
+<div class="glass-card rounded-[24px] overflow-hidden">
+<div class="p-4 flex items-center justify-between border-b border-glass-border active:bg-surface-variant/10 transition-colors">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">language</span>
+<p class="text-primary font-body-lg">Language / भाषा</p>
+</div>
+<span class="text-on-surface-variant font-label-md">English/मराठी</span>
+</div>
+<div class="p-4 flex items-center justify-between border-b border-glass-border active:bg-surface-variant/10 transition-colors">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">security</span>
+<p class="text-primary font-body-lg">Security Settings</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">chevron_right</span>
+</div>
+<div class="p-4 flex items-center justify-between text-error active:bg-error-container/10 transition-colors">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined">logout</span>
+<p class="font-body-lg">Logout</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe bg-glass-bg backdrop-blur-md h-[80px] shadow-sm border-t border-glass-border">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container active:scale-[0.98] transition-all duration-200">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md-mobile text-label-md-mobile mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container active:scale-[0.98] transition-all duration-200">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-md-mobile text-label-md-mobile mt-1">Loans</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container active:scale-[0.98] transition-all duration-200">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md-mobile text-label-md-mobile mt-1">Alerts</span>
+</button>
+<!-- Profile is Active -->
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-[0.98] transition-all duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md-mobile text-label-md-mobile">Profile</span>
+</button>
+</nav>
+<script>
+        // Simple micro-interaction for document cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>
