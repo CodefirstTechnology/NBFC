@@ -9,6 +9,18 @@ import {
   PagedMembersResponse,
 } from './member.models';
 
+const VALIDATION_MESSAGES: Record<string, string> = {
+  'Members.Mobile.Invalid': 'Mobile must be 10 digits and start with 6, 7, 8, or 9.',
+  'Members.PinCode.Invalid': 'PIN code must be exactly 6 digits.',
+  'Members.Aadhaar.Invalid': 'Aadhaar must be exactly 12 digits.',
+  'Members.Pan.Invalid': 'PAN must match format ABCDE1234F.',
+  'Members.DateOfBirth.Invalid': 'Date of birth must be in the past.',
+  'Members.Aadhaar.Exists': 'A member with this Aadhaar already exists.',
+  'Members.Email.Invalid': 'Enter a valid email address or leave it blank.',
+  validation_error: 'Check the highlighted fields and try again.',
+  invalid_request_body: 'Invalid request format. Check date and field formats.',
+};
+
 /**
  * Typed Members API client.
  * Replace with OpenAPI-generated client in CI when backend spec is aggregated.
@@ -62,6 +74,9 @@ export class MemberApiService {
 export function extractApiErrorMessage(error: unknown, fallback: string): string {
   if (typeof error === 'object' && error !== null && 'error' in error) {
     const problem = (error as { error?: { detail?: string; title?: string } }).error;
+    if (problem?.title && VALIDATION_MESSAGES[problem.title]) {
+      return VALIDATION_MESSAGES[problem.title];
+    }
     return problem?.detail ?? problem?.title ?? fallback;
   }
 

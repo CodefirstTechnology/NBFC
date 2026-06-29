@@ -4,6 +4,15 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '@patsanstha/auth';
 import { CreateMemberRequest, MemberApiService, extractApiErrorMessage } from '@patsanstha/members-data-access';
 import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit';
+import {
+  MEMBER_AADHAAR_PATTERN,
+  MEMBER_MOBILE_PATTERN,
+  MEMBER_PAN_PATTERN,
+  MEMBER_PIN_PATTERN,
+  normalizeDigits,
+  normalizeMobileNumber,
+  normalizePan,
+} from './member-create.validation';
 
 @Component({
   selector: 'pats-member-create-page',
@@ -17,7 +26,7 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
           Back to directory
         </a>
         <h1>Member Onboarding <span class="create-page__subtitle">/ सभासद नोंदणी</span></h1>
-        <p>Step 1 — Personal information. All fields are validated server-side.</p>
+        <p>Fields must match Indian formats: mobile (10 digits, starts 6–9), PIN (6 digits), Aadhaar (12 digits), PAN (ABCDE1234F).</p>
       </header>
 
       <form class="create-page__form" [formGroup]="form" (ngSubmit)="submit()">
@@ -25,15 +34,15 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
           <pats-form-field label="Full Name / पूर्ण नाव" formControlName="fullName" />
           <pats-form-field label="Gender / लिंग" formControlName="gender" />
           <pats-form-field label="Date of Birth" type="date" formControlName="dateOfBirth" />
-          <pats-form-field label="Mobile / मोबाईल" type="tel" formControlName="mobileNumber" />
+          <pats-form-field label="Mobile / मोबाईल" type="tel" placeholder="9876543210" formControlName="mobileNumber" />
           <pats-form-field label="Email (optional)" type="email" formControlName="email" />
           <pats-form-field label="Address Line 1" formControlName="addressLine1" />
           <pats-form-field label="Address Line 2 (optional)" formControlName="addressLine2" />
           <pats-form-field label="City / शहर" formControlName="city" />
           <pats-form-field label="State / राज्य" formControlName="state" />
-          <pats-form-field label="PIN Code" formControlName="pinCode" />
-          <pats-form-field label="Aadhaar / आधार" formControlName="aadhaar" />
-          <pats-form-field label="PAN" formControlName="pan" />
+          <pats-form-field label="PIN Code" placeholder="411001" formControlName="pinCode" />
+          <pats-form-field label="Aadhaar / आधार" placeholder="123456789012" formControlName="aadhaar" />
+          <pats-form-field label="PAN" placeholder="ABCDE1234F" formControlName="pan" />
           <pats-form-field label="Nominee Name (optional)" formControlName="nomineeName" />
           <pats-form-field label="Nominee Relation (optional)" formControlName="nomineeRelation" />
         </div>
@@ -125,15 +134,15 @@ export class MemberCreatePageComponent {
     fullName: ['', Validators.required],
     gender: ['', Validators.required],
     dateOfBirth: ['', Validators.required],
-    mobileNumber: ['', Validators.required],
+    mobileNumber: ['', [Validators.required, Validators.pattern(MEMBER_MOBILE_PATTERN)]],
     email: [''],
     addressLine1: ['', Validators.required],
     addressLine2: [''],
     city: ['', Validators.required],
     state: ['', Validators.required],
-    pinCode: ['', Validators.required],
-    aadhaar: ['', Validators.required],
-    pan: ['', Validators.required],
+    pinCode: ['', [Validators.required, Validators.pattern(MEMBER_PIN_PATTERN)]],
+    aadhaar: ['', [Validators.required, Validators.pattern(MEMBER_AADHAAR_PATTERN)]],
+    pan: ['', [Validators.required, Validators.pattern(MEMBER_PAN_PATTERN)]],
     nomineeName: [''],
     nomineeRelation: [''],
   });
@@ -152,22 +161,35 @@ export class MemberCreatePageComponent {
       this.auth.user()?.branchId?.trim() ||
       '00000000-0000-0000-0000-000000000010';
 
+    const mobileNumber = normalizeMobileNumber(values.mobileNumber);
+    const pinCode = normalizeDigits(values.pinCode);
+    const aadhaar = normalizeDigits(values.aadhaar);
+    const pan = normalizePan(values.pan);
+
+    this.form.patchValue({ mobileNumber, pinCode, aadhaar, pan });
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.errorMessage.set('Fix the highlighted fields before submitting.');
+      this.loading.set(false);
+      return;
+    }
+
     const request: CreateMemberRequest = {
       branchId,
-      fullName: values.fullName,
+      fullName: values.fullName.trim(),
       dateOfBirth: values.dateOfBirth,
-      gender: values.gender,
-      mobileNumber: values.mobileNumber,
-      email: values.email || null,
-      addressLine1: values.addressLine1,
-      addressLine2: values.addressLine2 || null,
-      city: values.city,
-      state: values.state,
-      pinCode: values.pinCode,
-      aadhaar: values.aadhaar,
-      pan: values.pan.toUpperCase(),
-      nomineeName: values.nomineeName || null,
-      nomineeRelation: values.nomineeRelation || null,
+      gender: values.gender.trim(),
+      mobileNumber,
+      email: values.email.trim() || null,
+      addressLine1: values.addressLine1.trim(),
+      addressLine2: values.addressLine2.trim() || null,
+      city: values.city.trim(),
+      state: values.state.trim(),
+      pinCode,
+      aadhaar,
+      pan,
+      nomineeName: values.nomineeName.trim() || null,
+      nomineeRelation: values.nomineeRelation.trim() || null,
     };
 
     try {

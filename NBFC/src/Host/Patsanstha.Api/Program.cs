@@ -138,6 +138,7 @@ try
     app.MapCollectionsEndpoints();
     app.MapAccountingEndpoints();
     app.MapReportingEndpoints();
+    app.MapDashboardEndpoints();
 
     app.Run();
 }

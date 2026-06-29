@@ -10,12 +10,12 @@ import {
   LoanProductType,
   extractApiErrorMessage,
 } from '@patsanstha/loans-data-access';
-import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit';
+import { PatsButtonComponent } from '@patsanstha/ui-kit';
 
 @Component({
   selector: 'pats-loan-create-page',
   standalone: true,
-  imports: [FormsModule, RouterLink, PatsButtonComponent, PatsFormFieldComponent],
+  imports: [FormsModule, RouterLink, PatsButtonComponent],
   template: `
     <section class="create-page">
       <header class="create-page__header">
@@ -50,7 +50,7 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
         <h2>Product &amp; Terms</h2>
         <div class="create-page__products">
           @for (product of products; track product.productType) {
-            <button type="button" class="create-page__product" [class.create-page__product--selected]="selectedProduct() === product.productType" (click)="selectedProduct.set(product.productType)">
+            <button type="button" class="create-page__product" [class.create-page__product--selected]="selectedProduct() === product.productType" (click)="selectProduct(product.productType)">
               <span class="material-symbols-outlined">{{ product.icon }}</span>
               <strong>{{ product.label }}</strong>
               <span>{{ product.rate }}% p.a.</span>
@@ -58,9 +58,29 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
           }
         </div>
         <div class="create-page__form">
-          <pats-form-field label="Requested Amount (₹)"><input type="number" min="1" [(ngModel)]="requestedAmount" (ngModelChange)="updatePreview()" /></pats-form-field>
-          <pats-form-field label="Tenure (Months)"><input type="number" min="1" max="360" [(ngModel)]="tenureMonths" (ngModelChange)="updatePreview()" /></pats-form-field>
-          <pats-form-field label="Purpose"><textarea rows="3" [(ngModel)]="purpose"></textarea></pats-form-field>
+          <label class="create-page__field">
+            <span class="create-page__field-label">Requested Amount (₹)</span>
+            <input
+              class="create-page__input"
+              type="number"
+              min="1"
+              [(ngModel)]="requestedAmount"
+              (ngModelChange)="updatePreview()" />
+          </label>
+          <label class="create-page__field">
+            <span class="create-page__field-label">Tenure (Months)</span>
+            <input
+              class="create-page__input"
+              type="number"
+              min="1"
+              max="360"
+              [(ngModel)]="tenureMonths"
+              (ngModelChange)="updatePreview()" />
+          </label>
+          <label class="create-page__field">
+            <span class="create-page__field-label">Purpose</span>
+            <textarea class="create-page__textarea" rows="3" [(ngModel)]="purpose"></textarea>
+          </label>
         </div>
         @if (emiPreview()) {
           <div class="create-page__preview">
@@ -91,6 +111,20 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
       .create-page__product { padding: 16px; border: 1px solid var(--pats-color-border-subtle); border-radius: var(--pats-radius-md); background: white; cursor: pointer; display: flex; flex-direction: column; gap: 4px; text-align: left; }
       .create-page__product--selected { border-color: var(--pats-color-primary); background: var(--pats-color-surface-container-low); }
       .create-page__form { display: grid; gap: 16px; }
+      .create-page__field { display: flex; flex-direction: column; gap: 8px; }
+      .create-page__field-label { font-size: 13px; font-weight: 600; color: var(--pats-color-on-surface-variant); }
+      .create-page__input,
+      .create-page__textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--pats-color-border-subtle);
+        border-radius: var(--pats-radius-md);
+        font-family: var(--pats-font-body);
+        font-size: 16px;
+        background: var(--pats-color-surface-container-lowest);
+      }
+      .create-page__input { min-height: 44px; }
+      .create-page__textarea { resize: vertical; min-height: 96px; }
       .create-page__preview { margin-top: 16px; padding: 16px; border-radius: var(--pats-radius-md); background: var(--pats-color-primary-fixed); display: flex; justify-content: space-between; }
       .create-page__actions { display: flex; justify-content: flex-end; gap: 12px; }
       .create-page__error { color: var(--pats-color-error); }
@@ -149,19 +183,31 @@ export class LoanCreatePageComponent implements OnInit {
 
   selectMember(member: MemberSummary): void {
     this.selectedMember.set(member);
+    this.memberResults.set([]);
+    this.memberSearch.set(member.fullName);
     this.errorMessage.set(null);
+  }
+
+  selectProduct(productType: LoanProductType): void {
+    this.selectedProduct.set(productType);
+    this.updatePreview();
   }
 
   async submit(): Promise<void> {
     const member = this.selectedMember();
-    if (!member || !this.purpose.trim()) {
-      this.errorMessage.set('Select a member and enter a purpose.');
+    if (!member) {
+      this.errorMessage.set('Select a member from the search results.');
+      return;
+    }
+    if (!this.purpose.trim()) {
+      this.errorMessage.set('Enter the loan purpose.');
       return;
     }
 
     this.loading.set(true);
     this.errorMessage.set(null);
-    const branchId = this.auth.user()?.branchId ?? '00000000-0000-0000-0000-000000000010';
+    const branchId =
+      this.auth.user()?.branchId?.trim() || '00000000-0000-0000-0000-000000000010';
 
     try {
       const detail = await this.loanApi.create({
