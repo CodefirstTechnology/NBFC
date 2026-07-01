@@ -57,6 +57,15 @@ export interface PagedDepositsResponse {
   totalCount: number;
 }
 
+export interface DepositSummary {
+  totalDepositsAmount: number;
+  depositsTrendPercent: number | null;
+  totalActiveAccounts: number;
+  activeSavingsCount: number;
+  fixedDepositsBalance: number;
+  dueThisMonthCount: number;
+}
+
 export interface ListDepositsParams {
   page?: number;
   pageSize?: number;
@@ -122,6 +131,103 @@ export function formatInr(amount: number): string {
     currency: 'INR',
     minimumFractionDigits: 2,
   }).format(amount);
+}
+
+export function formatCompactInr(amount: number): string {
+  if (amount >= 10_000_000) {
+    return `₹ ${(amount / 10_000_000).toFixed(2)} Crores`;
+  }
+
+  if (amount >= 100_000) {
+    return `₹ ${(amount / 100_000).toFixed(2)} Lakhs`;
+  }
+
+  return formatInr(amount);
+}
+
+export function formatTrendPercent(value: number | null | undefined): string | null {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  const sign = value > 0 ? '+' : '';
+  return `${sign}${value.toFixed(1)}%`;
+}
+
+export function formatDepositDate(value: string | null): string {
+  if (!value) {
+    return '—';
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  }).format(date);
+}
+
+export function depositProductShort(type: DepositProductType): string {
+  switch (type) {
+    case DepositProductType.Savings:
+      return 'SB';
+    case DepositProductType.RecurringDeposit:
+      return 'RD';
+    case DepositProductType.FixedDeposit:
+      return 'FD';
+    default:
+      return '—';
+  }
+}
+
+export function depositProductDotClass(type: DepositProductType): string {
+  switch (type) {
+    case DepositProductType.Savings:
+      return 'dot--savings';
+    case DepositProductType.RecurringDeposit:
+      return 'dot--recurring';
+    case DepositProductType.FixedDeposit:
+      return 'dot--fixed';
+    default:
+      return 'dot--default';
+  }
+}
+
+export function isMaturitySoon(maturityDate: string | null, withinDays = 30): boolean {
+  if (!maturityDate) {
+    return false;
+  }
+
+  const maturity = new Date(maturityDate);
+  const now = new Date();
+  const diffMs = maturity.getTime() - now.getTime();
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+  return diffDays >= 0 && diffDays <= withinDays;
+}
+
+export function isMaturityPast(maturityDate: string | null): boolean {
+  if (!maturityDate) {
+    return false;
+  }
+
+  return new Date(maturityDate).getTime() < Date.now();
+}
+
+export function estimateMaturityAmount(
+  principal: number,
+  rate: number,
+  tenureMonths: number
+): { interest: number; maturity: number } {
+  const interest = (principal * rate * tenureMonths) / (100 * 12);
+  return {
+    interest: Math.round(interest * 100) / 100,
+    maturity: Math.round((principal + interest) * 100) / 100,
+  };
 }
 
 export function depositProductLabel(type: DepositProductType): string {

@@ -40,6 +40,14 @@ public sealed record PagedDepositAccountsResponse(
     int PageSize,
     int TotalCount);
 
+public sealed record DepositSummaryDto(
+    decimal TotalDepositsAmount,
+    decimal? DepositsTrendPercent,
+    int TotalActiveAccounts,
+    int ActiveSavingsCount,
+    decimal FixedDepositsBalance,
+    int DueThisMonthCount);
+
 public sealed record ListDepositAccountsCriteria(
     int Page,
     int PageSize,

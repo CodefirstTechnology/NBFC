@@ -6,6 +6,7 @@ using Patsanstha.BuildingBlocks.Infrastructure.Api;
 using Patsanstha.BuildingBlocks.Infrastructure.Idempotency;
 using Patsanstha.Modules.Deposits.Application.DepositAccounts.CreateDepositAccount;
 using Patsanstha.Modules.Deposits.Application.DepositAccounts.GetDepositAccount;
+using Patsanstha.Modules.Deposits.Application.DepositAccounts.GetDepositSummary;
 using Patsanstha.Modules.Deposits.Application.DepositAccounts.ListDepositAccounts;
 using Patsanstha.Modules.Deposits.Application.DepositAccounts.UpdateDepositAccount;
 using Patsanstha.Modules.Deposits.Domain.Enums;
@@ -35,6 +36,14 @@ public static class DepositsEndpoints
         })
         .RequireAuthorization(Permissions.DepositsRead)
         .WithName("DepositsList");
+
+        group.MapGet("/summary", async (Guid? branchId, ISender sender) =>
+        {
+            var result = await sender.Send(new GetDepositSummaryQuery(branchId));
+            return result.ToHttpResult();
+        })
+        .RequireAuthorization(Permissions.DepositsRead)
+        .WithName("DepositsSummary");
 
         group.MapGet("/{depositAccountId:guid}", async (Guid depositAccountId, ISender sender) =>
         {
