@@ -22,7 +22,7 @@ public sealed class GetMemberQueryHandler(
         GetMemberQuery request,
         CancellationToken cancellationToken)
     {
-        var member = await memberRepository.GetByIdAsync(request.MemberId, cancellationToken);
+        var member = await memberRepository.GetByIdWithDocumentsAsync(request.MemberId, cancellationToken);
 
         if (member is null)
         {

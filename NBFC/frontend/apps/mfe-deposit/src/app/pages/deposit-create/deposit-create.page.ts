@@ -156,7 +156,8 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
         display: flex;
         flex-direction: column;
         gap: 24px;
-        max-width: 960px;
+        width: 100%;
+        max-width: var(--pats-form-max-width);
       }
 
       .create-page__back {

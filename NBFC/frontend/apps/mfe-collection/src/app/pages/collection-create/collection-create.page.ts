@@ -152,7 +152,7 @@ import { PatsButtonComponent } from '@patsanstha/ui-kit';
   `,
   styles: [
     `
-      .create-page { display: flex; flex-direction: column; gap: 24px; max-width: 960px; }
+      .create-page { display: flex; flex-direction: column; gap: 24px; width: 100%; max-width: var(--pats-form-max-width); }
       .create-page__back { display: inline-flex; align-items: center; gap: 4px; color: var(--pats-color-primary-container); font-weight: 600; font-size: 14px; }
       .create-page__header h1 { margin: 0; font-family: var(--pats-font-display); font-size: 32px; }
       .create-page__subtitle { font-size: 18px; color: var(--pats-color-text-secondary); font-weight: 500; }

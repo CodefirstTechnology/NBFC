@@ -8,6 +8,7 @@ using Patsanstha.Modules.Members.Application.Abstractions;
 using Patsanstha.Modules.Members.Infrastructure.Options;
 using Patsanstha.Modules.Members.Infrastructure.Persistence;
 using Patsanstha.Modules.Members.Infrastructure.Security;
+using Patsanstha.Modules.Members.Infrastructure.Storage;
 
 namespace Patsanstha.Modules.Members.Infrastructure;
 
@@ -18,6 +19,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.Configure<PiiEncryptionOptions>(configuration.GetSection(PiiEncryptionOptions.SectionName));
+        services.Configure<MemberDocumentStorageOptions>(configuration.GetSection(MemberDocumentStorageOptions.SectionName));
 
         services.AddDbContext<MembersDbContext>((sp, options) =>
         {
@@ -29,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IMemberNumberGenerator, MemberNumberGenerator>();
         services.AddScoped<IMemberMapper, MemberMapper>();
         services.AddSingleton<IPiiEncryptionService, AesPiiEncryptionService>();
+        services.AddSingleton<IMemberDocumentStorage, LocalMemberDocumentStorage>();
         services.AddScoped<IOutboxDbContext>(sp => sp.GetRequiredService<MembersDbContext>());
 
         return services;

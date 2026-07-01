@@ -4,9 +4,12 @@ import { firstValueFrom } from 'rxjs';
 import { AUTH_API_BASE_URL } from '@patsanstha/auth';
 import {
   CreateMemberRequest,
+  KycVerificationResult,
   ListMembersParams,
   MemberDetail,
+  MemberDocumentType,
   PagedMembersResponse,
+  SaveOnboardingDraftRequest,
 } from './member.models';
 
 const VALIDATION_MESSAGES: Record<string, string> = {
@@ -17,14 +20,11 @@ const VALIDATION_MESSAGES: Record<string, string> = {
   'Members.DateOfBirth.Invalid': 'Date of birth must be in the past.',
   'Members.Aadhaar.Exists': 'A member with this Aadhaar already exists.',
   'Members.Email.Invalid': 'Enter a valid email address or leave it blank.',
+  'Members.Submit.Invalid': 'Complete all required steps before submitting.',
   validation_error: 'Check the highlighted fields and try again.',
   invalid_request_body: 'Invalid request format. Check date and field formats.',
 };
 
-/**
- * Typed Members API client.
- * Replace with OpenAPI-generated client in CI when backend spec is aggregated.
- */
 @Injectable({ providedIn: 'root' })
 export class MemberApiService {
   private readonly http = inject(HttpClient);
@@ -63,10 +63,52 @@ export class MemberApiService {
   create(request: CreateMemberRequest): Promise<MemberDetail> {
     return firstValueFrom(
       this.http.post<MemberDetail>(this.membersUrl, request, {
-        headers: {
-          'Idempotency-Key': crypto.randomUUID(),
-        },
+        headers: { 'Idempotency-Key': crypto.randomUUID() },
       })
+    );
+  }
+
+  saveDraft(request: SaveOnboardingDraftRequest): Promise<MemberDetail> {
+    return firstValueFrom(
+      this.http.post<MemberDetail>(`${this.membersUrl}/onboarding/draft`, request)
+    );
+  }
+
+  submitOnboarding(memberId: string): Promise<MemberDetail> {
+    return firstValueFrom(
+      this.http.post<MemberDetail>(`${this.membersUrl}/${memberId}/submit`, {})
+    );
+  }
+
+  uploadDocument(
+    memberId: string,
+    documentType: MemberDocumentType,
+    file: File
+  ): Promise<MemberDetail> {
+    const formData = new FormData();
+    formData.append('documentType', String(documentType));
+    formData.append('file', file, file.name);
+
+    return firstValueFrom(
+      this.http.post<MemberDetail>(`${this.membersUrl}/${memberId}/documents`, formData)
+    );
+  }
+
+  verifyAadhaar(memberId: string, aadhaar: string): Promise<KycVerificationResult> {
+    return firstValueFrom(
+      this.http.post<KycVerificationResult>(
+        `${this.membersUrl}/${memberId}/kyc/verify-aadhaar`,
+        { aadhaar }
+      )
+    );
+  }
+
+  verifyPan(memberId: string, pan: string): Promise<KycVerificationResult> {
+    return firstValueFrom(
+      this.http.post<KycVerificationResult>(
+        `${this.membersUrl}/${memberId}/kyc/verify-pan`,
+        { pan }
+      )
     );
   }
 }
@@ -104,4 +146,8 @@ export function memberStatusVariant(
     default:
       return 'inactive';
   }
+}
+
+export function kycStatusLabel(status: number): string {
+  return ['Pending', 'Verified', 'Failed'][status] ?? 'Unknown';
 }

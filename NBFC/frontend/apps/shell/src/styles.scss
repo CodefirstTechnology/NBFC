@@ -3,6 +3,35 @@
 html,
 body {
   height: 100%;
+  margin: 0;
+}
+
+html.login-route,
+body.login-route {
+  overflow: hidden;
+  height: 100%;
+  max-height: 100dvh;
+}
+
+html:has(pats-shell-layout),
+body:has(pats-shell-layout) {
+  overflow: hidden;
+  height: 100%;
+  max-height: 100dvh;
+}
+
+pats-root:has(pats-login-page) {
+  display: block;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+pats-root:has(pats-shell-layout) {
+  display: block;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
 }
 
 a {
