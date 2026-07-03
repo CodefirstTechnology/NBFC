@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Patsanstha.BuildingBlocks.Application.Abstractions.Outbox;
 using Patsanstha.BuildingBlocks.Infrastructure;
 using Patsanstha.BuildingBlocks.Infrastructure.Persistence.Outbox;
@@ -19,7 +20,17 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.Configure<PiiEncryptionOptions>(configuration.GetSection(PiiEncryptionOptions.SectionName));
-        services.Configure<MemberDocumentStorageOptions>(configuration.GetSection(MemberDocumentStorageOptions.SectionName));
+        services.AddOptions<MemberDocumentStorageOptions>()
+            .Bind(configuration.GetSection(MemberDocumentStorageOptions.SectionName))
+            .PostConfigure<IHostEnvironment>((options, environment) =>
+            {
+                options.RootPath = Path.GetFullPath(
+                    Path.IsPathRooted(options.RootPath)
+                        ? options.RootPath
+                        : Path.Combine(environment.ContentRootPath, options.RootPath));
+
+                Directory.CreateDirectory(options.RootPath);
+            });
 
         services.AddDbContext<MembersDbContext>((sp, options) =>
         {

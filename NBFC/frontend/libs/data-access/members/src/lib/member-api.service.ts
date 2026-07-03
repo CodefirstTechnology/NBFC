@@ -94,6 +94,19 @@ export class MemberApiService {
     );
   }
 
+  resolveMemberFileUrl(fileUrl: string | null | undefined): string | null {
+    if (!fileUrl) {
+      return null;
+    }
+
+    if (fileUrl.startsWith('http://') || fileUrl.startsWith('https://')) {
+      return fileUrl;
+    }
+
+    const origin = this.apiBaseUrl.replace(/\/api\/v1\/?$/, '');
+    return `${origin}${fileUrl.startsWith('/') ? fileUrl : `/${fileUrl}`}`;
+  }
+
   verifyAadhaar(memberId: string, aadhaar: string): Promise<KycVerificationResult> {
     return firstValueFrom(
       this.http.post<KycVerificationResult>(

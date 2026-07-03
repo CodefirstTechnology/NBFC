@@ -16,6 +16,8 @@ public sealed record MemberDocumentDto(
     MemberDocumentType DocumentType,
     string FileName,
     string ContentType,
+    string StorageKey,
+    string FileUrl,
     long FileSizeBytes,
     DateTimeOffset CreatedAt);
 

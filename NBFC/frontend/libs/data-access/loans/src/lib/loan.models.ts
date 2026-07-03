@@ -80,12 +80,62 @@ export interface CreateLoanApplicationRequest {
   purpose: string;
 }
 
-export const LOAN_PRODUCTS = [
-  { productType: LoanProductType.Personal, label: 'Personal Loan', rate: 12.0, icon: 'person' },
-  { productType: LoanProductType.Gold, label: 'Gold Loan', rate: 10.5, icon: 'diamond' },
-  { productType: LoanProductType.Business, label: 'Business Loan', rate: 14.0, icon: 'storefront' },
-  { productType: LoanProductType.Vehicle, label: 'Vehicle Loan', rate: 11.5, icon: 'directions_car' },
-] as const;
+export interface LoanProductInfo {
+  productType: LoanProductType;
+  label: string;
+  labelMr: string;
+  rate: number;
+  maxTenureMonths: number;
+  icon: string;
+  iconTone: 'blue' | 'gold' | 'green';
+}
+
+export const LOAN_PRODUCTS: LoanProductInfo[] = [
+  {
+    productType: LoanProductType.Personal,
+    label: 'Personal Loan',
+    labelMr: 'व्यक्तिगत कर्ज',
+    rate: 12,
+    maxTenureMonths: 60,
+    icon: 'person',
+    iconTone: 'blue',
+  },
+  {
+    productType: LoanProductType.Gold,
+    label: 'Gold Loan',
+    labelMr: 'सोने कर्ज',
+    rate: 9,
+    maxTenureMonths: 12,
+    icon: 'savings',
+    iconTone: 'gold',
+  },
+  {
+    productType: LoanProductType.Business,
+    label: 'Business Loan',
+    labelMr: 'व्यवसाय कर्ज',
+    rate: 10.5,
+    maxTenureMonths: 84,
+    icon: 'storefront',
+    iconTone: 'blue',
+  },
+  {
+    productType: LoanProductType.Vehicle,
+    label: 'Agricultural Loan',
+    labelMr: 'कृषी कर्ज',
+    rate: 7,
+    maxTenureMonths: 36,
+    icon: 'agriculture',
+    iconTone: 'green',
+  },
+];
+
+export function getLoanProductMaxTenure(type: LoanProductType): number {
+  return LOAN_PRODUCTS.find((p) => p.productType === type)?.maxTenureMonths ?? 60;
+}
+
+export function getLoanProductInfo(type: LoanProductType): LoanProductInfo | undefined {
+  return LOAN_PRODUCTS.find((p) => p.productType === type);
+}
 
 export function formatInr(amount: number): string {
   return new Intl.NumberFormat('en-IN', {

@@ -100,6 +100,9 @@ const STEPS = [
                     }
                   </label>
                   <p class="step-form__photo-hint">JPG/PNG, Max 2MB</p>
+                  @if (photoSaved()) {
+                    <p class="step-form__photo-hint step-form__photo-hint--saved">Photo saved locally</p>
+                  }
                 </div>
 
                 <div class="step-form__fields">
@@ -183,6 +186,9 @@ const STEPS = [
                   <span>Upload Aadhaar Card / स्कॅन कॉपी</span>
                   <span class="upload-zone__hint">PDF or JPG, Max 5MB</span>
                   @if (docAadhaar()) { <span class="upload-zone__file">{{ docAadhaar()!.name }}</span> }
+                  @if (savedDocName(MemberDocumentType.AadhaarCard); as savedName) {
+                    <span class="upload-zone__saved">Saved locally: {{ savedName }}</span>
+                  }
                 </label>
               </section>
 
@@ -210,6 +216,9 @@ const STEPS = [
                   <span class="material-symbols-outlined">upload_file</span>
                   <span>Upload PAN Card / स्कॅन कॉपी</span>
                   @if (docPan()) { <span class="upload-zone__file">{{ docPan()!.name }}</span> }
+                  @if (savedDocName(MemberDocumentType.PanCard); as savedName) {
+                    <span class="upload-zone__saved">Saved locally: {{ savedName }}</span>
+                  }
                 </label>
               </section>
             </form>
@@ -657,6 +666,11 @@ const STEPS = [
         text-align: center;
       }
 
+      .step-form__photo-hint--saved {
+        color: var(--pats-color-secondary);
+        font-weight: 600;
+      }
+
       .step-form__fields,
       .step-form__contact,
       .step-form__grid {
@@ -816,8 +830,14 @@ const STEPS = [
       }
 
       .upload-zone__hint,
-      .upload-zone__file {
+      .upload-zone__file,
+      .upload-zone__saved {
         font-size: 12px;
+      }
+
+      .upload-zone__saved {
+        color: var(--pats-color-secondary);
+        font-weight: 600;
       }
 
       .upload-zone__file {
@@ -1091,6 +1111,7 @@ export class MemberCreatePageComponent {
 
   readonly steps = STEPS;
   readonly kycStatusLabel = kycStatusLabel;
+  readonly MemberDocumentType = MemberDocumentType;
   readonly currentStep = signal(1);
   readonly loading = signal(false);
   readonly savingDraft = signal(false);
@@ -1100,8 +1121,12 @@ export class MemberCreatePageComponent {
   readonly draftMemberId = signal<string | null>(null);
   readonly photoFile = signal<File | null>(null);
   readonly photoPreview = signal<string | null>(null);
+  readonly photoSaved = signal(false);
   readonly docAadhaar = signal<File | null>(null);
   readonly docPan = signal<File | null>(null);
+  readonly savedDocuments = signal<
+    Array<{ type: MemberDocumentType; fileName: string; storageKey: string; fileUrl: string }>
+  >([]);
   readonly aadhaarMessage = signal<string | null>(null);
   readonly panMessage = signal<string | null>(null);
   readonly aadhaarStatus = signal(KycVerificationStatus.Pending);
@@ -1158,17 +1183,26 @@ export class MemberCreatePageComponent {
     this.photoFile.set(file);
     this.photoPreview.set(URL.createObjectURL(file));
     this.errorMessage.set(null);
+    void this.tryUploadDocument(MemberDocumentType.Photo, file, () => this.photoFile.set(null));
   }
 
   onAadhaarDocSelected(event: Event): void {
-    this.onDocSelected(event, this.docAadhaar);
+    this.onDocSelected(event, this.docAadhaar, MemberDocumentType.AadhaarCard);
   }
 
   onPanDocSelected(event: Event): void {
-    this.onDocSelected(event, this.docPan);
+    this.onDocSelected(event, this.docPan, MemberDocumentType.PanCard);
   }
 
-  onDocSelected(event: Event, target: { set: (file: File | null) => void }): void {
+  savedDocName(type: MemberDocumentType): string | null {
+    return this.savedDocuments().find((doc) => doc.type === type)?.fileName ?? null;
+  }
+
+  onDocSelected(
+    event: Event,
+    target: { set: (file: File | null) => void },
+    documentType: MemberDocumentType
+  ): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
@@ -1178,6 +1212,7 @@ export class MemberCreatePageComponent {
     }
     target.set(file);
     this.errorMessage.set(null);
+    void this.tryUploadDocument(documentType, file, () => target.set(null));
   }
 
   async verifyAadhaar(): Promise<void> {
@@ -1350,6 +1385,46 @@ export class MemberCreatePageComponent {
     return saved.id;
   }
 
+  private async tryUploadDocument(
+    documentType: MemberDocumentType,
+    file: File,
+    clearPending: () => void
+  ): Promise<void> {
+    const step = documentType === MemberDocumentType.Photo ? 1 : 2;
+    const memberId = this.draftMemberId() ?? (await this.ensureDraft(step));
+    if (!memberId) {
+      return;
+    }
+
+    try {
+      const detail = await this.memberApi.uploadDocument(memberId, documentType, file);
+      this.applyUploadedDocuments(detail);
+      clearPending();
+    } catch (error) {
+      this.errorMessage.set(extractApiErrorMessage(error, 'Failed to save document locally.'));
+    }
+  }
+
+  private applyUploadedDocuments(detail: {
+    photoUrl: string | null;
+    documents: Array<{ documentType: MemberDocumentType; fileName: string; storageKey: string; fileUrl: string }>;
+  }): void {
+    const photoUrl = this.memberApi.resolveMemberFileUrl(detail.photoUrl);
+    if (photoUrl) {
+      this.photoPreview.set(photoUrl);
+      this.photoSaved.set(true);
+    }
+
+    this.savedDocuments.set(
+      detail.documents.map((doc) => ({
+        type: doc.documentType,
+        fileName: doc.fileName,
+        storageKey: doc.storageKey,
+        fileUrl: this.memberApi.resolveMemberFileUrl(doc.fileUrl) ?? doc.fileUrl,
+      }))
+    );
+  }
+
   private async uploadPendingDocuments(): Promise<void> {
     const memberId = this.draftMemberId();
     if (!memberId) return;
@@ -1357,22 +1432,36 @@ export class MemberCreatePageComponent {
     const uploads: Promise<unknown>[] = [];
     const photo = this.photoFile();
     if (photo) {
-      uploads.push(this.memberApi.uploadDocument(memberId, MemberDocumentType.Photo, photo));
+      uploads.push(
+        this.memberApi.uploadDocument(memberId, MemberDocumentType.Photo, photo).then((detail) => {
+          this.applyUploadedDocuments(detail);
+          this.photoFile.set(null);
+        })
+      );
     }
     const aadhaarDoc = this.docAadhaar();
     if (aadhaarDoc) {
-      uploads.push(this.memberApi.uploadDocument(memberId, MemberDocumentType.AadhaarCard, aadhaarDoc));
+      uploads.push(
+        this.memberApi
+          .uploadDocument(memberId, MemberDocumentType.AadhaarCard, aadhaarDoc)
+          .then((detail) => {
+            this.applyUploadedDocuments(detail);
+            this.docAadhaar.set(null);
+          })
+      );
     }
     const panDoc = this.docPan();
     if (panDoc) {
-      uploads.push(this.memberApi.uploadDocument(memberId, MemberDocumentType.PanCard, panDoc));
+      uploads.push(
+        this.memberApi.uploadDocument(memberId, MemberDocumentType.PanCard, panDoc).then((detail) => {
+          this.applyUploadedDocuments(detail);
+          this.docPan.set(null);
+        })
+      );
     }
 
     if (uploads.length > 0) {
       await Promise.all(uploads);
-      this.photoFile.set(null);
-      this.docAadhaar.set(null);
-      this.docPan.set(null);
     }
   }
 

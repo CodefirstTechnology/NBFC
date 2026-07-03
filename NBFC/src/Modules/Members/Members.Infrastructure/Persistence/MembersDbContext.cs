@@ -271,6 +271,8 @@ public sealed class MemberMapper(
                     d.DocumentType,
                     d.FileName,
                     d.ContentType,
+                    d.StorageKey,
+                    documentStorage.GetPublicUrl(d.StorageKey),
                     d.FileSizeBytes,
                     d.CreatedAt))
                 .ToList(),

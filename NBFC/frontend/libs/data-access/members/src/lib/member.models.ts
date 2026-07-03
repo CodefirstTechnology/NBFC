@@ -37,6 +37,8 @@ export interface MemberDocument {
   documentType: MemberDocumentType;
   fileName: string;
   contentType: string;
+  storageKey: string;
+  fileUrl: string;
   fileSizeBytes: number;
   createdAt: string;
 }
