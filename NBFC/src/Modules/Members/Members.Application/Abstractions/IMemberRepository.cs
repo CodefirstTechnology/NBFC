@@ -1,4 +1,5 @@
 using Patsanstha.Modules.Members.Domain.Entities;
+using Patsanstha.Modules.Members.Domain.Enums;
 
 namespace Patsanstha.Modules.Members.Application.Abstractions;
 
@@ -7,6 +8,8 @@ public interface IMemberRepository
     Task AddAsync(Member member, CancellationToken cancellationToken = default);
 
     Task<Member?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    Task<Member?> GetByIdWithDocumentsAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByAadhaarHashAsync(string aadhaarHash, CancellationToken cancellationToken = default);
 
@@ -33,6 +36,17 @@ public interface IPiiEncryptionService
     string MaskAadhaar(string plainText);
 
     string MaskPan(string plainText);
+}
+
+public interface IMemberDocumentStorage
+{
+    Task<string> SaveAsync(
+        Guid memberId,
+        string fileName,
+        Stream content,
+        CancellationToken cancellationToken = default);
+
+    string GetPublicUrl(string storageKey);
 }
 
 public interface IMemberMapper

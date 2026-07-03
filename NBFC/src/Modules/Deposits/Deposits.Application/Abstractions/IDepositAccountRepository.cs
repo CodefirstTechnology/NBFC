@@ -13,6 +13,10 @@ public interface IDepositAccountRepository
         ListDepositAccountsCriteria criteria,
         CancellationToken cancellationToken = default);
 
+    Task<DepositSummaryDto> GetSummaryAsync(
+        Guid? branchId = null,
+        CancellationToken cancellationToken = default);
+
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }
 

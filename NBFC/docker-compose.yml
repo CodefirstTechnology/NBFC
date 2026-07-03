@@ -1,28 +1,30 @@
-x-db-connection: &db-connection Host=postgres;Port=5432;Database=patsanstha;Username=postgres;Password=${POSTGRES_PASSWORD:-pravin@45}
+x-db-connection: &db-connection Host=postgres;Port=5432;Database=${POSTGRES_DB:-patsanstha};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
 
 services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pravin@45}
-      POSTGRES_DB: patsanstha
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-patsanstha}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_BIND:-127.0.0.1}:5432:5432"
     volumes:
       - patsanstha_pg:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d patsanstha"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-patsanstha}"]
       interval: 5s
       timeout: 5s
       retries: 10
+    restart: unless-stopped
 
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "${REDIS_BIND:-127.0.0.1}:6379:6379"
     volumes:
       - patsanstha_redis:/data
+    restart: unless-stopped
 
   api:
     build:
@@ -30,14 +32,14 @@ services:
       dockerfile: Dockerfile
     image: patsanstha/api:latest
     ports:
-      - "5080:8080"
+      - "${API_PORT:-5080}:8080"
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_started
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
       ASPNETCORE_URLS: http://+:8080
       ConnectionStrings__Identity: *db-connection
       ConnectionStrings__Members: *db-connection
@@ -49,6 +51,23 @@ services:
       ConnectionStrings__Accounting: *db-connection
       ConnectionStrings__Hangfire: *db-connection
       ConnectionStrings__Redis: redis:6379
+      Jwt__Issuer: ${JWT__Issuer:-Patsanstha}
+      Jwt__Audience: ${JWT__Audience:-Patsanstha.Api}
+      Jwt__SigningKey: ${JWT__SigningKey:?Set JWT__SigningKey in .env}
+      Jwt__AccessTokenMinutes: ${JWT__AccessTokenMinutes:-15}
+      Jwt__RefreshTokenDays: ${JWT__RefreshTokenDays:-7}
+      PiiEncryption__Key: ${PiiEncryption__Key:?Set PiiEncryption__Key in .env}
+      IdentitySeed__DefaultTenantId: ${IdentitySeed__DefaultTenantId:-00000000-0000-0000-0000-000000000001}
+      IdentitySeed__AdminEmail: ${IdentitySeed__AdminEmail:-admin@patsanstha.local}
+      IdentitySeed__AdminPassword: ${IdentitySeed__AdminPassword:?Set IdentitySeed__AdminPassword in .env}
+      IdentitySeed__AdminFullName: ${IdentitySeed__AdminFullName:-System Administrator}
+      Startup__AutoMigrate: ${STARTUP_AUTO_MIGRATE:-true}
+      Startup__SeedIdentity: ${STARTUP_SEED_IDENTITY:-true}
+      MemberDocuments__RootPath: uploads/members
+      MemberDocuments__PublicBasePath: /api/v1/members/files
+    volumes:
+      - patsanstha_uploads:/app/uploads
+    restart: unless-stopped
 
   gateway:
     build:
@@ -56,12 +75,14 @@ services:
       dockerfile: Dockerfile.gateway
     image: patsanstha/gateway:latest
     ports:
-      - "5000:8080"
+      - "${GATEWAY_PORT:-5000}:8080"
     depends_on:
       - api
     environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
       ASPNETCORE_URLS: http://+:8080
-      ReverseProxy__Clusters__api-cluster__Destinations__api-primary__Address: http://api:8080/
+      ReverseProxy__Clusters__api-cluster__Destinations__api-primary__Address: ${GATEWAY_API_ADDRESS:-http://api:8080/}
+    restart: unless-stopped
 
   shell:
     build:
@@ -70,7 +91,8 @@ services:
         APP_NAME: shell
     image: patsanstha/shell:latest
     ports:
-      - "4200:80"
+      - "${SHELL_PORT:-4200}:80"
+    restart: unless-stopped
 
   mfe-member:
     build:
@@ -80,6 +102,7 @@ services:
     image: patsanstha/mfe-member:latest
     ports:
       - "4201:80"
+    restart: unless-stopped
 
   mfe-deposit:
     build:
@@ -89,6 +112,7 @@ services:
     image: patsanstha/mfe-deposit:latest
     ports:
       - "4202:80"
+    restart: unless-stopped
 
   mfe-loan:
     build:
@@ -98,6 +122,7 @@ services:
     image: patsanstha/mfe-loan:latest
     ports:
       - "4203:80"
+    restart: unless-stopped
 
   mfe-collection:
     build:
@@ -107,6 +132,7 @@ services:
     image: patsanstha/mfe-collection:latest
     ports:
       - "4204:80"
+    restart: unless-stopped
 
   mfe-recovery:
     build:
@@ -116,6 +142,7 @@ services:
     image: patsanstha/mfe-recovery:latest
     ports:
       - "4205:80"
+    restart: unless-stopped
 
   mfe-accounting:
     build:
@@ -125,6 +152,7 @@ services:
     image: patsanstha/mfe-accounting:latest
     ports:
       - "4206:80"
+    restart: unless-stopped
 
   mfe-reports:
     build:
@@ -134,6 +162,7 @@ services:
     image: patsanstha/mfe-reports:latest
     ports:
       - "4207:80"
+    restart: unless-stopped
 
   mfe-admin:
     build:
@@ -143,7 +172,9 @@ services:
     image: patsanstha/mfe-admin:latest
     ports:
       - "4208:80"
+    restart: unless-stopped
 
 volumes:
   patsanstha_pg:
   patsanstha_redis:
+  patsanstha_uploads:

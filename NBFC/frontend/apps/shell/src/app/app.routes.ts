@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { loadRemoteModule } from '@angular-architects/native-federation';
 import { authGuard, guestGuard } from '@patsanstha/auth';
+import { loadFederatedRoutes } from '../federation-remotes';
 import { ShellLayoutComponent } from './layout/shell-layout.component';
 
 export const appRoutes: Routes = [
@@ -26,43 +26,35 @@ export const appRoutes: Routes = [
       },
       {
         path: 'members',
-        loadChildren: () =>
-          loadRemoteModule('mfe-member', './Routes').then((m) => m.memberRoutes),
+        loadChildren: () => loadFederatedRoutes('mfe-member', 'memberRoutes'),
       },
       {
         path: 'deposits',
-        loadChildren: () =>
-          loadRemoteModule('mfe-deposit', './Routes').then((m) => m.depositRoutes),
+        loadChildren: () => loadFederatedRoutes('mfe-deposit', 'depositRoutes'),
       },
       {
         path: 'loans',
-        loadChildren: () =>
-          loadRemoteModule('mfe-loan', './Routes').then((m) => m.loanRoutes),
+        loadChildren: () => loadFederatedRoutes('mfe-loan', 'loanRoutes'),
       },
       {
         path: 'collections',
-        loadChildren: () =>
-          loadRemoteModule('mfe-collection', './Routes').then((m) => m.collectionRoutes),
+        loadChildren: () => loadFederatedRoutes('mfe-collection', 'collectionRoutes'),
       },
       {
         path: 'recovery',
-        loadChildren: () =>
-          loadRemoteModule('mfe-recovery', './Routes').then((m) => m.recoveryRoutes),
+        loadChildren: () => loadFederatedRoutes('mfe-recovery', 'recoveryRoutes'),
       },
       {
         path: 'accounting',
-        loadChildren: () =>
-          loadRemoteModule('mfe-accounting', './Routes').then((m) => m.accountingRoutes),
+        loadChildren: () => loadFederatedRoutes('mfe-accounting', 'accountingRoutes'),
       },
       {
         path: 'reports',
-        loadChildren: () =>
-          loadRemoteModule('mfe-reports', './Routes').then((m) => m.reportsRoutes),
+        loadChildren: () => loadFederatedRoutes('mfe-reports', 'reportsRoutes'),
       },
       {
         path: 'admin',
-        loadChildren: () =>
-          loadRemoteModule('mfe-admin', './Routes').then((m) => m.adminRoutes),
+        loadChildren: () => loadFederatedRoutes('mfe-admin', 'adminRoutes'),
       },
     ],
   },

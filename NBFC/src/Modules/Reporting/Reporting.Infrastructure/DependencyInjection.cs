@@ -23,6 +23,7 @@ public static class DependencyInjection
 
         services.AddScoped<IReportSnapshotRepository, ReportSnapshotRepository>();
         services.AddScoped<IReportSnapshotMapper, ReportSnapshotMapper>();
+        services.AddScoped<IDashboardReadStore, DashboardReadStore>();
         services.AddScoped<IOutboxDbContext>(sp => sp.GetRequiredService<ReportingDbContext>());
 
         return services;

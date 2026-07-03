@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Patsanstha.BuildingBlocks.Infrastructure.Hosting;
 using Patsanstha.Modules.Accounting.Infrastructure.Persistence;
 
 namespace Patsanstha.Modules.Accounting.Infrastructure.Hosting;
@@ -9,7 +10,7 @@ public static class AccountingHostExtensions
 {
     public static async Task MigrateAccountingSchemaAsync(this IHost host)
     {
-        if (!host.Services.GetRequiredService<IHostEnvironment>().IsDevelopment())
+        if (!StartupTaskPolicy.ShouldRun(host, "Startup:AutoMigrate"))
         {
             return;
         }

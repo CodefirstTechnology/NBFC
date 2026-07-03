@@ -118,6 +118,71 @@ public sealed class DepositAccountRepository(DepositsDbContext dbContext) : IDep
         return (items, totalCount);
     }
 
+    public async Task<DepositSummaryDto> GetSummaryAsync(
+        Guid? branchId = null,
+        CancellationToken cancellationToken = default)
+    {
+        var activeQuery = dbContext.DepositAccounts.AsNoTracking()
+            .Where(a => a.Status == DepositAccountStatus.Active);
+
+        if (branchId.HasValue)
+        {
+            activeQuery = activeQuery.Where(a => a.BranchId == branchId.Value);
+        }
+
+        var now = DateTimeOffset.UtcNow;
+        var monthStart = new DateTimeOffset(now.Year, now.Month, 1, 0, 0, 0, TimeSpan.Zero);
+        var previousMonthStart = monthStart.AddMonths(-1);
+        var monthStartDate = DateOnly.FromDateTime(monthStart.UtcDateTime);
+        var monthEndDate = DateOnly.FromDateTime(monthStart.AddMonths(1).AddDays(-1).UtcDateTime);
+
+        var totalDepositsAmount = await activeQuery.SumAsync(a => a.CurrentBalance, cancellationToken);
+        var totalActiveAccounts = await activeQuery.CountAsync(cancellationToken);
+        var activeSavingsCount = await activeQuery.CountAsync(
+            a => a.ProductType == DepositProductType.Savings,
+            cancellationToken);
+        var fixedDepositsBalance = await activeQuery
+            .Where(a => a.ProductType == DepositProductType.FixedDeposit)
+            .SumAsync(a => a.CurrentBalance, cancellationToken);
+        var dueThisMonthCount = await activeQuery.CountAsync(
+            a => a.ProductType == DepositProductType.FixedDeposit
+                 && a.MaturityDate.HasValue
+                 && a.MaturityDate.Value >= monthStartDate
+                 && a.MaturityDate.Value <= monthEndDate,
+            cancellationToken);
+
+        var trendQuery = dbContext.DepositAccounts.AsNoTracking();
+        if (branchId.HasValue)
+        {
+            trendQuery = trendQuery.Where(a => a.BranchId == branchId.Value);
+        }
+
+        var depositsThisMonth = await trendQuery
+            .Where(a => a.CreatedAt >= monthStart)
+            .SumAsync(a => a.PrincipalAmount, cancellationToken);
+        var depositsLastMonth = await trendQuery
+            .Where(a => a.CreatedAt >= previousMonthStart && a.CreatedAt < monthStart)
+            .SumAsync(a => a.PrincipalAmount, cancellationToken);
+
+        return new DepositSummaryDto(
+            totalDepositsAmount,
+            CalcTrendPercent(depositsThisMonth, depositsLastMonth),
+            totalActiveAccounts,
+            activeSavingsCount,
+            fixedDepositsBalance,
+            dueThisMonthCount);
+    }
+
+    private static decimal? CalcTrendPercent(decimal current, decimal previous)
+    {
+        if (previous == 0m)
+        {
+            return current > 0m ? 100m : null;
+        }
+
+        return Math.Round((current - previous) / previous * 100m, 1);
+    }
+
     public Task SaveChangesAsync(CancellationToken cancellationToken = default) =>
         dbContext.SaveChangesAsync(cancellationToken);
 }

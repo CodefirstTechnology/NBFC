@@ -51,7 +51,8 @@
   --pats-font-body: 'Inter', sans-serif;
 
   --pats-sidebar-width: 256px;
-  --pats-max-content-width: 1440px;
+  --pats-max-content-width: 100%;
+  --pats-form-max-width: 100%;
 }
 
 *,

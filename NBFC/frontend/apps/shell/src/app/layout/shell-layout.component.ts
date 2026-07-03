@@ -60,10 +60,18 @@ interface NavItem {
   `,
   styles: [
     `
+      :host {
+        display: block;
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+      }
+
       .shell {
         display: grid;
         grid-template-columns: var(--pats-sidebar-width) 1fr;
-        min-height: 100vh;
+        height: 100%;
+        overflow: hidden;
         background: var(--pats-color-background);
       }
 
@@ -71,7 +79,9 @@ interface NavItem {
         display: flex;
         flex-direction: column;
         gap: 16px;
+        height: 100%;
         padding: 24px 16px;
+        overflow: hidden;
         background: var(--pats-color-surface);
         border-right: 1px solid var(--pats-color-border-subtle);
       }
@@ -80,6 +90,7 @@ interface NavItem {
         display: flex;
         align-items: center;
         gap: 12px;
+        flex-shrink: 0;
         padding: 0 8px 16px;
       }
 
@@ -111,6 +122,10 @@ interface NavItem {
         display: flex;
         flex-direction: column;
         gap: 4px;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
       }
 
       .shell__nav-link {
@@ -138,7 +153,10 @@ interface NavItem {
       .shell__main {
         display: flex;
         flex-direction: column;
+        height: 100%;
         min-width: 0;
+        min-height: 0;
+        overflow: hidden;
       }
 
       .shell__header {
@@ -146,6 +164,7 @@ interface NavItem {
         align-items: center;
         justify-content: space-between;
         gap: 16px;
+        flex-shrink: 0;
         padding: 24px 32px;
         background: var(--pats-color-surface-container-lowest);
         border-bottom: 1px solid var(--pats-color-border-subtle);
@@ -185,9 +204,12 @@ interface NavItem {
 
       .shell__content {
         flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
         padding: 32px;
-        max-width: var(--pats-max-content-width);
         width: 100%;
+        box-sizing: border-box;
       }
     `,
   ],

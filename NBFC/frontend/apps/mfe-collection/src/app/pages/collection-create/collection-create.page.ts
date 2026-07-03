@@ -16,12 +16,12 @@ import {
   extractApiErrorMessage,
   formatInr,
 } from '@patsanstha/collections-data-access';
-import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit';
+import { PatsButtonComponent } from '@patsanstha/ui-kit';
 
 @Component({
   selector: 'pats-collection-create-page',
   standalone: true,
-  imports: [FormsModule, RouterLink, PatsButtonComponent, PatsFormFieldComponent],
+  imports: [FormsModule, RouterLink, PatsButtonComponent],
   template: `
     <section class="create-page">
       <header class="create-page__header">
@@ -79,7 +79,12 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
                     [class.create-page__loan--selected]="selectedLoan()?.id === loan.id"
                     (click)="selectLoan(loan)">
                     <strong>{{ loan.loanNumber }}</strong>
-                    <span>{{ formatInr(loan.requestedAmount) }} · Disbursed</span>
+                    <span>
+                      {{ formatInr(loan.requestedAmount) }} · Disbursed
+                      @if (loan.emiAmount != null) {
+                        · EMI {{ formatInr(loan.emiAmount) }}
+                      }
+                    </span>
                   </button>
                 </li>
               }
@@ -104,17 +109,39 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
             }
           </div>
           <div class="create-page__form">
-            <pats-form-field label="Amount (₹)">
-              <input type="number" min="0.01" step="0.01" [(ngModel)]="amount" />
-            </pats-form-field>
-            <pats-form-field label="Reference Number">
-              <input type="text" [(ngModel)]="referenceNumber" placeholder="Cheque / UPI / txn ref (optional)" />
-            </pats-form-field>
-            <pats-form-field label="Collected On">
-              <input type="date" [(ngModel)]="collectedOn" />
-            </pats-form-field>
+            <label class="create-page__field">
+              <span class="create-page__field-label">Amount (₹)</span>
+              @if (selectedLoan()?.emiAmount != null) {
+                <span class="create-page__field-hint">
+                  Monthly EMI: {{ formatInr(selectedLoan()!.emiAmount!) }}
+                </span>
+              }
+              <input
+                class="create-page__input"
+                type="number"
+                min="0.01"
+                step="0.01"
+                [(ngModel)]="amount"
+                placeholder="Enter repayment amount" />
+            </label>
+            <label class="create-page__field">
+              <span class="create-page__field-label">Reference Number</span>
+              <input
+                class="create-page__input"
+                type="text"
+                [(ngModel)]="referenceNumber"
+                placeholder="Cheque / UPI / txn ref (optional for cash)" />
+            </label>
+            <label class="create-page__field">
+              <span class="create-page__field-label">Collected On</span>
+              <input class="create-page__input" type="date" [(ngModel)]="collectedOn" />
+            </label>
           </div>
         </article>
+      }
+
+      @if (!canSubmit() && selectedLoan()) {
+        <p class="create-page__hint">Enter an amount greater than zero and a collection date to enable Record Collection.</p>
       }
 
       <div class="create-page__actions">
@@ -125,7 +152,7 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
   `,
   styles: [
     `
-      .create-page { display: flex; flex-direction: column; gap: 24px; max-width: 960px; }
+      .create-page { display: flex; flex-direction: column; gap: 24px; width: 100%; max-width: var(--pats-form-max-width); }
       .create-page__back { display: inline-flex; align-items: center; gap: 4px; color: var(--pats-color-primary-container); font-weight: 600; font-size: 14px; }
       .create-page__header h1 { margin: 0; font-family: var(--pats-font-display); font-size: 32px; }
       .create-page__subtitle { font-size: 18px; color: var(--pats-color-text-secondary); font-weight: 500; }
@@ -140,8 +167,13 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
       .create-page__mode { padding: 12px; border: 1px solid var(--pats-color-border-subtle); border-radius: var(--pats-radius-md); background: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 13px; }
       .create-page__mode--selected { border-color: var(--pats-color-primary); background: var(--pats-color-surface-container-low); }
       .create-page__form { display: grid; gap: 16px; }
+      .create-page__field { display: flex; flex-direction: column; gap: 8px; }
+      .create-page__field-label { font-size: 13px; font-weight: 600; color: var(--pats-color-text-secondary); }
+      .create-page__field-hint { font-size: 12px; color: var(--pats-color-text-secondary); }
+      .create-page__input { width: 100%; min-height: 44px; padding: 0 16px; border: 1px solid var(--pats-color-border-subtle); border-radius: var(--pats-radius-md); }
       .create-page__actions { display: flex; justify-content: flex-end; gap: 12px; }
       .create-page__error { color: var(--pats-color-error); }
+      .create-page__hint { margin: 0; font-size: 13px; color: var(--pats-color-text-secondary); }
     `,
   ],
 })
@@ -193,10 +225,20 @@ export class CollectionCreatePageComponent {
   selectLoan(loan: LoanApplicationSummary): void {
     this.selectedLoan.set(loan);
     this.errorMessage.set(null);
+    if (loan.emiAmount != null && loan.emiAmount > 0) {
+      this.amount = loan.emiAmount;
+    }
   }
 
   canSubmit(): boolean {
-    return !!this.selectedMember() && !!this.selectedLoan() && this.amount > 0 && !!this.collectedOn;
+    const parsedAmount = Number(this.amount);
+    return (
+      !!this.selectedMember() &&
+      !!this.selectedLoan() &&
+      Number.isFinite(parsedAmount) &&
+      parsedAmount > 0 &&
+      !!this.collectedOn
+    );
   }
 
   async submit(): Promise<void> {
@@ -219,7 +261,7 @@ export class CollectionCreatePageComponent {
         loanApplicationId: loan.id,
         loanNumber: loan.loanNumber,
         branchId,
-        amount: this.amount,
+        amount: Number(this.amount),
         paymentMode: this.selectedPaymentMode(),
         referenceNumber: this.referenceNumber.trim() || null,
         collectedOn: this.collectedOn,

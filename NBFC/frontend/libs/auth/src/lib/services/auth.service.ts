@@ -16,6 +16,8 @@ export class AuthService {
   private readonly tokenStorage = inject(TokenStorageService);
   private readonly apiBaseUrl = inject(AUTH_API_BASE_URL);
 
+  private refreshInFlight: Promise<boolean> | null = null;
+
   private readonly userSignal = signal<AuthUser | null>(this.tokenStorage.getUser());
 
   readonly user = this.userSignal.asReadonly();
@@ -42,6 +44,19 @@ export class AuthService {
   }
 
   async refreshSession(): Promise<boolean> {
+    if (this.refreshInFlight) {
+      return this.refreshInFlight;
+    }
+
+    this.refreshInFlight = this.refreshSessionInternal();
+    try {
+      return await this.refreshInFlight;
+    } finally {
+      this.refreshInFlight = null;
+    }
+  }
+
+  private async refreshSessionInternal(): Promise<boolean> {
     const refreshToken = this.tokenStorage.getRefreshToken();
     if (!refreshToken) {
       return false;

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Patsanstha.BuildingBlocks.Infrastructure.Hosting;
 using Patsanstha.Modules.Collections.Infrastructure.Persistence;
 
 namespace Patsanstha.Modules.Collections.Infrastructure.Hosting;
@@ -9,7 +10,7 @@ public static class CollectionsHostExtensions
 {
     public static async Task MigrateCollectionsSchemaAsync(this IHost host)
     {
-        if (!host.Services.GetRequiredService<IHostEnvironment>().IsDevelopment())
+        if (!StartupTaskPolicy.ShouldRun(host, "Startup:AutoMigrate"))
         {
             return;
         }

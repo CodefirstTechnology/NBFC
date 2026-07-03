@@ -40,5 +40,8 @@ NBFC/
 appsettings.Local.json
 **/appsettings.Local.json
 
+# Member document uploads (stored locally at runtime)
+uploads/
+
 # Docker local overrides
 docker-compose.override.yml

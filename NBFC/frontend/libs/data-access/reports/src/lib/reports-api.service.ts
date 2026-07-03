@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { AUTH_API_BASE_URL } from '@patsanstha/auth';
 import {
+  ExecutiveDashboard,
   GenerateReportRequest,
   ListReportSnapshotsParams,
   PagedReportSnapshotsResponse,
@@ -16,6 +17,19 @@ export class ReportsApiService {
 
   private get reportsUrl(): string {
     return `${this.apiBaseUrl}/reports`;
+  }
+
+  private get dashboardUrl(): string {
+    return `${this.apiBaseUrl}/dashboard`;
+  }
+
+  getExecutiveDashboard(branchId?: string): Promise<ExecutiveDashboard> {
+    let params = new HttpParams();
+    if (branchId) {
+      params = params.set('branchId', branchId);
+    }
+
+    return firstValueFrom(this.http.get<ExecutiveDashboard>(`${this.dashboardUrl}/executive`, { params }));
   }
 
   list(params: ListReportSnapshotsParams = {}): Promise<PagedReportSnapshotsResponse> {

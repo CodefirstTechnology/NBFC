@@ -5,6 +5,7 @@ import { AUTH_API_BASE_URL } from '@patsanstha/auth';
 import {
   CreateDepositAccountRequest,
   DepositAccountDetail,
+  DepositSummary,
   ListDepositsParams,
   PagedDepositsResponse,
   UpdateDepositAccountRequest,
@@ -46,6 +47,17 @@ export class DepositApiService {
 
     return firstValueFrom(
       this.http.get<PagedDepositsResponse>(this.depositsUrl, { params: httpParams })
+    );
+  }
+
+  getSummary(branchId?: string): Promise<DepositSummary> {
+    let params = new HttpParams();
+    if (branchId) {
+      params = params.set('branchId', branchId);
+    }
+
+    return firstValueFrom(
+      this.http.get<DepositSummary>(`${this.depositsUrl}/summary`, { params })
     );
   }
 

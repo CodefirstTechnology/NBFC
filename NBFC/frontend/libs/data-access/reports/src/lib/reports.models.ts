@@ -91,3 +91,118 @@ export function extractApiErrorMessage(error: unknown, fallback: string): string
 
   return fallback;
 }
+
+export interface DashboardKpi {
+  totalMembers: number;
+  newMembersThisWeek: number;
+  membersTrendPercent: number | null;
+  activeLoansAmount: number;
+  activeLoansCount: number;
+  activeLoansTrendPercent: number | null;
+  totalDepositsAmount: number;
+  depositsTrendPercent: number | null;
+  recoveryRatePercent: number;
+  recoveryTargetPercent: number;
+}
+
+export interface MonthlyPerformancePoint {
+  monthLabel: string;
+  month: number;
+  year: number;
+  targetCollection: number;
+  actualRecovery: number;
+}
+
+export interface RecentActivityItem {
+  id: string;
+  activityType: string;
+  memberName: string;
+  referenceNumber: string;
+  amount: number | null;
+  status: string;
+  occurredAt: string;
+}
+
+export interface SystemStatus {
+  isOnline: boolean;
+  message: string;
+  lastProcessedAt: string | null;
+}
+
+export interface ExecutiveDashboard {
+  generatedAt: string;
+  branchName: string;
+  kpis: DashboardKpi;
+  monthlyPerformance: MonthlyPerformancePoint[];
+  recentActivity: RecentActivityItem[];
+  systemStatus: SystemStatus;
+}
+
+export function formatCompactInr(amount: number): string {
+  if (amount >= 10_000_000) {
+    return `₹ ${(amount / 10_000_000).toFixed(2)} Cr`;
+  }
+
+  if (amount >= 100_000) {
+    return `₹ ${(amount / 100_000).toFixed(2)} L`;
+  }
+
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
+export function formatCount(value: number): string {
+  return new Intl.NumberFormat('en-IN').format(value);
+}
+
+export function formatTrendPercent(value: number | null): string | null {
+  if (value === null || Number.isNaN(value)) {
+    return null;
+  }
+
+  const prefix = value > 0 ? '+' : '';
+  return `${prefix}${value.toFixed(1)}%`;
+}
+
+export function formatRelativeTime(isoDate: string): string {
+  const date = new Date(isoDate);
+  const diffMs = Date.now() - date.getTime();
+  const minutes = Math.floor(diffMs / 60_000);
+
+  if (minutes < 1) return 'Just now';
+  if (minutes < 60) return `${minutes} min${minutes === 1 ? '' : 's'} ago`;
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+
+  const days = Math.floor(hours / 24);
+  return `${days} day${days === 1 ? '' : 's'} ago`;
+}
+
+export function memberInitials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? '')
+    .join('');
+}
+
+export function activityStatusVariant(status: string): 'active' | 'pending' | 'error' | 'inactive' {
+  switch (status) {
+    case 'Completed':
+      return 'active';
+    case 'Pending Verification':
+    case 'In Progress':
+      return 'pending';
+    case 'Rejected':
+    case 'Reversed':
+      return 'error';
+    default:
+      return 'inactive';
+  }
+}
