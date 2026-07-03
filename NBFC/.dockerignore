@@ -18,9 +18,6 @@ Thumbs.db
 **/TestResults
 **/*.nupkg
 
-# Frontend (built separately via frontend/Dockerfile)
-frontend/
-
 # Design assets and local tools (not needed in API/gateway images)
 Design-Screens/
 tools/
