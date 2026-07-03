@@ -261,20 +261,103 @@ npm run docker:build
 ### Run full stack
 
 ```bash
+# Local quick start (uses defaults in docker-compose if no .env)
 docker compose up -d
 ```
+
+For **VPS / production**, copy `.env.example` → `.env` first (see [VPS deployment](#vps-deployment) below).
 
 Then open:
 
 - Shell: http://localhost:4200
-- API / Swagger: http://localhost:5080/swagger
+- API / Swagger: http://localhost:5080/swagger (Development only)
 - Gateway: http://localhost:5000
 
-Default admin: `admin@patsanstha.local` / `ChangeMe@123`
+Default admin (when using dev defaults): `admin@patsanstha.local` / `ChangeMe@123`
 
 Frontend apps call the API at `http://localhost:5080` (hardcoded in app config). MFE remotes load from `localhost:4201`–`4208`.
 
-First API startup applies migrations and seeds data (Development mode).
+On startup, the API applies migrations and seeds identity data when `Startup:AutoMigrate` / `Startup:SeedIdentity` are enabled (default `true` in Docker via `.env`).
+
+---
+
+## VPS deployment
+
+Deploy the full stack on a Linux VPS with Docker Compose.
+
+### 1. Clone and configure secrets
+
+```bash
+git clone <your-repo-url>
+cd NBFC
+cp .env.example .env
+nano .env   # set POSTGRES_PASSWORD, JWT__SigningKey, PiiEncryption__Key, admin password
+```
+
+**Required variables in `.env`:**
+
+| Variable | Purpose |
+|----------|---------|
+| `POSTGRES_PASSWORD` | Database password |
+| `JWT__SigningKey` | JWT signing secret (min 32 chars) |
+| `PiiEncryption__Key` | Aadhaar/PAN encryption key (min 32 chars) |
+| `IdentitySeed__AdminPassword` | First admin login password |
+
+Never commit `.env` — it is listed in `.gitignore`.
+
+### 2. Build and start
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+### 3. Verify
+
+```bash
+curl http://localhost:5080/health/live
+curl http://localhost:5000/health/live
+```
+
+### 4. Put nginx in front (recommended)
+
+Expose only **HTTPS (443)** publicly. Proxy to Gateway (`:5000`) for API and to Shell (`:4200`) for the UI:
+
+```nginx
+# Example — adjust server_name and SSL paths
+server {
+    listen 443 ssl;
+    server_name yourdomain.com;
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:5000;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:4200;
+    }
+}
+```
+
+Postgres (`5432`) and Redis (`6379`) bind to `127.0.0.1` by default — not exposed to the internet.
+
+### 5. Startup flags
+
+| `.env` variable | Default | Purpose |
+|-----------------|---------|---------|
+| `STARTUP_AUTO_MIGRATE` | `true` | Apply EF migrations on API start |
+| `STARTUP_SEED_IDENTITY` | `true` | Seed roles + admin user (idempotent) |
+| `ASPNETCORE_ENVIRONMENT` | `Production` | Disables Swagger/Hangfire dashboard |
+
+Set `STARTUP_SEED_IDENTITY=false` after first deploy if you prefer.
+
+### 6. Persistent data
+
+Docker volumes:
+
+- `patsanstha_pg` — PostgreSQL data
+- `patsanstha_redis` — Redis data
+- `patsanstha_uploads` — Member document uploads
 
 ---
 
@@ -362,6 +445,7 @@ npm run start:all      # shell + all MFEs (parallel)
 
 | File | Purpose |
 |------|---------|
+| `.env.example` | Template for VPS/Docker secrets (copy to `.env`) |
 | `src/Host/Patsanstha.Api/appsettings.json` | Connection strings, JWT, Hangfire cron schedules |
 | `src/Host/Patsanstha.Api/appsettings.Development.json` | Dev overrides (Redis disabled, console telemetry) |
 | `src/Host/Patsanstha.Gateway/appsettings.json` | YARP proxy routes |

@@ -102,15 +102,16 @@ try
         {
             Authorization = [app.Services.GetRequiredService<HangfireDashboardAuthorizationFilter>()],
         });
-        await app.SeedIdentityDataAsync();
-        await app.MigrateMembersSchemaAsync();
-        await app.MigrateDepositsSchemaAsync();
-        await app.MigrateLoansSchemaAsync();
-        await app.MigrateRecoverySchemaAsync();
-        await app.MigrateCollectionsSchemaAsync();
-        await app.MigrateAccountingSchemaAsync();
-        await app.MigrateReportingSchemaAsync();
     }
+
+    await app.SeedIdentityDataAsync();
+    await app.MigrateMembersSchemaAsync();
+    await app.MigrateDepositsSchemaAsync();
+    await app.MigrateLoansSchemaAsync();
+    await app.MigrateRecoverySchemaAsync();
+    await app.MigrateCollectionsSchemaAsync();
+    await app.MigrateAccountingSchemaAsync();
+    await app.MigrateReportingSchemaAsync();
 
     app.UseExceptionHandling();
     app.UseCorrelationId();

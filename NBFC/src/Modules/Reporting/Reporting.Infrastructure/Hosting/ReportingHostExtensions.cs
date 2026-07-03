@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Patsanstha.BuildingBlocks.Infrastructure.Hosting;
 using Patsanstha.Modules.Reporting.Infrastructure.Persistence;
 
 namespace Patsanstha.Modules.Reporting.Infrastructure.Hosting;
@@ -9,7 +10,7 @@ public static class ReportingHostExtensions
 {
     public static async Task MigrateReportingSchemaAsync(this IHost host)
     {
-        if (!host.Services.GetRequiredService<IHostEnvironment>().IsDevelopment())
+        if (!StartupTaskPolicy.ShouldRun(host, "Startup:AutoMigrate"))
         {
             return;
         }
