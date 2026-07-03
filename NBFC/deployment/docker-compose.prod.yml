@@ -1,0 +1,254 @@
+# Production stack for VPS deployment.
+# Run from NBFC/deployment/:  docker compose -f docker-compose.prod.yml --env-file .env up -d --build
+#
+# All services bind to 127.0.0.1 only — host nginx terminates SSL and proxies in.
+# Ports are prefixed with 15xxx to avoid clashes with other projects on the same VPS.
+
+x-db-connection: &db-connection Host=postgres;Port=5432;Database=${POSTGRES_DB:-patsanstha};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+
+x-frontend-build: &frontend-build
+  context: ..
+  dockerfile: deployment/docker/Dockerfile.frontend.prod
+  args:
+    API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+    FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+
+name: nbfc
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-patsanstha}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-15432}:5432"
+    volumes:
+      - nbfc_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-patsanstha}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-16379}:6379"
+    volumes:
+      - nbfc_redis:/data
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: nbfc/api:latest
+    ports:
+      - "127.0.0.1:${API_PORT:-15280}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Identity: *db-connection
+      ConnectionStrings__Members: *db-connection
+      ConnectionStrings__Deposits: *db-connection
+      ConnectionStrings__Loans: *db-connection
+      ConnectionStrings__Recovery: *db-connection
+      ConnectionStrings__Collections: *db-connection
+      ConnectionStrings__Reporting: *db-connection
+      ConnectionStrings__Accounting: *db-connection
+      ConnectionStrings__Hangfire: *db-connection
+      ConnectionStrings__Redis: redis:6379
+      Jwt__Issuer: ${JWT__Issuer:-Patsanstha}
+      Jwt__Audience: ${JWT__Audience:-Patsanstha.Api}
+      Jwt__SigningKey: ${JWT__SigningKey:?Set JWT__SigningKey in .env}
+      Jwt__AccessTokenMinutes: ${JWT__AccessTokenMinutes:-15}
+      Jwt__RefreshTokenDays: ${JWT__RefreshTokenDays:-7}
+      PiiEncryption__Key: ${PiiEncryption__Key:?Set PiiEncryption__Key in .env}
+      IdentitySeed__DefaultTenantId: ${IdentitySeed__DefaultTenantId:-00000000-0000-0000-0000-000000000001}
+      IdentitySeed__AdminEmail: ${IdentitySeed__AdminEmail:-admin@codingera.in}
+      IdentitySeed__AdminPassword: ${IdentitySeed__AdminPassword:?Set IdentitySeed__AdminPassword in .env}
+      IdentitySeed__AdminFullName: ${IdentitySeed__AdminFullName:-System Administrator}
+      Startup__AutoMigrate: ${STARTUP_AUTO_MIGRATE:-true}
+      Startup__SeedIdentity: ${STARTUP_SEED_IDENTITY:-true}
+      MemberDocuments__RootPath: uploads/members
+      MemberDocuments__PublicBasePath: /api/v1/members/files
+      Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+    volumes:
+      - nbfc_uploads:/app/uploads
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  gateway:
+    build:
+      context: ..
+      dockerfile: Dockerfile.gateway
+    image: nbfc/gateway:latest
+    ports:
+      - "127.0.0.1:${GATEWAY_PORT:-15000}:8080"
+    depends_on:
+      - api
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      ASPNETCORE_URLS: http://+:8080
+      ReverseProxy__Clusters__api-cluster__Destinations__api-primary__Address: ${GATEWAY_API_ADDRESS:-http://api:8080/}
+      Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  shell:
+    build:
+      <<: *frontend-build
+      args:
+        APP_NAME: shell
+        API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+        BASE_HREF: /
+    image: nbfc/shell:latest
+    ports:
+      - "127.0.0.1:${SHELL_PORT:-15200}:80"
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  mfe-member:
+    build:
+      <<: *frontend-build
+      args:
+        APP_NAME: mfe-member
+        API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+        BASE_HREF: /mfe-member/
+    image: nbfc/mfe-member:latest
+    ports:
+      - "127.0.0.1:15201:80"
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  mfe-deposit:
+    build:
+      <<: *frontend-build
+      args:
+        APP_NAME: mfe-deposit
+        API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+        BASE_HREF: /mfe-deposit/
+    image: nbfc/mfe-deposit:latest
+    ports:
+      - "127.0.0.1:15202:80"
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  mfe-loan:
+    build:
+      <<: *frontend-build
+      args:
+        APP_NAME: mfe-loan
+        API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+        BASE_HREF: /mfe-loan/
+    image: nbfc/mfe-loan:latest
+    ports:
+      - "127.0.0.1:15203:80"
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  mfe-collection:
+    build:
+      <<: *frontend-build
+      args:
+        APP_NAME: mfe-collection
+        API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+        BASE_HREF: /mfe-collection/
+    image: nbfc/mfe-collection:latest
+    ports:
+      - "127.0.0.1:15204:80"
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  mfe-recovery:
+    build:
+      <<: *frontend-build
+      args:
+        APP_NAME: mfe-recovery
+        API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+        BASE_HREF: /mfe-recovery/
+    image: nbfc/mfe-recovery:latest
+    ports:
+      - "127.0.0.1:15205:80"
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  mfe-accounting:
+    build:
+      <<: *frontend-build
+      args:
+        APP_NAME: mfe-accounting
+        API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+        BASE_HREF: /mfe-accounting/
+    image: nbfc/mfe-accounting:latest
+    ports:
+      - "127.0.0.1:15206:80"
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  mfe-reports:
+    build:
+      <<: *frontend-build
+      args:
+        APP_NAME: mfe-reports
+        API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+        BASE_HREF: /mfe-reports/
+    image: nbfc/mfe-reports:latest
+    ports:
+      - "127.0.0.1:15207:80"
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+  mfe-admin:
+    build:
+      <<: *frontend-build
+      args:
+        APP_NAME: mfe-admin
+        API_BASE_URL: ${API_BASE_URL:-https://api.nbfc.codingera.in/api/v1}
+        FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-https://nbfc.codingera.in}
+        BASE_HREF: /mfe-admin/
+    image: nbfc/mfe-admin:latest
+    ports:
+      - "127.0.0.1:15208:80"
+    restart: unless-stopped
+    networks:
+      - nbfc
+
+volumes:
+  nbfc_pg:
+  nbfc_redis:
+  nbfc_uploads:
+
+networks:
+  nbfc:
+    name: nbfc_net

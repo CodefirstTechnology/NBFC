@@ -82,10 +82,13 @@ try
         options.SwaggerDoc("v1", new() { Title = "Patsanstha API", Version = "v1" });
     });
 
+    var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+        ?? ["http://localhost:4200"];
+
     builder.Services.AddCors(options =>
     {
-        options.AddPolicy("FrontendDev", policy =>
-            policy.WithOrigins("http://localhost:4200")
+        options.AddPolicy("Frontend", policy =>
+            policy.WithOrigins(corsOrigins)
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .WithExposedHeaders("X-Correlation-Id"));
@@ -97,7 +100,7 @@ try
     {
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.UseCors("FrontendDev");
+        app.UseCors("Frontend");
         app.MapHangfireDashboard("/hangfire", new DashboardOptions
         {
             Authorization = [app.Services.GetRequiredService<HangfireDashboardAuthorizationFilter>()],
@@ -112,6 +115,11 @@ try
     await app.MigrateCollectionsSchemaAsync();
     await app.MigrateAccountingSchemaAsync();
     await app.MigrateReportingSchemaAsync();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseCors("Frontend");
+    }
 
     app.UseExceptionHandling();
     app.UseCorrelationId();

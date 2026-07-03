@@ -4,11 +4,6 @@
     "outDir": "../../dist/out-tsc/shell",
     "types": []
   },
-  "files": ["src/main.ts"],
-  "include": ["src/**/*.d.ts"],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    }
-  ]
+  "files": [],
+  "include": []
 }
