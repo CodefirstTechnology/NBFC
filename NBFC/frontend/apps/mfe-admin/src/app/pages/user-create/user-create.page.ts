@@ -30,18 +30,10 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
 
       <article class="create-page__card">
         <div class="create-page__form">
-          <pats-form-field label="Full Name">
-            <input type="text" [(ngModel)]="fullName" />
-          </pats-form-field>
-          <pats-form-field label="Email">
-            <input type="email" [(ngModel)]="email" />
-          </pats-form-field>
-          <pats-form-field label="Password">
-            <input type="password" [(ngModel)]="password" />
-          </pats-form-field>
-          <pats-form-field label="Branch Id (optional)">
-            <input type="text" [(ngModel)]="branchId" />
-          </pats-form-field>
+          <pats-form-field label="Full Name" [(ngModel)]="fullName" />
+          <pats-form-field label="Email" type="email" [(ngModel)]="email" />
+          <pats-form-field label="Password" type="password" [(ngModel)]="password" />
+          <pats-form-field label="Branch Id (optional)" [(ngModel)]="branchId" />
         </div>
 
         @if (roles().length > 0) {
