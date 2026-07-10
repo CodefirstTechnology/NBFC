@@ -1,7 +1,4 @@
-/**
- * Design tokens extracted from Design-Screens/cooperative_banking_design_system/DESIGN.md
- * and cross-referenced HTML reference screens.
- */
+/** Cooperative banking design tokens (colors, spacing, typography). */
 export const colors = {
   primary: '#002653',
   onPrimary: '#ffffff',

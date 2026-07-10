@@ -18,8 +18,7 @@ Thumbs.db
 **/TestResults
 **/*.nupkg
 
-# Design assets and local tools (not needed in API/gateway images)
-Design-Screens/
+# Local tools (not needed in API/gateway images)
 tools/
 
 # Nested duplicate scaffold
