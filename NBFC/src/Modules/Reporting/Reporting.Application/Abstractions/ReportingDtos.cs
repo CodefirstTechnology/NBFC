@@ -33,3 +33,8 @@ public sealed record ListReportSnapshotsCriteria(
     int PageSize,
     ReportType? ReportType,
     ReportSnapshotStatus? Status);
+
+public sealed record ReportExportFileDto(
+    byte[] Content,
+    string ContentType,
+    string FileName);

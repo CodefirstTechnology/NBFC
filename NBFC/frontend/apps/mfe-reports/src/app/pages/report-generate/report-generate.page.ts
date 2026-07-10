@@ -30,16 +30,15 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
 
       <article class="create-page__card">
         <div class="create-page__form">
-          <pats-form-field label="Report Type">
+          <label class="create-page__field">
+            <span class="create-page__label">Report Type</span>
             <select [(ngModel)]="reportType">
               @for (type of reportTypes; track type.reportType) {
                 <option [ngValue]="type.reportType">{{ type.label }}</option>
               }
             </select>
-          </pats-form-field>
-          <pats-form-field label="Title">
-            <input type="text" [(ngModel)]="title" />
-          </pats-form-field>
+          </label>
+          <pats-form-field label="Title" [(ngModel)]="title" />
         </div>
       </article>
 
@@ -57,7 +56,9 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
       .create-page__header p { margin: 8px 0 0; color: var(--pats-color-text-secondary); }
       .create-page__card { padding: 24px; border-radius: var(--pats-radius-lg); background: var(--pats-color-surface-container-lowest); border: 1px solid var(--pats-color-border-subtle); }
       .create-page__form { display: grid; gap: 16px; }
-      .create-page__form select, .create-page__form input { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--pats-color-border-subtle); border-radius: var(--pats-radius-md); }
+      .create-page__field { display: flex; flex-direction: column; gap: 8px; }
+      .create-page__label { font-size: 13px; font-weight: 600; color: var(--pats-color-on-surface-variant); }
+      .create-page__form select { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--pats-color-border-subtle); border-radius: var(--pats-radius-md); background: var(--pats-color-surface-container-lowest); font-size: 16px; }
       .create-page__actions { display: flex; justify-content: flex-end; gap: 12px; }
       .create-page__error { color: var(--pats-color-error); }
     `,
