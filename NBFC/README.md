@@ -43,7 +43,6 @@ NBFC/
 ├── Patsanstha.sln              # Main .NET solution
 ├── docker-compose.yml          # Optional: Postgres 16 + Redis 7
 ├── README.md                   # This file
-├── Design-Screens/             # UI reference (HTML mockups + design docs)
 │
 ├── src/
 │   ├── Host/
@@ -487,4 +486,3 @@ dotnet ef migrations add InitialIdentity \
 ## Further reading
 
 - Module conventions: `src/Modules/README.md`
-- UI reference mockups: `Design-Screens/`

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Patsanstha.BuildingBlocks.Infrastructure.Api;
 using Patsanstha.Modules.Identity.Domain.Authorization;
+using Patsanstha.Modules.Reporting.Application.Abstractions;
+using Patsanstha.Modules.Reporting.Application.ReportSnapshots.DownloadReportSnapshot;
 using Patsanstha.Modules.Reporting.Application.ReportSnapshots.GenerateReport;
 using Patsanstha.Modules.Reporting.Application.ReportSnapshots.GetReportSnapshot;
 using Patsanstha.Modules.Reporting.Application.ReportSnapshots.ListReportSnapshots;
@@ -37,6 +39,19 @@ public static class ReportingEndpoints
         })
         .RequireAuthorization(Permissions.ReportsRead)
         .WithName("ReportsGetById");
+
+        group.MapGet("/{reportSnapshotId:guid}/download", async (
+            Guid reportSnapshotId,
+            ReportExportFormat format,
+            ISender sender) =>
+        {
+            var result = await sender.Send(new DownloadReportSnapshotQuery(reportSnapshotId, format));
+            return result.IsSuccess
+                ? Results.File(result.Value.Content, result.Value.ContentType, result.Value.FileName)
+                : result.Error.ToProblemResult();
+        })
+        .RequireAuthorization(Permissions.ReportsRead)
+        .WithName("ReportsDownload");
 
         group.MapPost("/generate", async (GenerateReportRequestBody request, ISender sender) =>
         {
