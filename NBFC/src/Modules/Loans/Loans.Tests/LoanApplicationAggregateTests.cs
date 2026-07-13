@@ -11,8 +11,14 @@ public sealed class LoanApplicationAggregateTests
     private static readonly Guid MemberId = Guid.Parse("00000000-0000-0000-0000-000000000020");
     private static readonly Guid BranchId = Guid.Parse("00000000-0000-0000-0000-000000000010");
 
-    private static LoanApplication CreateSubmitted() =>
-        LoanApplication.Submit(
+    private static LoanApplication CreateSubmitted()
+    {
+        var amount = 100000m;
+        var rate = 12.0m;
+        var tenure = 24;
+        var emi = LoanEmiCalculator.CalculateEmi(amount, rate, tenure);
+
+        return LoanApplication.Submit(
             TenantId,
             MemberId,
             "M202600001",
@@ -20,11 +26,22 @@ public sealed class LoanApplicationAggregateTests
             BranchId,
             "LN-2026-00001",
             LoanProductType.Personal,
-            100000m,
-            12.0m,
-            24,
+            amount,
+            rate,
+            tenure,
             "Home renovation",
-            new DateOnly(2026, 1, 15));
+            new DateOnly(2026, 1, 15),
+            emi);
+    }
+
+    [Fact]
+    public void Submit_stores_estimated_emi_from_requested_amount()
+    {
+        var application = CreateSubmitted();
+        var expectedEmi = LoanEmiCalculator.CalculateEmi(100000m, 12.0m, 24);
+
+        Assert.Equal(expectedEmi, application.EmiAmount);
+    }
 
     [Fact]
     public void Submit_raises_LoanApplicationSubmitted_domain_event()

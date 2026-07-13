@@ -15,11 +15,11 @@ import {
   LOAN_PRODUCTS,
   LoanApiService,
   LoanProductInfo,
-  LoanProductType,
   getLoanProductMaxTenure,
   extractApiErrorMessage,
   formatInr,
 } from '@patsanstha/loans-data-access';
+import { mergeLoanProductRates } from './loan-product-rates';
 
 @Component({
   selector: 'pats-loan-create-page',
@@ -57,7 +57,7 @@ import {
           </header>
 
           <div class="loan-wizard__products">
-            @for (product of products; track product.productType) {
+            @for (product of products(); track product.productType) {
               <button
                 type="button"
                 class="loan-wizard__product"
@@ -176,12 +176,14 @@ import {
               <input
                 type="number"
                 min="1"
+                placeholder="Enter loan amount"
                 [(ngModel)]="requestedAmount"
                 (ngModelChange)="updatePreview()" />
             </label>
             <label class="loan-wizard__field">
               <span>Tenure (Months)</span>
               <select [(ngModel)]="tenureMonths" (ngModelChange)="updatePreview()">
+                <option [ngValue]="null">Select tenure</option>
                 @for (months of tenureOptions(); track months) {
                   <option [ngValue]="months">{{ months }} Months</option>
                 }
@@ -198,14 +200,29 @@ import {
           @if (emiPreview(); as preview) {
             <div class="loan-wizard__emi-preview">
               <div>
-                <span>Estimated EMI (preview)</span>
-                <strong>{{ formatInr(preview.emiAmount) }}/month</strong>
+                <span>Monthly EMI</span>
+                <strong>{{ formatInr(preview.emiAmount) }}</strong>
+              </div>
+              <div>
+                <span>Interest ({{ productRate() }}% p.a.)</span>
+                <strong>{{ formatInr(preview.totalInterest) }}</strong>
               </div>
               <div>
                 <span>Total payable</span>
                 <strong>{{ formatInr(preview.totalPayable) }}</strong>
               </div>
+              <div>
+                <span>Principal</span>
+                <strong>{{ formatInr(requestedAmount || 0) }}</strong>
+              </div>
             </div>
+            <p class="loan-wizard__emi-note">
+              Calculated as reducing-balance EMI on ₹{{ requestedAmount || 0 }} at {{ productRate() }}% p.a. for {{ tenureMonths }} months.
+            </p>
+          } @else {
+            <p class="loan-wizard__emi-note">
+              Enter amount and tenure to see estimated EMI based on {{ productRate() }}% p.a.
+            </p>
           }
         }
 
@@ -224,8 +241,8 @@ import {
               <span class="material-symbols-outlined">{{ kycComplete() ? 'check_circle' : 'radio_button_unchecked' }}</span>
               KYC documents verified
             </li>
-            <li [class.loan-wizard__kyc--ok]="requestedAmount > 0 && tenureMonths > 0">
-              <span class="material-symbols-outlined">{{ requestedAmount > 0 && tenureMonths > 0 ? 'check_circle' : 'radio_button_unchecked' }}</span>
+            <li [class.loan-wizard__kyc--ok]="(requestedAmount ?? 0) > 0 && (tenureMonths ?? 0) > 0">
+              <span class="material-symbols-outlined">{{ (requestedAmount ?? 0) > 0 && (tenureMonths ?? 0) > 0 ? 'check_circle' : 'radio_button_unchecked' }}</span>
               Loan amount and tenure within product limits
             </li>
             <li [class.loan-wizard__kyc--ok]="purpose.trim().length >= 10">
@@ -257,11 +274,11 @@ import {
             </div>
             <div>
               <dt>Requested Amount</dt>
-              <dd>{{ formatInr(requestedAmount) }}</dd>
+              <dd>{{ requestedAmount != null ? formatInr(requestedAmount) : '—' }}</dd>
             </div>
             <div>
               <dt>Tenure</dt>
-              <dd>{{ tenureMonths }} months</dd>
+              <dd>{{ tenureMonths != null ? tenureMonths + ' months' : '—' }}</dd>
             </div>
             <div>
               <dt>Interest Rate</dt>
@@ -270,6 +287,14 @@ import {
             <div>
               <dt>Estimated EMI</dt>
               <dd>{{ emiPreview() ? formatInr(emiPreview()!.emiAmount) + '/month' : '—' }}</dd>
+            </div>
+            <div>
+              <dt>Total Interest</dt>
+              <dd>{{ emiPreview() ? formatInr(emiPreview()!.totalInterest) : '—' }}</dd>
+            </div>
+            <div>
+              <dt>Total Payable</dt>
+              <dd>{{ emiPreview() ? formatInr(emiPreview()!.totalPayable) : '—' }}</dd>
             </div>
             <div class="loan-wizard__review-full">
               <dt>Purpose</dt>
@@ -696,7 +721,13 @@ import {
         display: block;
         margin-top: 4px;
         font-family: var(--pats-font-display);
-        font-size: 22px;
+        font-size: 20px;
+      }
+
+      .loan-wizard__emi-note {
+        margin: 10px 0 0;
+        font-size: 13px;
+        color: var(--pats-color-text-secondary);
       }
 
       .loan-wizard__consent {
@@ -840,7 +871,7 @@ export class LoanCreatePageComponent implements OnInit {
   private readonly loanApi = inject(LoanApiService);
   private readonly memberApi = inject(MemberApiService);
 
-  readonly products = LOAN_PRODUCTS;
+  readonly products = signal<LoanProductInfo[]>(LOAN_PRODUCTS);
   readonly steps = [
     { id: 1, label: 'PRODUCT' },
     { id: 2, label: 'KYC' },
@@ -858,12 +889,16 @@ export class LoanCreatePageComponent implements OnInit {
   readonly selectedMember = signal<MemberSummary | null>(null);
   readonly memberDetail = signal<MemberDetail | null>(null);
   readonly selectedProduct = signal<LoanProductInfo | null>(null);
-  readonly emiPreview = signal<{ emiAmount: number; totalPayable: number } | null>(null);
+  readonly emiPreview = signal<{
+    emiAmount: number;
+    totalInterest: number;
+    totalPayable: number;
+  } | null>(null);
 
   readonly kycVerified = KycVerificationStatus.Verified;
 
-  requestedAmount = 100000;
-  tenureMonths = 24;
+  requestedAmount: number | null = null;
+  tenureMonths: number | null = null;
   purpose = '';
   consentGiven = false;
 
@@ -901,18 +936,27 @@ export class LoanCreatePageComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.selectProduct(this.products[0]);
+    void this.loadProductRates();
   }
 
   updatePreview(): void {
+    const amount = Number(this.requestedAmount) || 0;
+    const tenure = Number(this.tenureMonths) || 0;
+
+    if (amount <= 0 || tenure <= 0) {
+      this.emiPreview.set(null);
+      return;
+    }
+
     const preview = previewEmi({
-      principal: this.requestedAmount,
+      principal: amount,
       annualRatePercent: this.productRate(),
-      tenureMonths: this.tenureMonths,
+      tenureMonths: tenure,
     });
 
     this.emiPreview.set({
       emiAmount: preview.emiAmount,
+      totalInterest: preview.totalInterest,
       totalPayable: preview.totalPayment,
     });
   }
@@ -920,12 +964,33 @@ export class LoanCreatePageComponent implements OnInit {
   selectProduct(product: LoanProductInfo): void {
     this.selectedProduct.set(product);
     const maxTenure = product.maxTenureMonths ?? getLoanProductMaxTenure(product.productType);
-    this.tenureMonths = Math.min(this.tenureMonths, maxTenure);
-    if (!this.tenureOptions().includes(this.tenureMonths)) {
-      this.tenureMonths = this.tenureOptions()[this.tenureOptions().length - 1] ?? maxTenure;
+
+    if (this.tenureMonths != null && this.tenureMonths > maxTenure) {
+      this.tenureMonths = maxTenure;
     }
+
     this.updatePreview();
     this.errorMessage.set(null);
+  }
+
+  private async loadProductRates(): Promise<void> {
+    try {
+      const apiProducts = await this.loanApi.getProducts();
+      const merged = mergeLoanProductRates(LOAN_PRODUCTS, apiProducts);
+      this.products.set(merged);
+
+      const selected = this.selectedProduct();
+      if (selected) {
+        const refreshed =
+          merged.find((p: LoanProductInfo) => p.productType === selected.productType) ?? null;
+        if (refreshed) {
+          this.selectProduct(refreshed);
+        }
+      }
+    } catch {
+      // Keep local catalog rates if products API is unavailable.
+      this.updatePreview();
+    }
   }
 
   async searchMembers(query: string): Promise<void> {
@@ -969,9 +1034,9 @@ export class LoanCreatePageComponent implements OnInit {
         return !!this.selectedMember();
       case 3:
         return (
-          this.requestedAmount > 0 &&
-          this.tenureMonths > 0 &&
-          this.tenureMonths <= this.productMaxTenure() &&
+          (this.requestedAmount ?? 0) > 0 &&
+          (this.tenureMonths ?? 0) > 0 &&
+          (this.tenureMonths ?? 0) <= this.productMaxTenure() &&
           this.purpose.trim().length >= 10
         );
       case 4:
@@ -992,11 +1057,11 @@ export class LoanCreatePageComponent implements OnInit {
       case 2:
         return 'Search for a member, then click their name in the results list (typing alone is not enough).';
       case 3: {
-        if (this.requestedAmount <= 0) {
+        if ((this.requestedAmount ?? 0) <= 0) {
           return 'Enter a requested amount greater than zero.';
         }
 
-        if (this.tenureMonths <= 0 || this.tenureMonths > this.productMaxTenure()) {
+        if ((this.tenureMonths ?? 0) <= 0 || (this.tenureMonths ?? 0) > this.productMaxTenure()) {
           return `Select a tenure up to ${this.productMaxTenure()} months for this product.`;
         }
 
@@ -1025,7 +1090,7 @@ export class LoanCreatePageComponent implements OnInit {
 
     if (this.step() === 2) {
       const maxTenure = this.productMaxTenure();
-      if (this.tenureMonths > maxTenure) {
+      if (this.tenureMonths != null && this.tenureMonths > maxTenure) {
         this.tenureMonths = maxTenure;
       }
       this.updatePreview();
@@ -1063,6 +1128,13 @@ export class LoanCreatePageComponent implements OnInit {
       return;
     }
 
+    const amount = this.requestedAmount;
+    const tenure = this.tenureMonths;
+    if (amount == null || amount <= 0 || tenure == null || tenure <= 0) {
+      this.errorMessage.set('Enter amount and tenure before submitting.');
+      return;
+    }
+
     this.loading.set(true);
     this.errorMessage.set(null);
 
@@ -1076,8 +1148,8 @@ export class LoanCreatePageComponent implements OnInit {
         memberName: member.fullName,
         branchId,
         productType: product.productType,
-        requestedAmount: this.requestedAmount,
-        tenureMonths: this.tenureMonths,
+        requestedAmount: amount,
+        tenureMonths: tenure,
         purpose: this.purpose.trim(),
       });
 

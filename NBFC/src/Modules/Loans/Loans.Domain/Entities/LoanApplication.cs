@@ -58,7 +58,8 @@ public sealed class LoanApplication : AggregateRoot
         decimal interestRate,
         int tenureMonths,
         string purpose,
-        DateOnly appliedOn)
+        DateOnly appliedOn,
+        decimal? estimatedEmiAmount = null)
     {
         if (tenantId == Guid.Empty)
         {
@@ -90,6 +91,11 @@ public sealed class LoanApplication : AggregateRoot
             throw new InvalidOperationException("Interest rate cannot be negative.");
         }
 
+        if (estimatedEmiAmount is <= 0)
+        {
+            throw new InvalidOperationException("Estimated EMI must be greater than zero.");
+        }
+
         var application = new LoanApplication
         {
             Id = Guid.NewGuid(),
@@ -103,6 +109,7 @@ public sealed class LoanApplication : AggregateRoot
             RequestedAmount = requestedAmount,
             InterestRate = interestRate,
             TenureMonths = tenureMonths,
+            EmiAmount = estimatedEmiAmount,
             Purpose = purpose.Trim(),
             Status = LoanApplicationStatus.Submitted,
             AppliedOn = appliedOn,

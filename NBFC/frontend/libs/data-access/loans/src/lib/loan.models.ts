@@ -90,12 +90,13 @@ export interface LoanProductInfo {
   iconTone: 'blue' | 'gold' | 'green';
 }
 
+/** UI metadata — rates must match backend LoanProductCatalog. */
 export const LOAN_PRODUCTS: LoanProductInfo[] = [
   {
     productType: LoanProductType.Personal,
     label: 'Personal Loan',
     labelMr: 'व्यक्तिगत कर्ज',
-    rate: 12,
+    rate: 12.0,
     maxTenureMonths: 60,
     icon: 'person',
     iconTone: 'blue',
@@ -104,7 +105,7 @@ export const LOAN_PRODUCTS: LoanProductInfo[] = [
     productType: LoanProductType.Gold,
     label: 'Gold Loan',
     labelMr: 'सोने कर्ज',
-    rate: 9,
+    rate: 10.5,
     maxTenureMonths: 12,
     icon: 'savings',
     iconTone: 'gold',
@@ -113,21 +114,38 @@ export const LOAN_PRODUCTS: LoanProductInfo[] = [
     productType: LoanProductType.Business,
     label: 'Business Loan',
     labelMr: 'व्यवसाय कर्ज',
-    rate: 10.5,
+    rate: 14.0,
     maxTenureMonths: 84,
     icon: 'storefront',
     iconTone: 'blue',
   },
   {
     productType: LoanProductType.Vehicle,
-    label: 'Agricultural Loan',
-    labelMr: 'कृषी कर्ज',
-    rate: 7,
+    label: 'Vehicle Loan',
+    labelMr: 'वाहन कर्ज',
+    rate: 11.5,
     maxTenureMonths: 36,
-    icon: 'agriculture',
+    icon: 'directions_car',
     iconTone: 'green',
   },
 ];
+
+export interface LoanProductApiDto {
+  productType: LoanProductType;
+  defaultInterestRatePercent: number;
+}
+
+export function mergeLoanProductRates(
+  catalog: LoanProductInfo[],
+  apiProducts: LoanProductApiDto[]
+): LoanProductInfo[] {
+  return catalog.map((product) => {
+    const fromApi = apiProducts.find((item) => item.productType === product.productType);
+    return fromApi
+      ? { ...product, rate: Number(fromApi.defaultInterestRatePercent) }
+      : product;
+  });
+}
 
 export function getLoanProductMaxTenure(type: LoanProductType): number {
   return LOAN_PRODUCTS.find((p) => p.productType === type)?.maxTenureMonths ?? 60;

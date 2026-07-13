@@ -6,6 +6,7 @@ import {
   CreateLoanApplicationRequest,
   ListLoansParams,
   LoanApplicationDetail,
+  LoanProductApiDto,
   PagedLoansResponse,
 } from './loan.models';
 
@@ -34,6 +35,10 @@ export class LoanApiService {
 
   getById(id: string): Promise<LoanApplicationDetail> {
     return firstValueFrom(this.http.get<LoanApplicationDetail>(`${this.loansUrl}/${id}`));
+  }
+
+  getProducts(): Promise<LoanProductApiDto[]> {
+    return firstValueFrom(this.http.get<LoanProductApiDto[]>(`${this.loansUrl}/products`));
   }
 
   create(request: CreateLoanApplicationRequest): Promise<LoanApplicationDetail> {

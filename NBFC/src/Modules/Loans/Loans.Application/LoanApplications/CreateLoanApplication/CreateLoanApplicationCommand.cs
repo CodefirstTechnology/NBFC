@@ -49,6 +49,10 @@ public sealed class CreateLoanApplicationCommandHandler(
 
         var loanNumber = await loanNumberGenerator.GenerateNextAsync(cancellationToken);
         var interestRate = LoanProductCatalog.GetDefaultInterestRate(request.ProductType);
+        var estimatedEmi = LoanEmiCalculator.CalculateEmi(
+            request.RequestedAmount,
+            interestRate,
+            request.TenureMonths);
 
         var application = LoanApplication.Submit(
             tenantId,
@@ -62,7 +66,8 @@ public sealed class CreateLoanApplicationCommandHandler(
             interestRate,
             request.TenureMonths,
             request.Purpose,
-            DateOnly.FromDateTime(DateTime.UtcNow));
+            DateOnly.FromDateTime(DateTime.UtcNow),
+            estimatedEmi);
 
         await repository.AddAsync(application, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);

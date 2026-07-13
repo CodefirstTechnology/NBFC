@@ -223,9 +223,10 @@ export function estimateMaturityAmount(
   rate: number,
   tenureMonths: number
 ): { interest: number; maturity: number } {
-  const interest = (principal * rate * tenureMonths) / (100 * 12);
+  // Backward-compatible FD-style simple interest helper.
+  const interest = Math.round(((principal * rate * tenureMonths) / 1200) * 100) / 100;
   return {
-    interest: Math.round(interest * 100) / 100,
+    interest,
     maturity: Math.round((principal + interest) * 100) / 100,
   };
 }

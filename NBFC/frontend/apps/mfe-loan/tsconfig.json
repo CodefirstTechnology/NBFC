@@ -4,6 +4,6 @@
     "outDir": "../../dist/out-tsc/mfe-loan",
     "types": []
   },
-  "files": [],
-  "include": []
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
 }

@@ -2,6 +2,10 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@patsanstha/auth';
+import {
+  DepositCalcProductType,
+  estimateDepositMaturity,
+} from '@patsanstha/core-utils';
 import { MemberApiService, MemberSummary, extractApiErrorMessage as memberError } from '@patsanstha/members-data-access';
 import {
   DEPOSIT_PRODUCTS,
@@ -9,7 +13,6 @@ import {
   DepositProductType,
   InterestPayoutMode,
   ProductRateInfo,
-  estimateMaturityAmount,
   extractApiErrorMessage,
   formatInr,
 } from '@patsanstha/deposits-data-access';
@@ -146,14 +149,23 @@ import {
 
               <div class="create-page__form">
                 <label class="create-page__field">
-                  <span>Principal Amount (₹)</span>
-                  <input type="number" min="1" step="0.01" [(ngModel)]="principalAmount" />
+                  <span>{{ amountLabel() }}</span>
+                  <input
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    placeholder="Enter amount"
+                    [ngModel]="principalAmount()"
+                    (ngModelChange)="principalAmount.set($event ? Number($event) : null)" />
                 </label>
 
                 @if (requiresTenure()) {
                   <label class="create-page__field">
                     <span>Tenure (Months)</span>
-                    <select [(ngModel)]="tenureMonths">
+                    <select
+                      [ngModel]="tenureMonths()"
+                      (ngModelChange)="tenureMonths.set($event)">
+                      <option [ngValue]="null">Select tenure</option>
                       <option [ngValue]="12">12 Months</option>
                       <option [ngValue]="24">24 Months</option>
                       <option [ngValue]="36">36 Months</option>
@@ -193,16 +205,19 @@ import {
 
         <aside class="create-page__aside">
           <article class="create-page__preview">
-            <span class="create-page__preview-label">Projected Interest Rate</span>
+            <span class="create-page__preview-label">Interest Rate</span>
             <strong>{{ previewRate() }}%</strong>
+            <span class="create-page__preview-label">{{ previewInvestedLabel() }}</span>
+            <strong>{{ formatInr(preview().totalInvested) }}</strong>
             <span class="create-page__preview-label">Total Interest</span>
             <strong>{{ formatInr(preview().interest) }}</strong>
-            <span class="create-page__preview-label">Maturity Amount</span>
+            <span class="create-page__preview-label">{{ previewMaturityLabel() }}</span>
             <strong class="create-page__preview-total">{{ formatInr(preview().maturity) }}</strong>
             <footer>
               <span>Product: {{ previewProductLabel() }}</span>
               <span>Tenure: {{ previewTenureLabel() }}</span>
             </footer>
+            <p class="create-page__preview-note">{{ preview().formulaLabel }}</p>
           </article>
 
           <article class="create-page__checklist">
@@ -623,6 +638,13 @@ import {
       .create-page__error {
         color: var(--pats-color-error);
       }
+
+      .create-page__preview-note {
+        margin: 12px 0 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: var(--pats-color-text-secondary);
+      }
     `,
   ],
 })
@@ -647,9 +669,9 @@ export class DepositCreatePageComponent {
   readonly memberResults = signal<MemberSummary[]>([]);
   readonly selectedMember = signal<MemberSummary | null>(null);
   readonly selectedProduct = signal<ProductRateInfo | null>(null);
+  readonly principalAmount = signal<number | null>(null);
+  readonly tenureMonths = signal<number | null>(null);
 
-  principalAmount = 50000;
-  tenureMonths = 36;
   interestPayoutMode = InterestPayoutMode.OnMaturity;
   autoRenewal = false;
 
@@ -663,10 +685,16 @@ export class DepositCreatePageComponent {
     );
   });
 
-  readonly previewRate = computed(() => this.selectedProduct()?.rate ?? 4.0);
+  readonly amountLabel = computed(() =>
+    this.selectedProduct()?.productType === DepositProductType.RecurringDeposit
+      ? 'Monthly Installment (₹)'
+      : 'Principal Amount (₹)'
+  );
+
+  readonly previewRate = computed(() => this.selectedProduct()?.rate ?? 0);
 
   readonly previewProductLabel = computed(
-    () => this.selectedProduct()?.label ?? 'Savings Account'
+    () => this.selectedProduct()?.label ?? 'Select a product'
   );
 
   readonly previewTenureLabel = computed(() => {
@@ -674,14 +702,42 @@ export class DepositCreatePageComponent {
       return 'Flexible';
     }
 
-    return `${this.tenureMonths} Months`;
+    const tenure = this.tenureMonths();
+    return tenure ? `${tenure} Months` : '—';
   });
 
-  readonly preview = computed(() => {
-    const rate = this.previewRate();
-    const tenure = this.requiresTenure() ? this.tenureMonths : 12;
+  readonly previewInvestedLabel = computed(() =>
+    this.selectedProduct()?.productType === DepositProductType.RecurringDeposit
+      ? 'Total Installments'
+      : 'Principal'
+  );
 
-    return estimateMaturityAmount(this.principalAmount, rate, tenure);
+  readonly previewMaturityLabel = computed(() =>
+    this.selectedProduct()?.productType === DepositProductType.Savings
+      ? 'Projected Value (1 year)'
+      : 'Maturity Amount'
+  );
+
+  readonly preview = computed(() => {
+    const product = this.selectedProduct();
+    const amount = this.principalAmount();
+    const tenure = this.tenureMonths();
+
+    if (!product || amount == null || amount <= 0) {
+      return estimateDepositMaturity({
+        productType: DepositCalcProductType.Savings,
+        amount: 0,
+        annualRatePercent: 0,
+        tenureMonths: null,
+      });
+    }
+
+    return estimateDepositMaturity({
+      productType: product.productType as unknown as DepositCalcProductType,
+      amount,
+      annualRatePercent: product.rate,
+      tenureMonths: this.requiresTenure() ? tenure : null,
+    });
   });
 
   async searchMembers(query: string): Promise<void> {
@@ -710,15 +766,29 @@ export class DepositCreatePageComponent {
 
   selectProduct(product: ProductRateInfo): void {
     this.selectedProduct.set(product);
+    this.principalAmount.set(null);
+    this.tenureMonths.set(null);
     this.errorMessage.set(null);
   }
 
   async submit(): Promise<void> {
     const member = this.selectedMember();
     const product = this.selectedProduct();
+    const amount = this.principalAmount();
+    const tenure = this.tenureMonths();
 
     if (!member || !product) {
       this.errorMessage.set('Select a member and product type.');
+      return;
+    }
+
+    if (amount == null || amount <= 0) {
+      this.errorMessage.set('Enter a valid amount.');
+      return;
+    }
+
+    if (this.requiresTenure() && (tenure == null || tenure <= 0)) {
+      this.errorMessage.set('Select a tenure for this product.');
       return;
     }
 
@@ -735,8 +805,8 @@ export class DepositCreatePageComponent {
         memberName: member.fullName,
         branchId,
         productType: product.productType,
-        principalAmount: this.principalAmount,
-        tenureMonths: this.requiresTenure() ? this.tenureMonths : null,
+        principalAmount: amount,
+        tenureMonths: this.requiresTenure() ? tenure : null,
         interestPayoutMode: this.interestPayoutMode,
         autoRenewal: this.autoRenewal,
       });

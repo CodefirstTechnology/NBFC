@@ -14,12 +14,12 @@ import {
   RecoveryApiService,
   extractApiErrorMessage,
 } from '@patsanstha/recovery-data-access';
-import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit';
+import { PatsButtonComponent } from '@patsanstha/ui-kit';
 
 @Component({
   selector: 'pats-recovery-create-page',
   standalone: true,
-  imports: [FormsModule, RouterLink, PatsButtonComponent, PatsFormFieldComponent],
+  imports: [FormsModule, RouterLink, PatsButtonComponent],
   template: `
     <section class="create-page">
       <header class="create-page__header">
@@ -90,15 +90,18 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
         <article class="create-page__card">
           <h2>Case Details</h2>
           <div class="create-page__form">
-            <pats-form-field label="Outstanding Amount (₹)">
+            <label class="create-page__notes">
+              <span>Outstanding Amount (₹)</span>
               <input type="number" min="0.01" step="0.01" [(ngModel)]="outstandingAmount" />
-            </pats-form-field>
-            <pats-form-field label="Days Past Due">
+            </label>
+            <label class="create-page__notes">
+              <span>Days Past Due</span>
               <input type="number" min="1" [(ngModel)]="daysPastDue" />
-            </pats-form-field>
-            <pats-form-field label="Notes">
+            </label>
+            <label class="create-page__notes">
+              <span>Notes</span>
               <textarea rows="3" [(ngModel)]="notes" placeholder="Initial recovery notes…"></textarea>
-            </pats-form-field>
+            </label>
           </div>
         </article>
       }
@@ -123,6 +126,9 @@ import { PatsButtonComponent, PatsFormFieldComponent } from '@patsanstha/ui-kit'
       .create-page__loan--selected { border-color: var(--pats-color-primary); background: var(--pats-color-surface-container-low); }
       .create-page__selected { margin-top: 12px; color: var(--pats-color-secondary); }
       .create-page__form { display: grid; gap: 16px; }
+      .create-page__notes { display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 600; color: var(--pats-color-on-surface-variant); }
+      .create-page__notes input, .create-page__notes textarea { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--pats-color-border-subtle); border-radius: var(--pats-radius-md); font: inherit; font-weight: 400; background: var(--pats-color-surface-container-lowest); }
+      .create-page__notes textarea { min-height: auto; padding: 12px; }
       .create-page__actions { display: flex; justify-content: flex-end; gap: 12px; }
       .create-page__error { color: var(--pats-color-error); }
     `,
@@ -171,10 +177,21 @@ export class RecoveryCreatePageComponent {
     await this.loadLoans(member.id);
   }
 
-  selectLoan(loan: LoanApplicationSummary): void {
+  async selectLoan(loan: LoanApplicationSummary): Promise<void> {
     this.selectedLoan.set(loan);
     this.outstandingAmount = loan.approvedAmount ?? loan.requestedAmount;
+    this.daysPastDue = 1;
     this.errorMessage.set(null);
+
+    try {
+      const detail = await this.loanApi.getById(loan.id);
+      this.outstandingAmount =
+        detail.outstandingPrincipal ??
+        detail.approvedAmount ??
+        detail.requestedAmount;
+    } catch (error) {
+      this.errorMessage.set(loanError(error, 'Failed to load loan outstanding balance.'));
+    }
   }
 
   canSubmit(): boolean {
