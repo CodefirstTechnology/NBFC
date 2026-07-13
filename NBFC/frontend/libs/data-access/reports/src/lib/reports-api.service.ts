@@ -56,4 +56,13 @@ export class ReportsApiService {
       })
     );
   }
+
+  download(id: string, format: 'json' | 'csv'): Promise<Blob> {
+    return firstValueFrom(
+      this.http.get(`${this.reportsUrl}/${id}/download`, {
+        params: { format },
+        responseType: 'blob',
+      })
+    );
+  }
 }

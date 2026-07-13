@@ -138,6 +138,15 @@ export interface ExecutiveDashboard {
   systemStatus: SystemStatus;
 }
 
+export function formatInr(amount: number): string {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
 export function formatCompactInr(amount: number): string {
   if (amount >= 10_000_000) {
     return `₹ ${(amount / 10_000_000).toFixed(2)} Cr`;

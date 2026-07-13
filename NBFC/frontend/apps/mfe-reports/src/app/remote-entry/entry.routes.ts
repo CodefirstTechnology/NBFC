@@ -7,6 +7,13 @@ export const reportsRoutes: Routes = [
       import('../pages/report-list/report-list.page').then((m) => m.ReportListPageComponent),
   },
   {
+    path: 'daily-collection',
+    loadComponent: () =>
+      import('../pages/daily-collection-report/daily-collection-report.page').then(
+        (m) => m.DailyCollectionReportPageComponent
+      ),
+  },
+  {
     path: 'generate',
     loadComponent: () =>
       import('../pages/report-generate/report-generate.page').then((m) => m.ReportGeneratePageComponent),
