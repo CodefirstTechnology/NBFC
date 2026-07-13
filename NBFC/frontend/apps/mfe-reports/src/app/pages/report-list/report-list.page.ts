@@ -7,6 +7,7 @@ import {
   extractApiErrorMessage,
 } from '@patsanstha/reports-data-access';
 import { REPORT_HUB_CARDS, ReportHubCard } from '../report-hub.config';
+import { downloadReportPdf } from '../report-pdf.local';
 
 @Component({
   selector: 'pats-report-list-page',
@@ -126,11 +127,11 @@ import { REPORT_HUB_CARDS, ReportHubCard } from '../report-hub.config';
                 type="button"
                 class="hub-card__download"
                 *patsHasPermission="'reports.export'"
-                title="Download"
+                title="Download PDF"
                 [disabled]="downloadingCardId() === card.id"
                 (click)="downloadReport(card)">
                 <span class="material-symbols-outlined">
-                  {{ downloadingCardId() === card.id ? 'progress_activity' : 'download' }}
+                  {{ downloadingCardId() === card.id ? 'progress_activity' : 'picture_as_pdf' }}
                 </span>
               </button>
             </footer>
@@ -430,6 +431,12 @@ export class ReportListPageComponent {
 
   async downloadReport(card: ReportHubCard): Promise<void> {
     if (card.reportType === undefined) {
+      if (card.route) {
+        await this.router.navigate([card.route]);
+        return;
+      }
+
+      this.errorMessage.set('PDF download is not available for this report yet.');
       return;
     }
 
@@ -438,10 +445,10 @@ export class ReportListPageComponent {
 
     try {
       const snapshot = await this.findOrCreateSnapshot(card.reportType, card.title);
-      const blob = await this.reportsApi.download(snapshot.id, 'csv');
-      this.triggerDownload(blob, `${card.id}-report.csv`);
+      const detail = await this.reportsApi.getById(snapshot.id);
+      downloadReportPdf(detail);
     } catch (error) {
-      this.errorMessage.set(extractApiErrorMessage(error, 'Failed to download report.'));
+      this.errorMessage.set(extractApiErrorMessage(error, 'Failed to download PDF.'));
     } finally {
       this.downloadingCardId.set(null);
     }
@@ -454,14 +461,5 @@ export class ReportListPageComponent {
     }
 
     return this.reportsApi.generate({ reportType, title });
-  }
-
-  private triggerDownload(blob: Blob, fileName: string): void {
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = fileName;
-    anchor.click();
-    URL.revokeObjectURL(url);
   }
 }

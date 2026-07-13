@@ -14,6 +14,7 @@ import {
   interestPayoutLabel,
 } from '@patsanstha/deposits-data-access';
 import { PatsStatusPillComponent } from '@patsanstha/ui-kit';
+import { downloadDepositTransactionPdf } from './deposit-receipt-pdf';
 
 interface DepositTransactionRow {
   id: string;
@@ -165,8 +166,12 @@ interface DepositTransactionRow {
                           {{ txn.type === 'CREDIT' ? '+' : '-' }} {{ formatInr(txn.amount) }}
                         </td>
                         <td>
-                          <button type="button" class="detail-page__icon-btn">
-                            <span class="material-symbols-outlined">description</span>
+                          <button
+                            type="button"
+                            class="detail-page__icon-btn"
+                            title="Download PDF receipt"
+                            (click)="downloadTransactionPdf(txn)">
+                            <span class="material-symbols-outlined">picture_as_pdf</span>
                           </button>
                         </td>
                       </tr>
@@ -731,6 +736,19 @@ export class DepositDetailPageComponent implements OnInit {
   onTransactionSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.transactionSearch.set(value);
+  }
+
+  downloadTransactionPdf(txn: DepositTransactionRow): void {
+    const account = this.account();
+    if (!account) {
+      return;
+    }
+
+    try {
+      downloadDepositTransactionPdf(account, txn);
+    } catch (error) {
+      this.errorMessage.set(extractApiErrorMessage(error, 'Failed to download PDF receipt.'));
+    }
   }
 
   printPassbook(): void {

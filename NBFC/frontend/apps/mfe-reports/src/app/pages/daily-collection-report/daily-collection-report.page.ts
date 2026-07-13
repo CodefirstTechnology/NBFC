@@ -13,12 +13,12 @@ import {
 import {
   ReportType,
   ReportsApiService,
-  downloadReportPdf,
   extractApiErrorMessage,
   formatCompactInr,
   formatInr,
   formatTrendPercent,
 } from '@patsanstha/reports-data-access';
+import { downloadReportPdf } from '../report-pdf.local';
 
 interface ChartDay {
   label: string;

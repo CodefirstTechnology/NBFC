@@ -3,13 +3,13 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import {
   ReportSnapshotDetail,
   ReportsApiService,
-  downloadReportPdf,
   extractApiErrorMessage,
   reportStatusLabel,
   reportStatusVariant,
   reportTypeLabel,
 } from '@patsanstha/reports-data-access';
 import { PatsButtonComponent, PatsStatusPillComponent } from '@patsanstha/ui-kit';
+import { downloadReportPdf } from '../report-pdf.local';
 
 @Component({
   selector: 'pats-report-detail-page',

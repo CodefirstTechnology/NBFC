@@ -2,10 +2,6 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@patsanstha/auth';
-import {
-  DepositCalcProductType,
-  estimateDepositMaturity,
-} from '@patsanstha/core-utils';
 import { MemberApiService, MemberSummary, extractApiErrorMessage as memberError } from '@patsanstha/members-data-access';
 import {
   DEPOSIT_PRODUCTS,
@@ -16,6 +12,10 @@ import {
   extractApiErrorMessage,
   formatInr,
 } from '@patsanstha/deposits-data-access';
+import {
+  DepositCalcProductType,
+  estimateDepositMaturity,
+} from './deposit-maturity.calc';
 
 @Component({
   selector: 'pats-deposit-create-page',
@@ -156,7 +156,7 @@ import {
                     step="0.01"
                     placeholder="Enter amount"
                     [ngModel]="principalAmount()"
-                    (ngModelChange)="principalAmount.set($event ? Number($event) : null)" />
+                    (ngModelChange)="onPrincipalChange($event)" />
                 </label>
 
                 @if (requiresTenure()) {
@@ -164,7 +164,7 @@ import {
                     <span>Tenure (Months)</span>
                     <select
                       [ngModel]="tenureMonths()"
-                      (ngModelChange)="tenureMonths.set($event)">
+                      (ngModelChange)="onTenureChange($event)">
                       <option [ngValue]="null">Select tenure</option>
                       <option [ngValue]="12">12 Months</option>
                       <option [ngValue]="24">24 Months</option>
@@ -769,6 +769,20 @@ export class DepositCreatePageComponent {
     this.principalAmount.set(null);
     this.tenureMonths.set(null);
     this.errorMessage.set(null);
+  }
+
+  onPrincipalChange(value: string | number | null): void {
+    if (value === null || value === undefined || value === '') {
+      this.principalAmount.set(null);
+      return;
+    }
+
+    const parsed = typeof value === 'number' ? value : parseFloat(value);
+    this.principalAmount.set(Number.isFinite(parsed) ? parsed : null);
+  }
+
+  onTenureChange(value: number | null): void {
+    this.tenureMonths.set(value);
   }
 
   async submit(): Promise<void> {
